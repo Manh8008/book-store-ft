@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 export default function Header() {
     return (
@@ -16,7 +16,11 @@ export default function Header() {
 
                             {/* <!-- Search --> */}
                             <div className="search-container">
-                                <input type="text" placeholder="Tìm kiếm..." className="search-input" />
+                                <input
+                                    type="text"
+                                    placeholder="Tìm kiếm..."
+                                    className="search-input"
+                                />
                                 <button type="submit" className="search-button">
                                     <i className="fas fa-search"></i>
                                 </button>
@@ -28,7 +32,8 @@ export default function Header() {
                                     <a href="#!" className="link">
                                         <i className="fa-solid fa-phone-volume"></i>
                                         <div className="text text-phone">
-                                            <span>Gọi điện đặt hàng</span><br />
+                                            <span>Gọi điện đặt hàng</span>
+                                            <br />
                                             <span>0986 836 563</span>
                                         </div>
                                     </a>
@@ -64,13 +69,27 @@ export default function Header() {
 
                             {/* <!-- Navigation --> */}
                             <ul>
-                                <li><Link href="#!">Trang chủ</Link></li>
-                                <li><Link href="#!">Danh mục sản phẩm</Link></li>
-                                <li><Link href="#!">Sản phẩm</Link></li>
-                                <li><Link href="#!">Bài viết</Link></li>
-                                <li><Link href="#!">Tuyển cộng tác viên</Link></li>
-                                <li><Link href="#!">Liên hệ</Link></li>
-                                <li><Link href="#!">Review Sách</Link></li>
+                                <li>
+                                    <Link href="#!">Trang chủ</Link>
+                                </li>
+                                <li>
+                                    <Link href="#!">Danh mục sản phẩm</Link>
+                                </li>
+                                <li>
+                                    <Link href="#!">Sản phẩm</Link>
+                                </li>
+                                <li>
+                                    <Link href="#!">Bài viết</Link>
+                                </li>
+                                <li>
+                                    <Link href="#!">Tuyển cộng tác viên</Link>
+                                </li>
+                                <li>
+                                    <Link href="#!">Liên hệ</Link>
+                                </li>
+                                <li>
+                                    <Link href="#!">Review Sách</Link>
+                                </li>
                             </ul>
                         </nav>
                     </div>

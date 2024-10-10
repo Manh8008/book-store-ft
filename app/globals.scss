@@ -3,7 +3,9 @@
 }
 
 :root {
-    --primary-color: #F47830;
+    --primary-color: #f47830;
+    --footer-height: 296px;
+    --text-color: #333333;
 }
 
 html {
@@ -12,7 +14,7 @@ html {
 
 body {
     font-size: 1.6rem;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 /* Commom */
@@ -41,9 +43,8 @@ hr {
 .header .top-header img {
     width: 100%;
     height: 70px;
-    object-fit: cover
+    object-fit: cover;
 }
-
 
 /* ================ mid-header ============= */
 
@@ -54,7 +55,6 @@ hr {
     margin-left: auto;
     margin-right: auto;
 }
-
 
 .search-container {
     display: flex;
@@ -163,7 +163,6 @@ hr {
     margin-left: -10px;
 }
 
-
 /* =================== bot-header ================ */
 
 .header .bot-header {
@@ -197,7 +196,7 @@ hr {
 }
 
 .header .bot-header .navbar a:hover {
-    background: #EEEEEE;
+    background: #eeeeee;
     color: var(--primary-color);
     padding: 15px;
 }

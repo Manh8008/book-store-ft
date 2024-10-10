@@ -1,4 +1,4 @@
-export default function Banner() {
+export const Banner = () => {
     return (
         <>
             {/* <!-- Banner --> */}
@@ -20,5 +20,5 @@ export default function Banner() {
                 </div>
             </div>
         </>
-    );
+    )
 }

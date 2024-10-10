@@ -35,8 +35,6 @@
 .right-bottom {
     flex: 1;
 }
-
-
 /* ===================== Products Hot ===========================*/
 .product-hot .title-hot {
     display: flex;
@@ -60,15 +58,19 @@
 }
 
 .list-product .item {
-    border: 1px solid #ddd;
     padding: 15px;
     text-align: center;
     background-color: #ffff;
     transition: transform 0.5s ease;
-    width: 230px;
-    margin: 15px;
+    width: 256px;
+    margin: 15px 0;
     height: 350px;
     position: relative;
+    border-left: 1px solid #e0e0e0;
+}
+
+.list-product .item:first-child {
+    border-left: none;
 }
 
 .list-product .item:hover {
@@ -96,12 +98,13 @@
 
 .list-product .item .thumb {
     max-width: 100%;
-    height: auto;
+    height: 180px;
+    object-fit: cover;
 }
 
 .list-product .item .title {
-    font-size: 1em;
-    margin: 10px 0;
+    font-size: 0.9em;
+    margin: 8px 0;
 }
 
 .list-product .item .title a {
@@ -113,27 +116,33 @@
 }
 
 .list-product .item .stars {
-    margin: 10px 0;
+    margin: 8px 0px;
 }
 
 .list-product .item .stars img {
     width: 15px;
     height: 15px;
-    margin-right: -4px;
+    margin-right: 1px;
 }
 
 .list-product .item .price {
-    font-size: 1em;
+    font-size: 0.9em;
     color: #777;
     text-decoration: line-through;
-    margin-top: 5px;
+    margin-right: 5px;
+    display: inline-block;
 }
 
 .list-product .item .price-sale {
-    font-size: 1.2em;
+    font-size: 0.9em;
     color: var(--primary-color);
     font-weight: 500;
-    margin-top: 5px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.list-product .item .price-sale {
+    font-size: 1em;
 }
 
 /* ================= Banner-sale ============== */
@@ -200,9 +209,8 @@
     position: relative;
 }
 
-
 .review-product .list-review .image::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -252,7 +260,6 @@
     border-radius: 12px;
     z-index: 9;
 }
-
 
 .sub-title-review {
     display: -webkit-box;
