@@ -1,0 +1,203 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #F47830;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    font-family: "Roboto", sans-serif;
+}
+
+/* Commom */
+.btn {
+    display: inline-block;
+    margin-top: 10px;
+    min-width: 200px;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    border-radius: 12px;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+hr {
+    border: 1px solid #d3cdcd;
+}
+
+/* ============= top-header ============= */
+.header .top-header img {
+    width: 100%;
+    height: 70px;
+    object-fit: cover
+}
+
+
+/* ================ mid-header ============= */
+
+.mid-header,
+.content {
+    width: 1349px;
+    max-width: calc(100% - 85px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.search-container {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+}
+
+.search-input {
+    padding: 10px;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    width: 518px;
+}
+
+.search-button {
+    background: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+}
+
+.search-button i {
+    font-size: 1.6rem;
+}
+
+.header .navbar .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar .row .item .link {
+    display: flex;
+    align-items: center;
+    border-radius: 21px;
+    height: 37px;
+}
+
+.navbar .row {
+    background: #ffffff;
+    padding: 15px 0px 15px 0px;
+}
+
+.navbar .row img {
+    margin-left: -3px;
+}
+
+.navbar .row .list {
+    display: flex;
+}
+
+.navbar .row .item .link i {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #f2f2f2;
+    border-radius: 50%;
+    background: #f2f2f2;
+    color: #000;
+    font-size: 2rem;
+}
+
+.navbar .row .list .item :hover {
+    color: orange;
+}
+
+.navbar .row .list .item {
+    position: relative;
+}
+
+.navbar .row .list .item .bage {
+    top: -5px;
+    right: 70px;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background: var(--primary-color);
+    color: #ffffff;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar .row .link .text {
+    color: #333333;
+    font-size: 1.5rem;
+    padding: 0px 0px 0px 10px;
+}
+
+.navbar .row .list .item .link .text-phone {
+    line-height: 20px;
+}
+
+.navbar .row .item {
+    margin-left: 10px;
+}
+
+.navbar .row .item:first-child {
+    margin-left: -10px;
+}
+
+
+/* =================== bot-header ================ */
+
+.header .bot-header {
+    background: var(--primary-color);
+}
+
+.header .bot-header .navbar {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+.header .bot-header .navbar ul {
+    display: flex;
+    margin-left: 102px;
+}
+
+.header .bot-header .navbar .cate {
+    display: flex;
+    gap: 8px;
+    font-size: 1.6rem;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.header .bot-header .navbar a {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+    padding: 8px 14px;
+}
+
+.header .bot-header .navbar a:hover {
+    background: #EEEEEE;
+    color: var(--primary-color);
+    padding: 15px;
+}
