@@ -1,12 +1,9 @@
-import Header from '@/components/header'
-import { Footer } from '@/components/footer'
+import MainLayout from '@/layouts/main-layout'
 
 export default function Layout({ children }) {
     return (
         <>
-            <Header />
-            {children}
-            <Footer />
+            <MainLayout>{children}</MainLayout>
         </>
     )
 }

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export default function Header() {
+export const Header = () => {
     return (
         <>
             {/* <!-- Header --> */}
