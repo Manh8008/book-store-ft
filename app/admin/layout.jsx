@@ -1,9 +1,8 @@
 import Head from 'next/head'
+import MainLayout from '@/layouts/main-layout'
 import '@/public/css/reset.css'
 import './globals.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
-import Header from '@/components/header'
-import Footer from '@/components/footer'
 
 export const metadata = {
     title: 'Create Next App',
@@ -25,9 +24,7 @@ export default function RootLayout({ children }) {
                 />
             </Head>
             <body>
-                <Header />
-                {children}
-                <Footer />
+                <MainLayout>{children}</MainLayout>
             </body>
         </html>
     )

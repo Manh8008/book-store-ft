@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import MainLayout from '@/layouts/main-layout'
 
 import styles from './cart.module.scss'
+import ProductList from '@/components/product-list/product-list'
 const cx = classNames.bind(styles)
 
 const Cart = () => {
@@ -36,6 +37,11 @@ const Cart = () => {
                             <CartItem />
                             <CartItem />
                             <CartItem />
+                        </div>
+
+                        <div className={cx('bundled-products')}>
+                            <h4>Sản phẩm mua kèm</h4>
+                            <ProductList />
                         </div>
                     </div>
                     <div className={cx('cart-right')}>

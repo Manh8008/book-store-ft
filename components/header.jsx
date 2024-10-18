@@ -10,7 +10,9 @@ export const Header = () => {
                 <div className="mid-header">
                     <nav className="navbar">
                         <div className="row">
-                            <img src="/img/logo.svg" alt="Book Shop" />
+                            <Link href="/">
+                                <img src="/img/logo.svg" alt="Book Shop" />
+                            </Link>
                             <div className="search-container">
                                 <input
                                     type="text"

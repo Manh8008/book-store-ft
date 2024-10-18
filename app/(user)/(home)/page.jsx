@@ -1,7 +1,7 @@
 import '@/public/styles/main.scss'
 import { Banner } from '@/components/banner'
 import { ProductHot } from '@/components/product-hot'
-import { ProductCard } from '@/components/product-card'
+import { ProductCard } from '@/components/product-card/product-card'
 
 export default function Home() {
     return (

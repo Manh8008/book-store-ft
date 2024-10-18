@@ -7,7 +7,7 @@ import QuantitySelector from '@/components/ui/quantity-selecter/quantity-selecte
 
 const cx = classNames.bind(styles)
 
-export const CartItem = () => {
+const CartItem = () => {
     const handleQuantityChange = (newQuantity) => {
         console.log('New Quantity: ', newQuantity)
     }
@@ -37,3 +37,5 @@ export const CartItem = () => {
         </div>
     )
 }
+
+export default CartItem
