@@ -3,7 +3,6 @@ import Link from 'next/link'
 export const Header = () => {
     return (
         <>
-            {/* <!-- Header --> */}
             <header className="header">
                 <div className="top-header">
                     <img src="img/banner-sale.jpg" alt="" />
@@ -11,10 +10,7 @@ export const Header = () => {
                 <div className="mid-header">
                     <nav className="navbar">
                         <div className="row">
-                            {/* <!-- Logo --> */}
                             <img src="/img/logo.svg" alt="Book Shop" />
-
-                            {/* <!-- Search --> */}
                             <div className="search-container">
                                 <input
                                     type="text"
@@ -26,34 +22,33 @@ export const Header = () => {
                                 </button>
                             </div>
 
-                            {/* <!-- Navigation --> */}
                             <div className="list">
                                 <div className="item">
-                                    <a href="#!" className="link">
+                                    <Link href="#!" className="link">
                                         <i className="fa-solid fa-phone-volume"></i>
                                         <div className="text text-phone">
                                             <span>Gọi điện đặt hàng</span>
                                             <br />
                                             <span>0986 836 563</span>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="item">
-                                    <a href="#!" className="link">
+                                    <Link href="#!" className="link">
                                         <i className="fa-regular fa-user"></i>
                                         <div className="text">
                                             <span>Đăng nhập</span>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="item">
-                                    <a href="#!" className="link">
+                                    <Link href="/cart" className="link">
                                         <i className="fa-solid fa-cart-shopping"></i>
                                         <div className="text">
                                             <span className="bage">0</span>
                                             <span>Giỏ hàng</span>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +62,6 @@ export const Header = () => {
                                 <span>TẤT CẢ DANH MỤC</span>
                             </div>
 
-                            {/* <!-- Navigation --> */}
                             <ul>
                                 <li>
                                     <Link href="#!">Trang chủ</Link>

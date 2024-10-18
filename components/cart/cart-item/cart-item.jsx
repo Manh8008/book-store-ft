@@ -1,10 +1,17 @@
+'use client'
 import classNames from 'classnames/bind'
 import { CiTrash } from 'react-icons/ci'
 import styles from './cart-item.module.scss'
+import { Button } from '@/components/ui/button'
+import QuantitySelector from '@/components/ui/quantity-selecter/quantity-selecter'
 
 const cx = classNames.bind(styles)
 
 export const CartItem = () => {
+    const handleQuantityChange = (newQuantity) => {
+        console.log('New Quantity: ', newQuantity)
+    }
+
     return (
         <div className={cx('cart-item')}>
             <div className={cx('item-info')}>
@@ -17,11 +24,12 @@ export const CartItem = () => {
             <span className={cx('item-price')}>
                 150.000đ <del>210.000đ</del>
             </span>
-            <div className={cx('item-quantity')}>
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-            </div>
+            <QuantitySelector
+                initialQuantity={3}
+                min={1}
+                max={10}
+                onChange={handleQuantityChange}
+            />
             <div className={cx('item-total')}>150.000đ</div>
             <div className={cx('item-remove')}>
                 <CiTrash />

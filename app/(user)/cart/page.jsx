@@ -1,21 +1,20 @@
-import classNames from 'classnames/bind'
 import { CiTrash } from 'react-icons/ci'
+import classNames from 'classnames/bind'
 
-import MainLayout from '@/layouts/main-layout'
+import { BannerSlider, CartItem } from '@/components/cart'
 import { Button } from '@/components/ui/button'
+import MainLayout from '@/layouts/main-layout'
 
 import styles from './cart.module.scss'
-import { CartItem } from '@/components/cart-item'
 const cx = classNames.bind(styles)
 
 const Cart = () => {
     return (
         <MainLayout>
             <div className={cx('cart')}>
-                <h2 className={cx('cart-title')}>Giỏ Hàng</h2>
-
                 <div className={cx('cart-content')}>
                     <div className={cx('cart-left')}>
+                        <h2 className={cx('cart-title')}>Giỏ Hàng</h2>
                         <div className={cx('cart-header')}>
                             <label className={cx('cart-checkbox')}>
                                 <input type="checkbox" className={cx('item-checkbox')} />
@@ -56,6 +55,10 @@ const Cart = () => {
                             <Button primary className={cx('checkout-button')}>
                                 Mua Hàng (2)
                             </Button>
+                        </div>
+
+                        <div className={cx('cart-banner')}>
+                            <BannerSlider />
                         </div>
                     </div>
                 </div>
