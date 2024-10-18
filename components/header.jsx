@@ -5,7 +5,7 @@ export const Header = () => {
         <>
             <header className="header">
                 <div className="top-header">
-                    <img src="img/banner-sale.jpg" alt="banner-sale" />
+                    <img src="/img/banner-sale.jpg" alt="banner-sale" />
                 </div>
                 <div className="mid-header">
                     <nav className="navbar">
@@ -84,7 +84,7 @@ export const Header = () => {
                                     <Link href="#!">Liên hệ</Link>
                                 </li>
                                 <li>
-                                    <Link href="#!">Review Sách</Link>
+                                    <Link href="/review-book">Review Sách</Link>
                                 </li>
                             </ul>
                         </nav>
