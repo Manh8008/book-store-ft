@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import '@/public/styles/product-detail.scss'
+import { Beardcrumb } from '@/components/ui/breadcrumb'
 
 export default function ProductDetail() {
     return (
@@ -8,26 +9,7 @@ export default function ProductDetail() {
             <main style={{ background: '#EEEEEE' }}>
                 <div className="product-detail">
                     <div className="content">
-                        {/* Breadcrumb */}
-                        <div className="breadcrumb">
-                            <ul className="navigation">
-                                <li>
-                                    <a href="#!">Trang chủ</a>
-                                    <span className="chevron-right">
-                                        <i className="fa-solid fa-chevron-right"></i>
-                                    </span>
-                                </li>
-                                <li>
-                                    <a href="#!">Sách Tư Duy - Kỹ Năng</a>
-                                    <span className="chevron-right">
-                                        <i className="fa-solid fa-chevron-right"></i>
-                                    </span>
-                                </li>
-                                <li>
-                                    <a href="#!">Kỹ Năng - Phát Triển Bản Thân</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <Beardcrumb />
 
                         <div className="product-detail-container">
                             <div className="main-left">

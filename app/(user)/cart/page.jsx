@@ -39,10 +39,7 @@ const Cart = () => {
                             <CartItem />
                         </div>
 
-                        <div className={cx('bundled-products')}>
-                            <h4>Sản phẩm mua kèm</h4>
-                            <ProductList />
-                        </div>
+                        <ProductList title="Sản phẩm mua kèm" />
                     </div>
                     <div className={cx('cart-right')}>
                         <div className={cx('cart-summary')}>

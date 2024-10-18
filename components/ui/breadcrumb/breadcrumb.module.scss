@@ -1,0 +1,23 @@
+.breadcrumb {
+    .navigation {
+        padding: 12px 0;
+        display: flex;
+
+        a {
+            color: #888;
+            font-size: 1.5rem;
+
+            &:last-child {
+                color: #f5a623;
+            }
+        }
+
+        .chevron-right {
+            margin: 0 5px;
+            i {
+                font-size: 0.9rem;
+                color: #888;
+            }
+        }
+    }
+}

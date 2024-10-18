@@ -2,10 +2,11 @@ import '@/public/styles/main.scss'
 import { Banner } from '@/components/banner'
 import { ProductHot } from '@/components/product-hot'
 import { ProductCard } from '@/components/product-card/product-card'
+import MainLayout from '@/layouts/main-layout'
 
 export default function Home() {
     return (
-        <>
+        <MainLayout>
             <main style={{ background: '#EEEEEE' }}>
                 <Banner />
 
@@ -282,6 +283,6 @@ export default function Home() {
                     </div>
                 </div>
             </main>
-        </>
+        </MainLayout>
     )
 }
