@@ -5,7 +5,7 @@ export const Header = () => {
         <>
             <header className="header">
                 <div className="top-header">
-                    <img src="img/banner-sale.jpg" alt="banner-sale" />
+                    <img src="../img/banner-sale.jpg" alt="banner-sale" />
                 </div>
                 <div className="mid-header">
                     <nav className="navbar">
@@ -36,7 +36,7 @@ export const Header = () => {
                                     </Link>
                                 </div>
                                 <div className="item">
-                                    <Link href="/login" className="link">
+                                    <Link href="/auth/login" className="link">
                                         <i className="fa-regular fa-user"></i>
                                         <div className="text">
                                             <span>Đăng nhập</span>
@@ -69,7 +69,9 @@ export const Header = () => {
                                     <Link href="#!">Trang chủ</Link>
                                 </li>
                                 <li>
-                                    <Link href="/category/1">Danh mục sản phẩm</Link>
+                                    <Link href="/collections/kinh-te-tai-chinh">
+                                        Danh mục sản phẩm
+                                    </Link>
                                 </li>
                                 <li>
                                     <Link href="#!">Sản phẩm</Link>

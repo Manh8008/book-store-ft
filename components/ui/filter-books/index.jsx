@@ -1,1 +1,1 @@
-export * from './filter-books'
+export { default as FilterBooks } from './filter-books'
