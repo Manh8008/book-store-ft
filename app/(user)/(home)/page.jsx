@@ -1,13 +1,12 @@
 import '@/public/styles/main.scss'
 import { Banner } from '@/components/banner'
-import { ProductHot } from '@/components/product-hot'
-import { ProductCard } from '@/components/product-card/product-card'
 import MainLayout from '@/layouts/main-layout'
+import { ProductList } from '@/components/product-list'
 
 export default function Home() {
     return (
         <MainLayout>
-            <main style={{ background: '#EEEEEE' }}>
+            <main style={{ background: '#F5F5FA' }}>
                 <Banner />
 
                 {/* <!-- Products Hot --> */}
@@ -19,7 +18,7 @@ export default function Home() {
                         </div>
 
                         <div className="list-product">
-                            <ProductHot />
+                            <ProductList />
                         </div>
                     </div>
                 </div>
@@ -46,11 +45,7 @@ export default function Home() {
                             alt="Sách tư duy - kỹ năng"
                         />
                         <div className="list-product">
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
+                            <ProductList />
                         </div>
                     </div>
                     <div className="content">
@@ -63,11 +58,7 @@ export default function Home() {
                             alt="Sách tư duy - kỹ năng"
                         />
                         <div className="list-product">
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
+                            <ProductList />
                         </div>
                     </div>
                     <div className="content">
@@ -80,11 +71,7 @@ export default function Home() {
                             alt="Sách tư duy - kỹ năng"
                         />
                         <div className="list-product">
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
+                            <ProductList />
                         </div>
                     </div>
                     <div className="content">
@@ -97,11 +84,7 @@ export default function Home() {
                             alt="Sách tư duy - kỹ năng"
                         />
                         <div className="list-product">
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
+                            <ProductList />
                         </div>
                     </div>
                 </div>

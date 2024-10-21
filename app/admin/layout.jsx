@@ -1,8 +1,7 @@
 import Head from 'next/head'
 import MainLayout from '@/layouts/main-layout'
-import '@/public/css/reset.css'
-import './globals.css'
-import '@fortawesome/fontawesome-free/css/all.min.css'
+import '@/public/styles/main.scss'
+import '../globals.scss'
 
 export const metadata = {
     title: 'Create Next App',

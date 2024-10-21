@@ -2,10 +2,11 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import '@/public/styles/product-detail.scss'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
+import MainLayout from '@/layouts/main-layout'
 
 export default function ProductDetail() {
     return (
-        <>
+        <MainLayout>
             <main style={{ background: '#EEEEEE' }}>
                 <div className="product-detail">
                     <div className="content">
@@ -500,6 +501,6 @@ export default function ProductDetail() {
                     </div>
                 </div>
             </main>
-        </>
+        </MainLayout>
     )
 }
