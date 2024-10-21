@@ -72,7 +72,7 @@ export const Footer = () => {
                             </ul>
                         </div>
                         <div className={cx('footer-col')}>
-                            <h4>Theo giõi chúng tôi</h4>
+                            <h4>Theo dõi chúng tôi</h4>
                             <div className={cx('social-links')}>
                                 <Link className={cx('social-icon')} href="#">
                                     <FontAwesomeIcon icon={faFacebook} />

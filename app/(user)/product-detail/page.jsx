@@ -7,7 +7,7 @@ import MainLayout from '@/layouts/main-layout'
 export default function ProductDetail() {
     return (
         <MainLayout>
-            <main style={{ background: '#EEEEEE' }}>
+            <main style={{ background: '#F5F5FA' }}>
                 <div className="product-detail">
                     <div className="content">
                         <Beardcrumb />

@@ -124,7 +124,15 @@ hr {
     font-size: 2rem;
 }
 
-.navbar .row .list .item :hover {
+.navbar .row .list .item .link:hover {
+    color: orange;
+}
+
+.navbar .row .list .item .link:hover i {
+    color: orange;
+}
+
+.navbar .row .list .item .link:hover .text span {
     color: orange;
 }
 

@@ -5,7 +5,7 @@ import '@/public/styles/review-book.scss'
 export default function ReviewBook() {
     return (
         <>
-            <main style={{ background: '#EEEEEE' }}>
+            <main style={{ background: '#F5F5FA' }}>
                 <div className="beardcrumb">
                     <Beardcrumb />
                 </div>

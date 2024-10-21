@@ -47,7 +47,7 @@ export const Header = () => {
                                     <Link href="/cart" className="link">
                                         <i className="fa-solid fa-cart-shopping"></i>
                                         <div className="text">
-                                            <span className="bage">0</span>
+                                            <p className="bage">0</p>
                                             <span>Giỏ hàng</span>
                                         </div>
                                     </Link>
@@ -66,7 +66,7 @@ export const Header = () => {
 
                             <ul>
                                 <li>
-                                    <Link href="#!">Trang chủ</Link>
+                                    <Link href="/">Trang chủ</Link>
                                 </li>
                                 <li>
                                     <Link href="/collections/kinh-te-tai-chinh">
@@ -74,16 +74,13 @@ export const Header = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="#!">Sản phẩm</Link>
+                                    <Link href="/collections/kinh-te-tai-chinh">Sản phẩm</Link>
                                 </li>
                                 <li>
-                                    <Link href="#!">Bài viết</Link>
+                                    <Link href="/review-book">Bài viết</Link>
                                 </li>
                                 <li>
-                                    <Link href="#!">Tuyển cộng tác viên</Link>
-                                </li>
-                                <li>
-                                    <Link href="#!">Liên hệ</Link>
+                                    <Link href="/contact">Liên hệ</Link>
                                 </li>
                                 <li>
                                     <Link href="/review-book">Review Sách</Link>
