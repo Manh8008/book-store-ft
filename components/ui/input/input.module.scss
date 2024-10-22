@@ -11,6 +11,10 @@
     line-height: 18px;
     font-size: 13px;
     text-align: left;
+
+    &.label-error {
+        color: red;
+    }
 }
 
 .form-control {
@@ -35,5 +39,9 @@
         color: #57585a;
         font-weight: 700;
         background-color: #f7f8f9;
+    }
+
+    &.input-error {
+        border-color: red;
     }
 }
