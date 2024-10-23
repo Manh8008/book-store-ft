@@ -1,0 +1,121 @@
+.container {
+    display: flex;
+    padding: 20px;
+    width: 1349px;
+    max-width: calc(100% - 85px);
+    margin-left: auto;
+    margin-right: auto;
+}
+.sidebar {
+    width: 350px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-right: 20px;
+}
+.sidebar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+}
+.sidebar .status {
+    text-align: center;
+    margin-top: 10px;
+}
+.sidebar .status .badge {
+    background-color: #e0e0e0;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 5px;
+}
+.sidebar .points {
+    text-align: center;
+    margin-top: 10px;
+    color: #888;
+}
+.sidebar .menu {
+    margin-top: 20px;
+}
+.sidebar .menu a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+} // hồ sơ
+.sidebar .menu a.active {
+    color: #f47830;
+    font-weight: bold;
+} // thông tin tài khoản
+.sidebar .menu a i {
+    margin-right: 10px;
+}
+// hồ sơ cá nhân
+.content-body {
+    flex: 1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #fff;
+}
+.content-body h2 {
+    margin-top: 0;
+    font-size: 2rem;
+    color: #333;
+    font-weight: 500;
+}
+.content-body form {
+    margin-top: 20px;
+}
+.content-body form .form-group {
+    margin-bottom: 15px;
+}
+.content-body form .form-group label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+form .form-group input {
+    width: 70%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+form .form-group input:focus {
+    border: 2px solid #f47830;
+    outline: none;
+}
+
+.content-body form .form-group input[type='radio'] {
+    width: auto;
+    margin-right: 5px;
+}
+.content-body form .form-group .date-group input {
+    width: 10%;
+    margin-right: 10px;
+}
+.content-body form .form-group .link:hover {
+    text-decoration: underline;
+} // gạch chân
+// btn lưu thay đổi
+.content-body form .form-group .btn {
+    background-color: #f47830;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.content-body form .form-group .btn:hover {
+    background-color: darkorange;
+}
