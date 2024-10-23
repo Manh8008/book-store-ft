@@ -25,3 +25,7 @@ export const RegisterSchema = z
         message: 'Mật khẩu không khớp!',
         path: ['confirmPassword']
     })
+
+export const VerificationSchema = z.object({
+    verificationCode: z.string().min(1, { message: 'Mã xác thực là bắt buộc!' })
+})

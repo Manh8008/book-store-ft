@@ -55,7 +55,11 @@ const Cart = () => {
                                 <span>Tổng tiền</span>
                                 <span className={cx('total-amount')}>330.000đ</span>
                             </div>
-                            <Button primary className={cx('checkout-button')}>
+                            <Button
+                                primary
+                                className={cx('checkout-button')}
+                                href="/checkout/payment"
+                            >
                                 Mua Hàng (2)
                             </Button>
                         </div>

@@ -1,0 +1,320 @@
+.align-center {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.text {
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.method-text {
+    font-size: 14px;
+    line-height: 20px;
+    color: rgb(56, 56, 61);
+}
+
+.wrapper {
+    background-color: #f5f5fa;
+    width: 100%;
+}
+
+.content {
+    display: flex;
+    padding: 20px 0;
+    width: 1349px;
+    margin: 0 auto;
+}
+
+.left {
+    width: calc(100% - 350px);
+    margin-right: 20px;
+}
+
+.section-container {
+    padding: 16px;
+    margin-bottom: 16px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.title {
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+//.shipping-package
+.shipping-package {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgb(227, 225, 221);
+    margin-top: 20px;
+    padding: 20px 16px 16px;
+    position: relative;
+    display: flex;
+    z-index: 0;
+}
+
+.package-time {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgb(7, 148, 73);
+    padding: 0px 4px;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 0px;
+    left: 12px;
+    transform: translateY(-50%);
+
+    .package-title {
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        margin-right: 8px;
+    }
+}
+
+.left-content {
+    margin-right: 46px;
+    max-width: 482px;
+}
+
+.right-content {
+    flex: 1 1 0%;
+
+    .content-wrapper {
+        display: flex;
+        width: 100%;
+        align-items: flex-start;
+        background: rgb(245, 245, 250);
+        border-radius: 8px;
+        padding: 8px 16px;
+    }
+
+    .content-icon {
+        flex-shrink: 0;
+        margin-right: 8px;
+        font-size: 24px;
+        fill: none;
+        overflow-clip-margin: content-box;
+        color: rgb(128, 128, 137);
+        overflow: hidden;
+    }
+
+    .content-text {
+        margin: 0px;
+        font-size: 14px;
+        line-height: 20px;
+        color: rgb(128, 128, 137);
+    }
+
+    .content-text:first-of-type {
+        margin-bottom: 4px;
+    }
+}
+
+//shipping information
+.shipping-info {
+    border-radius: 4px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    position: relative;
+    padding: 16px;
+    background-color: rgb(255, 255, 255);
+}
+
+.block-header {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.block-header-title {
+    color: rgb(128, 128, 137);
+    font-weight: normal;
+    margin: 0px;
+}
+
+.block-header-nav {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.customer_info {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(56, 56, 61);
+    margin-bottom: 2px;
+    font-weight: 600;
+
+    & i {
+        display: block;
+        width: 1px;
+        height: 20px;
+        background-color: rgb(235, 235, 240);
+        margin: 0px 8px;
+    }
+}
+
+.customer_info__name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
+.customer_info__phone {
+    margin: 0px;
+    word-break: break-word;
+}
+
+.address {
+    color: rgb(128, 128, 137);
+    font-weight: normal;
+}
+
+.address__type {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 0px 6px;
+    border-radius: 100px;
+    margin-right: 4px;
+    height: 18px;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.address__type--home {
+    color: rgb(0, 171, 86);
+    background-color: rgb(239, 255, 244);
+}
+// Tổng kết đơn hàng
+.package-summary {
+    margin-top: 8px;
+    width: 482px;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+
+    .shipping-fee {
+        font-size: 14px;
+        line-height: 20px;
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+
+        .current-fee {
+            color: rgb(56, 56, 61);
+            font-weight: 500;
+        }
+    }
+}
+
+.order-summary {
+    background: rgb(240, 248, 255);
+    border: 1px solid rgb(255, 234, 194);
+    border-radius: 10px;
+    padding: 16px;
+    display: grid;
+    row-gap: 12px;
+    z-index: 0;
+}
+
+.order-summary {
+    margin-top: 12px;
+    .price {
+        .old-price {
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+    }
+}
+
+.vnPay-discount {
+    background-color: #f8f8f8;
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.right {
+    width: 350px;
+
+    .order-summary {
+        background-color: #fff;
+        width: 100%;
+        border-radius: 8px;
+
+        .summary-header {
+            display: flex;
+            -webkit-box-pack: justify;
+            justify-content: space-between;
+
+            font-size: 14px;
+            line-height: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgb(235, 235, 240);
+        }
+
+        .summary-title {
+            font-weight: 500;
+            color: rgb(56, 56, 61);
+            margin: 0px;
+        }
+
+        .summary-title-nav {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .summary-discount,
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .summary-discount {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: rgb(128, 128, 137);
+        }
+
+        .summary-total {
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            .total-amount {
+                color: var(--primary-color);
+            }
+        }
+
+        .checkout-button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+
+            &:hover {
+                background-color: #e0393e;
+            }
+        }
+    }
+}
