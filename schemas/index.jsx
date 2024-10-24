@@ -19,11 +19,11 @@ export const RegisterSchema = z
             .string()
             .min(6, { message: 'Mật khẩu cần ít nhất 6 kí tự!' })
             .min(1, { message: 'Mật khẩu là bắt buộc!' }),
-        confirmPassword: z.string()
+        password_confirm: z.string()
     })
-    .refine((values) => values.password === values.confirmPassword, {
+    .refine((values) => values.password === values.password_confirm, {
         message: 'Mật khẩu không khớp!',
-        path: ['confirmPassword']
+        path: ['password_confirm']
     })
 
 export const VerificationSchema = z.object({

@@ -1,7 +1,9 @@
+import { cookies } from 'next/headers'
 import Head from 'next/head'
 import '@/public/styles/reset.scss'
 import '../globals.scss'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import AppProvider from '@/app/AppProvider'
 
 export const metadata = {
     title: 'Create Next App',
@@ -9,6 +11,9 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+    const cookieStore = cookies()
+    const sessionToken = cookieStore.get('sessionToken')
+
     return (
         <html lang="en">
             <Head>
@@ -22,8 +27,8 @@ export default function RootLayout({ children }) {
                     rel="stylesheet"
                 />
             </Head>
-            <body>
-                {children}
+            <body suppressHydrationWarning={true}>
+                <AppProvider initialSessionToken={sessionToken?.value}>{children}</AppProvider>
             </body>
         </html>
     )

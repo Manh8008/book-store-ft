@@ -8,7 +8,6 @@ export default function Home() {
         <MainLayout>
             <main style={{ background: '#F5F5FA' }}>
                 <Banner />
-
                 {/* <!-- Products Hot --> */}
                 <div className="product-hot">
                     <div className="content">

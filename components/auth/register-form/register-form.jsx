@@ -6,6 +6,7 @@ import { startTransition } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { RegisterSchema } from '@/schemas'
+import envConfig from '@/config'
 import styles from './register-form.module.scss'
 
 const cx = classNames.bind(styles)
@@ -22,20 +23,20 @@ export const RegisterForm = () => {
             name: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            password_confirm: ''
         }
     })
 
     const onSubmit = async (values) => {
-        // Xử lý logic gửi dữ liệu đi, ví dụ gọi API:
-        // const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/register`, {
-        //     body: JSON.stringify(values),
-        //     headers: {
-        //         'content-type': 'application/json'
-        //     },a
-        //     method: 'POST'
-        // }).then((res) => res.json())
-        // console.log(result)
+        const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/api/register`, {
+            body: JSON.stringify(values),
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST'
+        }).then((res) => res.json())
+
+        console.log(result)
 
         startTransition(() => {
             console.log(values)
@@ -92,11 +93,11 @@ export const RegisterForm = () => {
                         type="password"
                         id="confirmPassword"
                         placeholder="Nhập lại mật khẩu..."
-                        error={!!errors.confirmPassword}
-                        {...register('confirmPassword')}
+                        error={!!errors.password_confirm}
+                        {...register('password_confirm')}
                     />
-                    {errors.confirmPassword && (
-                        <p className={cx('error')}>{errors.confirmPassword.message}</p>
+                    {errors.password_confirm && (
+                        <p className={cx('error')}>{errors.password_confirm.message}</p>
                     )}
                 </div>
 

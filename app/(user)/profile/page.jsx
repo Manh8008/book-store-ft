@@ -1,7 +1,83 @@
+'use client'
 import Link from 'next/link'
+import React, { useEffect, useState } from 'react'
+import envConfig from '@/config'
+import { useAppContext } from '@/app/AppProvider'
+
 import '@/public/styles/profile.scss'
 
+const Menu = () => {
+    return (
+        <div className="menu">
+            <Link className="active" href="#">
+                <i className="fas fa-user"></i> Thông tin tài khoản
+            </Link>
+            <Link href="#">
+                <i className="fas fa-id-card"></i> Hồ sơ cá nhân
+            </Link>
+            <Link href="#">
+                <i className="fas fa-map-marker-alt"></i> Số địa chỉ
+            </Link>
+            <Link href="#">
+                <i className="fas fa-key"></i> Đổi mật khẩu
+            </Link>
+            <Link href="#">
+                <i className="fas fa-file-invoice"></i> Thông tin xuất hóa đơn GTGT
+            </Link>
+            <Link href="#">
+                <i className="fas fa-gift"></i> Ưu đãi thành viên
+            </Link>
+            <Link href="#">
+                <i className="fas fa-box"></i> Đơn hàng của tôi
+            </Link>
+            <Link href="#">
+                <i className="fas fa-wallet"></i> Ví voucher{' '}
+                <span style={{ color: 'red' }}>14</span>
+            </Link>
+            <Link href="#">
+                <i className="fas fa-coins"></i> Tài Khoản F-Point / Freeship
+            </Link>
+        </div>
+    )
+}
+
 export default function Profile() {
+    const { sessionToken } = useAppContext()
+    const [userData, setUserData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        address: ''
+    })
+
+    useEffect(() => {
+        const fetchRequest = async () => {
+            const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/api/profile`, {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json',
+                    Authorization: `Bearer ${sessionToken}`
+                }
+            })
+
+            if (!result.ok) {
+                throw new Error('Có lỗi xảy ra trong quá trình fetch dữ liệu.')
+            }
+
+            const data = await result.json()
+
+            setUserData({
+                name: data.data.name || '',
+                email: data.data.email || '',
+                phone: data.data.phone || '',
+                address: ''
+            })
+
+            console.log(data)
+        }
+        fetchRequest()
+    }, [sessionToken])
+
     return (
         <main style={{ background: '#F5F5FA' }}>
             <div className="container">
@@ -17,55 +93,56 @@ export default function Profile() {
                         <div className="points">F-Point tích lũy 0</div>
                         <div className="points">Thêm 30.000 để nâng hạng Vàng</div>
                     </div>
-                    <div className="menu">
-                        <a className="active" href="#">
-                            <i className="fas fa-user"></i> Thông tin tài khoản
-                        </a>
-                        <a href="#">
-                            <i className="fas fa-id-card"></i> Hồ sơ cá nhân
-                        </a>
-                        <a href="#">
-                            <i className="fas fa-map-marker-alt"></i> Số địa chỉ
-                        </a>
-                        <a href="#">
-                            <i className="fas fa-key"></i> Đổi mật khẩu
-                        </a>
-                        <a href="#">
-                            <i className="fas fa-file-invoice"></i> Thông tin xuất hóa đơn GTGT
-                        </a>
-                        <a href="#">
-                            <i className="fas fa-gift"></i> Ưu đãi thành viên
-                        </a>
-                        <a href="#">
-                            <i className="fas fa-box"></i> Đơn hàng của tôi
-                        </a>
-                        <a href="#">
-                            <i className="fas fa-wallet"></i> Ví voucher{' '}
-                            <span style={{ color: 'red' }}>14</span>
-                        </a>
-                        <a href="#">
-                            <i className="fas fa-coins"></i> Tài Khoản F-Point / Freeship
-                        </a>
-                    </div>
+                    <Menu />
                 </div>
                 <div className="content-body">
                     <h2>Hồ sơ cá nhân</h2>
                     <form>
                         <div className="form-group">
                             <label htmlFor="fullname">Họ và tên*</label>
-                            <input id="fullname" placeholder="Nhập họ và tên" type="text" />
+                            <input
+                                id="fullname"
+                                placeholder="Nhập họ và tên"
+                                type="text"
+                                value={userData.name}
+                                onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                            />
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email*</label>
-                            <input id="email" placeholder="Email" type="text" />
+                            <input
+                                id="email"
+                                placeholder="Email"
+                                type="text"
+                                value={userData.email}
+                                onChange={(e) =>
+                                    setUserData({ ...userData, email: e.target.value })
+                                }
+                            />
                         </div>
                         <div className="form-group">
                             <label htmlFor="phone">Số điện thoại*</label>
-                            <input id="phone" placeholder="Số điện thoại" type="text" />
+                            <input
+                                id="phone"
+                                placeholder="Số điện thoại"
+                                type="text"
+                                value={userData.phone}
+                                onChange={(e) =>
+                                    setUserData({ ...userData, phone: e.target.value })
+                                }
+                            />
                         </div>
                         <div className="form-group">
                             <label htmlFor="address">Địa chỉ*</label>
-                            <input id="address" placeholder="Địa chỉ giao hàng" type="text" />
+                            <input
+                                id="address"
+                                placeholder="Địa chỉ giao hàng"
+                                type="text"
+                                value={userData.address}
+                                onChange={(e) =>
+                                    setUserData({ ...userData, address: e.target.value })
+                                }
+                            />
                         </div>
                         <div className="form-group">
                             <label>Giới tính*</label>
