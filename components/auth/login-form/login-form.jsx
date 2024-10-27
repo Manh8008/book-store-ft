@@ -1,18 +1,22 @@
 'use client'
 import classNames from 'classnames/bind'
+import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import { LoginSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { clientSessionToken } from '@/lib/http'
+import { handleHttpError } from '@/lib/utils'
+import authApiRequest from '@/apiRequests/auth'
 import styles from './login-form.module.scss'
-import { LoginSchema } from '@/schemas'
-import envConfig from '@/config'
-import { useAppContext } from '@/app/AppProvider'
 
 const cx = classNames.bind(styles)
 
 export const LoginForm = () => {
-    const { setSessionToken } = useAppContext()
+    const router = useRouter()
+    const [error, setError] = useState('')
     const {
         register,
         handleSubmit,
@@ -27,33 +31,23 @@ export const LoginForm = () => {
     })
 
     const onSubmit = async (values) => {
-        // Gửi yêu cầu tới api backend để login
-        const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/api/login`, {
-            body: JSON.stringify(values),
-            headers: {
-                'content-type': 'application/json'
-            },
-            method: 'POST'
-        }).then((res) => res.json())
+        setError('')
+        try {
+            const result = await authApiRequest.login(values)
 
-        // Gửi kết quả tới API nội bộ của Next.js để set Token vào cookie
-        const resultFromNextServer = await fetch('/api/auth/', {
-            method: 'POST',
-            body: JSON.stringify(result),
-            headers: {
-                'content-type': 'application/json'
-            }
-        }).then((res) => res.json())
-        console.log(result)
-        //Set cookie vào context api để sử dụng
-        setSessionToken(resultFromNextServer?.res?.data?.access_token)
+            await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
+            clientSessionToken.value = result.payload.data.access_token
+
+            router.push('/profile')
+        } catch (error) {
+            handleHttpError(error, setError)
+        }
     }
 
     return (
         <div className={cx('container')}>
             <form className={cx('form')} onSubmit={handleSubmit(onSubmit)}>
                 <h2 className={cx('title')}>Đăng nhập</h2>
-
                 <div>
                     <Input
                         label="Email"
@@ -78,6 +72,7 @@ export const LoginForm = () => {
                     />
                     {errors.password && <p className={cx('error')}>{errors.password.message}</p>}
                 </div>
+                {error && <p className={cx('error')}>{error}</p>}
 
                 <Button primary fullWidth type="submit">
                     Đăng nhập

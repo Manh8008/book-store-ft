@@ -2,16 +2,21 @@
 import classNames from 'classnames/bind'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { startTransition } from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { RegisterSchema } from '@/schemas'
-import envConfig from '@/config'
+import authApiRequest from '@/apiRequests/auth'
 import styles from './register-form.module.scss'
+import { handleHttpError } from '@/lib/utils'
 
 const cx = classNames.bind(styles)
 
 export const RegisterForm = () => {
+    const router = useRouter()
+    const [error, setError] = useState('')
+
     const {
         register,
         handleSubmit,
@@ -28,19 +33,14 @@ export const RegisterForm = () => {
     })
 
     const onSubmit = async (values) => {
-        const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/api/register`, {
-            body: JSON.stringify(values),
-            headers: {
-                'content-type': 'application/json'
-            },
-            method: 'POST'
-        }).then((res) => res.json())
+        try {
+            const result = await authApiRequest.register(values)
 
-        console.log(result)
-
-        startTransition(() => {
-            console.log(values)
-        })
+            console.log(result)
+            router.push('/auth/login')
+        } catch (error) {
+            handleHttpError(error, setError)
+        }
     }
 
     return (
@@ -91,7 +91,7 @@ export const RegisterForm = () => {
                     <Input
                         label="Nhập lại mật khẩu"
                         type="password"
-                        id="confirmPassword"
+                        id="password_confirm"
                         placeholder="Nhập lại mật khẩu..."
                         error={!!errors.password_confirm}
                         {...register('password_confirm')}
@@ -100,6 +100,7 @@ export const RegisterForm = () => {
                         <p className={cx('error')}>{errors.password_confirm.message}</p>
                     )}
                 </div>
+                {error && <p className={cx('error')}>{error}</p>}
 
                 <Button primary fullWidth type="submit">
                     Đăng ký

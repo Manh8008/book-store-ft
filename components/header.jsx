@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Buttonlogout from './ui/button-logout/button-logout'
 
 export const Header = () => {
     return (
@@ -51,6 +52,9 @@ export const Header = () => {
                                             <span>Giỏ hàng</span>
                                         </div>
                                     </Link>
+                                </div>
+                                <div className="item">
+                                    <Buttonlogout />
                                 </div>
                             </div>
                         </div>

@@ -21,5 +21,5 @@ export function middleware(request) {
 }
 
 export const config = {
-    matcher: [...privatePaths, ...authPaths]
+    matcher: ['/profile', '/auth/login', '/auth/register']
 }

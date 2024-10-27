@@ -1,9 +1,8 @@
 'use client'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import envConfig from '@/config'
-import { useAppContext } from '@/app/AppProvider'
-
+import { clientSessionToken } from '@/lib/http'
+import accountApiRequest from '@/apiRequests/account'
 import '@/public/styles/profile.scss'
 
 const Menu = () => {
@@ -42,7 +41,6 @@ const Menu = () => {
 }
 
 export default function Profile() {
-    const { sessionToken } = useAppContext()
     const [userData, setUserData] = useState({
         name: '',
         email: '',
@@ -52,31 +50,18 @@ export default function Profile() {
 
     useEffect(() => {
         const fetchRequest = async () => {
-            const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/api/profile`, {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json',
-                    Authorization: `Bearer ${sessionToken}`
-                }
-            })
-
-            if (!result.ok) {
-                throw new Error('Có lỗi xảy ra trong quá trình fetch dữ liệu.')
-            }
-
-            const data = await result.json()
+            const result = await accountApiRequest.profile(clientSessionToken.value)
+            const data = result.payload.data
 
             setUserData({
-                name: data.data.name || '',
-                email: data.data.email || '',
-                phone: data.data.phone || '',
+                name: data.name || '',
+                email: data.email || '',
+                phone: data.phone || '',
                 address: ''
             })
-
-            console.log(data)
         }
         fetchRequest()
-    }, [sessionToken])
+    }, [clientSessionToken])
 
     return (
         <main style={{ background: '#F5F5FA' }}>
