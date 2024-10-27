@@ -1,11 +1,13 @@
 'use client'
+import { useEffect } from 'react'
 import { clientSessionToken } from '@/lib/http'
-import { useState } from 'react'
 
 export default function AppProvider({ children, initialSessionToken = '' }) {
-    useState(() => {
-        clientSessionToken.value = initialSessionToken
-    })
+    useEffect(() => {
+        if (initialSessionToken) {
+            clientSessionToken.value = initialSessionToken
+        }
+    }, [initialSessionToken])
 
     return <>{children}</>
 }

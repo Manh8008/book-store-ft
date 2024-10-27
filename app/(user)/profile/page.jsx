@@ -17,7 +17,7 @@ const Menu = () => {
             <Link href="#">
                 <i className="fas fa-map-marker-alt"></i> Số địa chỉ
             </Link>
-            <Link href="#">
+            <Link href="/auth/change-password">
                 <i className="fas fa-key"></i> Đổi mật khẩu
             </Link>
             <Link href="#">

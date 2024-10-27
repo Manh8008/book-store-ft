@@ -1,5 +1,9 @@
-function AuthLayout({ children }) {
-    return <div>{children}</div>
-}
+import MainLayout from '@/layouts/main-layout'
 
-export default AuthLayout
+export default function Layout({ children }) {
+    return (
+        <>
+            <MainLayout>{children}</MainLayout>
+        </>
+    )
+}

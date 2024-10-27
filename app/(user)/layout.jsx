@@ -14,8 +14,6 @@ export default function RootLayout({ children }) {
     const cookieStore = cookies()
     const sessionToken = cookieStore.get('sessionToken')
 
-    console.log(sessionToken)
-
     return (
         <html lang="en">
             <Head>

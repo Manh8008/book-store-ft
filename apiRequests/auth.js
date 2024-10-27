@@ -7,9 +7,10 @@ const authApiRequest = {
         http.post('/api/auth', body, {
             baseUrl: ''
         }),
+    changePassword: (body) => http.put('/api/changePassword', body),
 
     logoutFromNextServerToServer: (sessionToken) =>
-        http.post(
+        http.get(
             '/api/logout',
             {},
             {
