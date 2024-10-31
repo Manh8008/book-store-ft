@@ -39,7 +39,7 @@ export const Header = () => {
                                 <div className="item">
                                     <Link href="/auth/login" className="link">
                                         <i className="fa-regular fa-user"></i>
-                                        <div className="text">
+                                        <div className="text text-user">
                                             <span>Đăng nhập</span>
                                         </div>
                                     </Link>
@@ -47,7 +47,7 @@ export const Header = () => {
                                 <div className="item">
                                     <Link href="/cart" className="link">
                                         <i className="fa-solid fa-cart-shopping"></i>
-                                        <div className="text">
+                                        <div className="text text-cart">
                                             <p className="bage">0</p>
                                             <span>Giỏ hàng</span>
                                         </div>
