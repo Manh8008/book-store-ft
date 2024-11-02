@@ -14,16 +14,17 @@ export const Header = () => {
                             <Link href="/">
                                 <img src="/img/logo.svg" alt="Book Shop" />
                             </Link>
-                            <div className="search-container">
+                            <form className="search-container" action="/search">
                                 <input
                                     type="text"
                                     placeholder="Tìm kiếm..."
                                     className="search-input"
+                                    name="query"
                                 />
                                 <button type="submit" className="search-button">
                                     <i className="fas fa-search"></i>
                                 </button>
-                            </div>
+                            </form>
 
                             <div className="list">
                                 <div className="item">
@@ -73,12 +74,12 @@ export const Header = () => {
                                     <Link href="/">Trang chủ</Link>
                                 </li>
                                 <li>
-                                    <Link href="/collections/kinh-te-tai-chinh">
+                                    <Link href="/shop">
                                         Danh mục sản phẩm
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/collections/kinh-te-tai-chinh">Sản phẩm</Link>
+                                    <Link href="/shop">Sản phẩm</Link>
                                 </li>
                                 <li>
                                     <Link href="/review-book">Bài viết</Link>
