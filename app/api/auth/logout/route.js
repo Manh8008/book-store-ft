@@ -8,7 +8,7 @@ export async function POST(request) {
     if (!sessionToken) {
         return Response.json(
             {
-                message: 'Không nhận được sessionToken'
+                message: 'Không nhận được sessionToken!'
             },
             {
                 status: 401
@@ -17,17 +17,16 @@ export async function POST(request) {
     }
 
     try {
+        //Xóa Token trên trình duyệt
         const result = await authApiRequest.logoutFromNextServerToServer(sessionToken.value)
-
+        console.log(result)
         return Response.json(result.payload, {
             status: 200,
             headers: {
-                'set-cookie': `sessionToken=; path=/; httpOnly; Max-age=0`
+                'Set-Cookie': `sessionToken=; path=/; httpOnly; Max-age=0`
             }
         })
     } catch (error) {
-        console.error('Logout Error:', error)
-
         if (error.status == 401) {
             return Response.json(error.payload, {
                 status: error.status

@@ -18,6 +18,7 @@
         "@hookform/resolvers": "^3.9.0",
         "classnames": "^2.5.1",
         "frontend": "file:",
+        "js-cookie": "^3.0.5",
         "next": "14.2.14",
         "nookies": "^2.5.2",
         "prop-types": "^15.8.1",

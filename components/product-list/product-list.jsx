@@ -1,25 +1,28 @@
-"use client"
+'use client'
 
 import classNames from 'classnames/bind'
+import { useEffect, useState } from 'react'
 import { ProductCard } from '@/components/product-card'
 import styles from './product-list.module.scss'
 import { Button } from '../ui/button'
-import { useEffect, useState } from 'react'
+import productApiRequest from '@/apiRequests/product'
 
 const cx = classNames.bind(styles)
 
 export default function ProductList({ title }) {
-
-    const [productList, setProductList] = useState([]);
+    const [productList, setProductList] = useState([])
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const listProducts = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllBooks`, { cache: 'no-store' })
-                .then(res => res.json())
-            setProductList(listProducts.data);
+            try {
+                const listProducts = await productApiRequest.getAllBooks()
+                setProductList(listProducts.payload.data)
+            } catch (error) {
+                console.error(error)
+            }
         }
-        fetchProducts();
-    }, []);
+        fetchProducts()
+    }, [])
 
     return (
         <>

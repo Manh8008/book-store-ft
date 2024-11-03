@@ -74,9 +74,7 @@ export const Header = () => {
                                     <Link href="/">Trang chủ</Link>
                                 </li>
                                 <li>
-                                    <Link href="/shop">
-                                        Danh mục sản phẩm
-                                    </Link>
+                                    <Link href="/shop">Danh mục sản phẩm</Link>
                                 </li>
                                 <li>
                                     <Link href="/shop">Sản phẩm</Link>

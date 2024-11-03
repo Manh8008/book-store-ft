@@ -10,15 +10,12 @@ const authApiRequest = {
     changePassword: (body) => http.put('/api/changePassword', body),
 
     logoutFromNextServerToServer: (sessionToken) =>
-        http.get(
-            '/api/logout',
-            {},
-            {
-                headers: {
-                    Authorization: `Bearer ${sessionToken}`
-                }
+        http.get('/api/logout', {
+            headers: {
+                Authorization: `Bearer ${sessionToken}`
             }
-        ),
+        }),
+
     logoutFromNextClientToServer: () => http.post('/api/auth/logout', {}, { baseUrl: '' })
 }
 

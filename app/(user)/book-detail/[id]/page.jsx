@@ -1,10 +1,30 @@
-import { Button } from '@/components/ui/button'
+'use client'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import '@/public/styles/product-detail.scss'
+
+import productApiRequest from '@/apiRequests/product'
+import { handleHttpError } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import MainLayout from '@/layouts/main-layout'
+import '@/public/styles/product-detail.scss'
 
-export default function ProductDetail() {
+export default function ProductDetail({ params }) {
+    const [book, setBook] = useState(null)
+    const [error, setError] = useState(null)
+    useEffect(() => {
+        const fetchRequest = async () => {
+            try {
+                const result = await productApiRequest.bookDetail(params.id)
+                setBook(result.payload.data)
+            } catch (error) {
+                handleHttpError(error, setError)
+            }
+        }
+
+        fetchRequest()
+    }, [params.id])
+
     return (
         <MainLayout>
             <main style={{ background: '#F5F5FA' }}>
@@ -16,22 +36,20 @@ export default function ProductDetail() {
                             <div className="main-left">
                                 <div className="main-detail">
                                     <div className="product-image">
-                                        <img src="/img/product-1.png" alt="Hình ảnh sản phẩm" />
+                                        <img src={book?.images[0]?.url.trim()} alt={book?.name} />
                                     </div>
 
                                     <div className="product-info">
-                                        <h1 className="product-title">
-                                            Sức Mạnh Của Thói Quen - The Power of Habit
-                                        </h1>
+                                        <h1 className="product-title">{book?.name}</h1>
                                         <hr />
                                         <p className="product-price">
-                                            Giá bán: <span className="price-sale">135.200₫</span>{' '}
+                                            Giá bán:{' '}
+                                            <span className="price-sale">
+                                                {parseFloat(book?.price).toLocaleString('vi-VN')}đ
+                                            </span>{' '}
                                             <span className="price-retail">169.000đ</span>
                                         </p>
-                                        <p className="product-description">
-                                            Đây là mô tả ngắn về sản phẩm, bao gồm những tính năng
-                                            nổi bật và các thông số kỹ thuật quan trọng.
-                                        </p>
+                                        <p className="product-description">{book?.short_summary}</p>
                                         <Button primary>Thêm vào giỏ hàng</Button>
                                     </div>
                                 </div>
@@ -45,53 +63,7 @@ export default function ProductDetail() {
                                     <div className="tab-content">
                                         <div className="body">
                                             <h2 className="title">Học tập qua dự án</h2>
-                                            <p className="text-desc">
-                                                Blood and Oil là một tác phẩm báo chí điều tra hấp
-                                                dẫn mô tả kỹ lưỡng kế hoạch kinh tế mới đầy tham
-                                                vọng dành cho Ả Rập Xê Út trong thế giới dầu mỏ và
-                                                chính trị của Thái tử Mohammed bin Salman (MBS). Có
-                                                lẽ không nhiều người biết đến cái tên Mohammed bin
-                                                Salman (MBS) cho tới khi cha của ông trở thành Quốc
-                                                vương Ả-rập Xê-út năm 2015. Từ thời điểm đó, Salman
-                                                bắt đầu được chú ý và dần trở thành một trong những
-                                                nhân vật có tầm ảnh hưởng nhất chính trường Trung
-                                                Đông. MBS đã nổi lên như một nhân vật quyết định,
-                                                quyết tâm tái thiết nền kinh tế dựa vào các nguồn
-                                                lực khác ngoài dầu mỏ để đưa Ả-rập Xê-út hội nhập
-                                                vào nền kinh tế thế giới. Trong cuốn sách Dầu và máu
-                                                mà các bạn sắp đọc, hai tác giả Bradley Hope và
-                                                Justin Scheck sẽ khắc họa một cách sâu sắc chân dung
-                                                của vị thái tử táo bạo và không kém phần lôi cuốn
-                                                này. Cuốn sách bắt đầu với một cái nhìn tổng quan về
-                                                Ả-rập Xê-út và vai trò của dầu mỏ trong nền kinh tế
-                                                và chính trị của quốc gia. Tác giả đã đi sâu vào
-                                                cuộc hành trình của MBS từ khi ông là Thái tử cho
-                                                đến các quyết định quan trọng về kinh tế và chính
-                                                trị mà ông đã đưa ra. Ở một gia tộc đã quá quen với
-                                                sự xa hoa và hào phóng có được nhờ sự phụ thuộc
-                                                không lành mạnh vào dầu mỏ, MBS lại là một nhân tố
-                                                khác biệt. MBS đặt mục tiêu trở thành người thừa kế
-                                                ngai vàng của Ả-rập Xê-út và khi hai người anh trai
-                                                của cha ông lần lượt qua đời và Salman trở thành
-                                                quốc vương vào năm 2015, ông muốn nắm bắt thời cơ và
-                                                để cải thiện vận mệnh của chính mình, đồng thời theo
-                                                đuổi tham vọng biến Ả-rập Xê-út trở thành “châu Âu
-                                                mới”. Vị thái tử với tư tưởng cải cách mạnh mẽ và
-                                                tân tiến này phải trải qua một quá trình không hề dễ
-                                                dàng để có thể khiến Ả-rập Xê-út thoát khỏi bệ đỡ
-                                                quá lớn mang tên dầu mỏ. Dầu Và Máu không chỉ là một
-                                                cuốn sách đơn thuần về chính trị và kinh tế, mà còn
-                                                là một tác phẩm văn học, là một câu chuyện tuyệt vời
-                                                về quyền lực, tham vọng và những biến động của thế
-                                                giới hiện đại. Nhiều câu chuyện trong cuốn sách có
-                                                thể còn gây nhiều tranh cãi, nhưng đây cũng là một
-                                                cái nhìn mới cho độc giả, một cơ hội để hiểu rõ hơn
-                                                về những sức mạnh và mâu thuẫn địa chính trị đang
-                                                định hình thế giới xung quanh chúng ta. Cuốn sách
-                                                cũng làm cho độc giả hiểu hơn về một Trung Đông phát
-                                                triển về kinh tế và đang dần độc lập về chính trị
-                                                nơi tôi cũng đã có dịp ghé thăm và làm việc lâu dài.
-                                            </p>
+                                            <p className="text-desc">{book?.description}</p>
                                         </div>
                                     </div>
 
