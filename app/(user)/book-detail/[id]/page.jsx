@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import MainLayout from '@/layouts/main-layout'
 import '@/public/styles/product-detail.scss'
+import QuantitySelector from '@/components/ui/quantity-selecter/quantity-selecter'
 
 export default function ProductDetail({ params }) {
     const [book, setBook] = useState(null)
@@ -50,6 +51,13 @@ export default function ProductDetail({ params }) {
                                             <span className="price-retail">169.000đ</span>
                                         </p>
                                         <p className="product-description">{book?.short_summary}</p>
+
+                                        <div class="quantity-control">
+                                            <button class="quantity-btn decrement">-</button>
+                                            <span class="quantity-value">1</span>
+                                            <button class="quantity-btn increment">+</button>
+                                        </div>
+
                                         <Button primary>Thêm vào giỏ hàng</Button>
                                     </div>
                                 </div>
@@ -62,8 +70,8 @@ export default function ProductDetail({ params }) {
 
                                     <div className="tab-content">
                                         <div className="body">
-                                            <h2 className="title">Học tập qua dự án</h2>
-                                            <p className="text-desc">{book?.description}</p>
+                                            <h2 className="title">{book?.name}</h2>
+                                            <p className="text-desc">{book?.short_summary}</p>
                                         </div>
                                     </div>
 
@@ -77,19 +85,19 @@ export default function ProductDetail({ params }) {
                                                 </tr>
                                                 <tr>
                                                     <td>Ngày xuất bản</td>
-                                                    <td>2019-03-15 11:47:36</td>
+                                                    <td>{book?.created_at}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Kích thước</td>
-                                                    <td>19 x 27 cm</td>
+                                                    <td>{book?.size}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Loại bìa</td>
-                                                    <td>Bìa gập</td>
+                                                    <td>{book?.format}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Số trang</td>
-                                                    <td>168</td>
+                                                    <td>{book?.pages}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>SKU</td>

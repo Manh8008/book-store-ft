@@ -13,12 +13,12 @@ import { Pagination } from '@/components/ui/pagination'
 const cx = classNames.bind(styles)
 
 const BookCollection = () => {
-    // const totalPages = 10
-    // const [currentPage, setCurrentPage] = useState(1)
-    // const handlePageChange = (pageNumber) => {
-    //     setCurrentPage(pageNumber)
-    //     console.log(`Chuyển sang trang: ${pageNumber}`)
-    // }
+    const totalPages = 10
+    const [currentPage, setCurrentPage] = useState(1)
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber)
+        // console.log(`Chuyển sang trang: ${pageNumber}`)
+    }
 
     const [categories, setCategories] = useState([])
     useEffect(() => {
@@ -52,13 +52,13 @@ const BookCollection = () => {
                 <ProductList title={'Tất cả sản phẩm'} />
             </div>
 
-            {/* <div className={cx('pagination')}>
+            <div className={cx('pagination')}>
                 <Pagination
                     totalPages={totalPages}
                     currentPage={currentPage}
                     onPageChange={handlePageChange}
                 />
-            </div> */}
+            </div>
         </div>
     )
 }

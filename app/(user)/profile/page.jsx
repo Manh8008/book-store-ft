@@ -130,17 +130,6 @@ export default function Profile() {
                             />
                         </div>
                         <div className="form-group">
-                            <label>Giới tính*</label>
-                            <div className="radio-group">
-                                <label>
-                                    <input name="gender" type="radio" value="male" /> Nam
-                                </label>
-                                <label>
-                                    <input name="gender" type="radio" value="female" /> Nữ
-                                </label>
-                            </div>
-                        </div>
-                        <div className="form-group">
                             <label>Ngày sinh*</label>
                             <div className="date-group">
                                 <input placeholder="DD" type="number" />

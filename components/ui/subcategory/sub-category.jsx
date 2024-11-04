@@ -11,7 +11,7 @@ export const Subcategory = (props) => {
                 {
                     props.data.map((category) => {
                         return (
-                            <Link className={cx('category-link')} key={category.id} href="#!">
+                            <Link className={cx('category-link')} key={category.id} href={`/shop/productByCate/${category.id}`}>
                                 <Image
                                     width={96}
                                     height={90}
