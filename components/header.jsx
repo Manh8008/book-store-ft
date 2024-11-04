@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Buttonlogout from './ui/button-logout/button-logout'
+import CategoryList from './category-list/category-list'
 
 export const Header = () => {
     return (
@@ -64,12 +65,9 @@ export const Header = () => {
                 <div className="bot-header">
                     <div className="content">
                         <nav className="navbar">
-                            <div className="cate">
-                                <i className="fa-solid fa-bars"></i>
-                                <span>TẤT CẢ DANH MỤC</span>
-                            </div>
+                            <CategoryList />
 
-                            <ul>
+                            <ul className="menu-list">
                                 <li>
                                     <Link href="/">Trang chủ</Link>
                                 </li>
