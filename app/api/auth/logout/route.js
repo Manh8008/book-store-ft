@@ -19,7 +19,6 @@ export async function POST(request) {
     try {
         //Xóa Token trên trình duyệt
         const result = await authApiRequest.logoutFromNextServerToServer(sessionToken.value)
-        console.log(result)
         return Response.json(result.payload, {
             status: 200,
             headers: {

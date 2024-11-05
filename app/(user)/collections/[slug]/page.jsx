@@ -17,7 +17,6 @@ const BookCollection = () => {
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber)
-        console.log(`Chuyển sang trang: ${pageNumber}`)
     }
     return (
         <div className={cx('wrapper')}>

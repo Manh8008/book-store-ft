@@ -8,7 +8,8 @@ const authApiRequest = {
             baseUrl: ''
         }),
     changePassword: (body) => http.put('/api/changePassword', body),
-
+    forgotPassword: (body) => http.post('/api/forgot-password', body),
+    resetPassword: (body) => http.post('/api/reset-password', body),
     logoutFromNextServerToServer: (sessionToken) =>
         http.get('/api/logout', {
             headers: {

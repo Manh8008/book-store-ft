@@ -40,3 +40,23 @@ export const changePasswordSchema = z
         message: 'Mật khẩu không khớp!',
         path: ['confirm_password']
     })
+
+export const ForgotPasswordSchema = z.object({
+    email: z
+        .string()
+        .email({ message: 'Email không hợp lệ!' })
+        .min(1, { message: 'Email là bắt buộc!' })
+})
+
+export const resetPasswordSchema = z
+    .object({
+        password: z
+            .string()
+            .min(8, { message: 'Mật khẩu cần ít nhất 8 kí tự!' })
+            .min(1, { message: 'Mật khẩu là bắt buộc!' }),
+        confirm_password: z.string()
+    })
+    .refine((values) => values.password === values.confirm_password, {
+        message: 'Mật khẩu không khớp!',
+        path: ['confirm_password']
+    })
