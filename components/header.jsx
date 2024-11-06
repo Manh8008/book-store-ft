@@ -1,8 +1,18 @@
+"use client"
+
 import Link from 'next/link'
 import Buttonlogout from './ui/button-logout/button-logout'
 import CategoryList from './category-list/category-list'
+import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 
 export const Header = () => {
+
+    const cart = useSelector((state) => state.cart)
+    const totalItem = useMemo(() => {
+        return cart.reduce((total, item) => total + item.quantity, 0);
+    }, [cart])
+
     return (
         <>
             <header className="header">
@@ -50,7 +60,7 @@ export const Header = () => {
                                     <Link href="/cart" className="link">
                                         <i className="fa-solid fa-cart-shopping"></i>
                                         <div className="text text-cart">
-                                            <p className="bage">0</p>
+                                            <p className="bage">{totalItem}</p>
                                             <span>Giỏ hàng</span>
                                         </div>
                                     </Link>

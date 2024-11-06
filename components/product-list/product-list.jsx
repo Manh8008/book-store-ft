@@ -32,11 +32,11 @@ export default function ProductList({ title }) {
                     <ProductCard data={productList} />
                 </div>
             </div>
-            <div className={cx('see_more_button')}>
+            {/* <div className={cx('see_more_button')}>
                 <Button outline large>
                     Xem thêm
                 </Button>
-            </div>
+            </div> */}
         </>
     )
 }

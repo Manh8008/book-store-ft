@@ -1,10 +1,18 @@
+"use client"
+
 import Link from 'next/link'
 import classNames from 'classnames/bind'
 import { Button } from '@/components/ui/button'
+import { useDispatch } from 'react-redux';
+import { addItem } from '@/redux/slices/cartslice';
 
 import styles from './product-card.module.scss'
+import { useState } from 'react';
 const cx = classNames.bind(styles)
 const ProductCard = (props) => {
+    const [quantity] = useState(1);
+    const dispatch = useDispatch();
+
     return (
         <>
             {props.data.map((product) => {
@@ -35,7 +43,7 @@ const ProductCard = (props) => {
                                 </div>
                                 <span className={cx('sold-count')}>Đã bán 23</span>
                             </div>
-                            <Button className={cx('buy-now')}>Mua ngay</Button>
+                            <Button className={cx('buy-now')} onClick={() => dispatch(addItem({ product, quantity }))}>Mua ngay</Button>
                         </div>
                     </div>
                 )

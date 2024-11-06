@@ -4,6 +4,7 @@ import '@/public/styles/reset.scss'
 import '../globals.scss'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import AppProvider from '@/app/AppProvider'
+import Providers from '@/redux/Provider'
 
 export const metadata = {
     title: 'Create Next App',
@@ -28,7 +29,11 @@ export default function RootLayout({ children }) {
                 />
             </Head>
             <body suppressHydrationWarning={true}>
-                <AppProvider initialSessionToken={sessionToken?.value}>{children}</AppProvider>
+                <Providers>
+                    <AppProvider initialSessionToken={sessionToken?.value}>
+                        {children}
+                    </AppProvider>
+                </Providers>
             </body>
         </html>
     )

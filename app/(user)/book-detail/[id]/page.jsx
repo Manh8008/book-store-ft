@@ -1,23 +1,42 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import { useDispatch } from 'react-redux';
+import { addItem } from '@/redux/slices/cartslice';
 
+import Link from 'next/link'
 import productApiRequest from '@/apiRequests/product'
 import { handleHttpError } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import MainLayout from '@/layouts/main-layout'
 import '@/public/styles/product-detail.scss'
-import QuantitySelector from '@/components/ui/quantity-selecter/quantity-selecter'
 
 export default function ProductDetail({ params }) {
-    const [book, setBook] = useState(null)
+    // Chi tiết sản phẩm
+    const [product, setProduct] = useState(null)
     const [error, setError] = useState(null)
+
+    // Set số lượng khi thêm vào giỏ hàng
+    const [quantity, setQuantity] = useState(1);
+    const dispatch = useDispatch();
+
+    // Hàm giảm số lượng
+    const decrement = () => {
+        if (quantity > 1) {
+            setQuantity(quantity - 1);
+        }
+    };
+
+    // Hàm tăng số lượng
+    const increment = () => {
+        setQuantity(quantity + 1);
+    };
+
     useEffect(() => {
         const fetchRequest = async () => {
             try {
                 const result = await productApiRequest.bookDetail(params.id)
-                setBook(result.payload.data)
+                setProduct(result.payload.data)
             } catch (error) {
                 handleHttpError(error, setError)
             }
@@ -37,28 +56,28 @@ export default function ProductDetail({ params }) {
                             <div className="main-left">
                                 <div className="main-detail">
                                     <div className="product-image">
-                                        <img src={book?.images[0]?.url.trim()} alt={book?.name} />
+                                        <img src={product?.images[0]?.url.trim()} alt={product?.name} />
                                     </div>
 
                                     <div className="product-info">
-                                        <h1 className="product-title">{book?.name}</h1>
+                                        <h1 className="product-title">{product?.name}</h1>
                                         <hr />
                                         <p className="product-price">
                                             Giá bán:{' '}
                                             <span className="price-sale">
-                                                {parseFloat(book?.price).toLocaleString('vi-VN')}đ
+                                                {parseFloat(product?.price).toLocaleString('vi-VN')}đ
                                             </span>{' '}
                                             <span className="price-retail">169.000đ</span>
                                         </p>
-                                        <p className="product-description">{book?.short_summary}</p>
+                                        <p className="product-description">{product?.short_summary}</p>
 
                                         <div class="quantity-control">
-                                            <button class="quantity-btn decrement">-</button>
-                                            <span class="quantity-value">1</span>
-                                            <button class="quantity-btn increment">+</button>
+                                            <button className="quantity-btn decrement" onClick={decrement}>-</button>
+                                            <span className="quantity-value">{quantity}</span>
+                                            <button className="quantity-btn increment" onClick={increment}>+</button>
                                         </div>
 
-                                        <Button primary>Thêm vào giỏ hàng</Button>
+                                        <Button primary onClick={() => dispatch(addItem({ product, quantity }))}>Thêm vào giỏ hàng</Button>
                                     </div>
                                 </div>
 
@@ -70,8 +89,8 @@ export default function ProductDetail({ params }) {
 
                                     <div className="tab-content">
                                         <div className="body">
-                                            <h2 className="title">{book?.name}</h2>
-                                            <p className="text-desc">{book?.short_summary}</p>
+                                            <h2 className="title">{product?.name}</h2>
+                                            <p className="text-desc">{product?.short_summary}</p>
                                         </div>
                                     </div>
 
@@ -85,19 +104,19 @@ export default function ProductDetail({ params }) {
                                                 </tr>
                                                 <tr>
                                                     <td>Ngày xuất bản</td>
-                                                    <td>{book?.created_at}</td>
+                                                    <td>{product?.created_at}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Kích thước</td>
-                                                    <td>{book?.size}</td>
+                                                    <td>{product?.size}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Loại bìa</td>
-                                                    <td>{book?.format}</td>
+                                                    <td>{product?.format}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Số trang</td>
-                                                    <td>{book?.pages}</td>
+                                                    <td>{product?.pages}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>SKU</td>
