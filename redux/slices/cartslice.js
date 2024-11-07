@@ -34,7 +34,7 @@ export const cartSlice = createSlice({
             const { product, quantity } = actions.payload;
             const cart = state;
             const index = cart.findIndex(
-                (item) => item.id == product.id
+                (item) => item.id == product.id 
             );
             cart[index].quantity = Math.max(1, quantity);
             return cart;
