@@ -1,7 +1,13 @@
+import "../../public/css/bootstrap.min.css";
+import "../../public/css/style.css";
+
 import Head from 'next/head'
-import MainLayout from '@/layouts/main-layout'
-import '@/public/styles/main.scss'
-import '../globals.scss'
+import Script from 'next/script';
+import 'remixicon/fonts/remixicon.css';
+import LeftBar from './components/leftBar';
+import TopBar from './components/topBar';
+import Footer from './components/footer';
+import "../../public/css/responsive.css";
 
 export const metadata = {
     title: 'Create Next App',
@@ -15,15 +21,47 @@ export default function RootLayout({ children }) {
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Book Store</title>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-                    rel="stylesheet"
-                />
             </Head>
             <body>
-                <MainLayout>{children}</MainLayout>
+                <div id="loading">
+                    <div id="loading-center">
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <LeftBar />
+                    <TopBar />
+                    {children}
+                </div>
+                <Footer />
+
+                <Script src="/js/jquery.min.js" strategy="beforeInteractive" />
+                <Script src="/js/popper.min.js" strategy="beforeInteractive" />
+                <Script src="/js/bootstrap.min.js" strategy="beforeInteractive" />
+                <Script src="/js/jquery.appear.js" strategy="lazyOnload" />
+                <Script src="/js/countdown.min.js" strategy="lazyOnload" />
+                <Script src="/js/waypoints.min.js" strategy="lazyOnload" />
+                <Script src="/js/jquery.counterup.min.js" strategy="lazyOnload" />
+                <Script src="/js/wow.min.js" strategy="lazyOnload" />
+                <Script src="/js/apexcharts.js" strategy="lazyOnload" />
+                <Script src="/js/slick.min.js" strategy="lazyOnload" />
+                <Script src="/js/select2.min.js" strategy="lazyOnload" />
+                <Script src="/js/owl.carousel.min.js" strategy="lazyOnload" />
+                <Script src="/js/jquery.magnific-popup.min.js" strategy="lazyOnload" />
+                <Script src="/js/smooth-scrollbar.js" strategy="lazyOnload" />
+                <Script src="/js/lottie.js" strategy="lazyOnload" />
+                <Script src="/js/core.js" strategy="lazyOnload" />
+                <Script src="/js/charts.js" strategy="lazyOnload" />
+                <Script src="/js/animated.js" strategy="lazyOnload" />
+                <Script src="/js/kelly.js" strategy="lazyOnload" />
+                <Script src="/js/maps.js" strategy="lazyOnload" />
+                <Script src="/js/worldLow.js" strategy="lazyOnload" />
+                <Script src="/js/raphael-min.js" strategy="lazyOnload" />
+                <Script src="/js/morris.js" strategy="lazyOnload" />
+                <Script src="/js/morris.min.js" strategy="lazyOnload" />
+                <Script src="/js/flatpickr.js" strategy="lazyOnload" />
+                <Script src="/js/style-customizer.js" strategy="lazyOnload" />
+                <Script src="/js/chart-custom.js" strategy="lazyOnload" />
+                <Script src="/js/custom.js" strategy="lazyOnload" />
             </body>
         </html>
     )
