@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { addItem } from '@/redux/slices/cartslice';
+import { useDispatch } from 'react-redux'
+import { addItem } from '@/redux/slices/cartslice'
 
 import Link from 'next/link'
 import productApiRequest from '@/apiRequests/product'
@@ -17,20 +17,20 @@ export default function ProductDetail({ params }) {
     const [error, setError] = useState(null)
 
     // Set số lượng khi thêm vào giỏ hàng
-    const [quantity, setQuantity] = useState(1);
-    const dispatch = useDispatch();
+    const [quantity, setQuantity] = useState(1)
+    const dispatch = useDispatch()
 
     // Hàm giảm số lượng
     const decrement = () => {
         if (quantity > 1) {
-            setQuantity(quantity - 1);
+            setQuantity(quantity - 1)
         }
-    };
+    }
 
     // Hàm tăng số lượng
     const increment = () => {
-        setQuantity(quantity + 1);
-    };
+        setQuantity(quantity + 1)
+    }
 
     useEffect(() => {
         const fetchRequest = async () => {
@@ -56,7 +56,10 @@ export default function ProductDetail({ params }) {
                             <div className="main-left">
                                 <div className="main-detail">
                                     <div className="product-image">
-                                        <img src={product?.images[0]?.url.trim()} alt={product?.name} />
+                                        <img
+                                            src={product?.images[0]?.url.trim()}
+                                            alt={product?.name}
+                                        />
                                     </div>
 
                                     <div className="product-info">
@@ -65,19 +68,37 @@ export default function ProductDetail({ params }) {
                                         <p className="product-price">
                                             Giá bán:{' '}
                                             <span className="price-sale">
-                                                {parseFloat(product?.price).toLocaleString('vi-VN')}đ
+                                                {parseFloat(product?.price).toLocaleString('vi-VN')}
+                                                đ
                                             </span>{' '}
                                             <span className="price-retail">169.000đ</span>
                                         </p>
-                                        <p className="product-description">{product?.short_summary}</p>
+                                        <p className="product-description">
+                                            {product?.short_summary}
+                                        </p>
 
-                                        <div class="quantity-control">
-                                            <button className="quantity-btn decrement" onClick={decrement}>-</button>
+                                        <div className="quantity-control">
+                                            <button
+                                                className="quantity-btn decrement"
+                                                onClick={decrement}
+                                            >
+                                                -
+                                            </button>
                                             <span className="quantity-value">{quantity}</span>
-                                            <button className="quantity-btn increment" onClick={increment}>+</button>
+                                            <button
+                                                className="quantity-btn increment"
+                                                onClick={increment}
+                                            >
+                                                +
+                                            </button>
                                         </div>
 
-                                        <Button primary onClick={() => dispatch(addItem({ product, quantity }))}>Thêm vào giỏ hàng</Button>
+                                        <Button
+                                            primary
+                                            onClick={() => dispatch(addItem({ product, quantity }))}
+                                        >
+                                            Thêm vào giỏ hàng
+                                        </Button>
                                     </div>
                                 </div>
 

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import Link from 'next/link'
 import Buttonlogout from './ui/button-logout/button-logout'
@@ -7,17 +7,16 @@ import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 
 export const Header = () => {
-
     const cart = useSelector((state) => state.cart)
     const totalItem = useMemo(() => {
-        return cart.reduce((total, item) => total + item.quantity, 0);
+        return cart.reduce((total, item) => total + item.quantity, 0)
     }, [cart])
 
     return (
         <>
             <header className="header">
                 <div className="top-header">
-                    <img src="../img/banner-sale.jpg" alt="banner-sale" />
+                    <img src="../../../img/banner-sale.jpg" alt="banner-sale" />
                 </div>
                 <div className="mid-header">
                     <nav className="navbar">

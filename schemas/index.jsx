@@ -60,3 +60,22 @@ export const resetPasswordSchema = z
         message: 'Mật khẩu không khớp!',
         path: ['confirm_password']
     })
+
+export const AddressSchema = z.object({
+    address_line: z
+        .string()
+        .min(1, { message: 'Địa chỉ cụ thể là bắt buộc!' })
+        .max(255, { message: 'Địa chỉ cụ thể không được vượt quá 255 ký tự!' }),
+    name: z
+        .string()
+        .min(1, { message: 'Tên là bắt buộc!' })
+        .max(100, { message: 'Tên không được vượt quá 100 ký tự!' }),
+    phone: z
+        .string()
+        .min(10, { message: 'Số điện thoại cần ít nhất 10 chữ số!' })
+        .max(11, { message: 'Số điện thoại không được vượt quá 11 chữ số!' })
+        .regex(/^\d+$/, { message: 'Số điện thoại chỉ được chứa chữ số!' }),
+    province: z.string().min(1, { message: 'Tỉnh/Thành phố là bắt buộc!' }),
+    district: z.string().min(1, { message: 'Quận/Huyện là bắt buộc!' }),
+    town: z.string().min(1, { message: 'Phường/Xã là bắt buộc!' })
+})

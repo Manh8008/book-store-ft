@@ -34,11 +34,10 @@ export const LoginForm = () => {
         setError('')
         try {
             const result = await authApiRequest.login(values)
-
             await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
             clientSessionToken.value = result.payload.data.access_token
 
-            router.push('/profile')
+            router.push('/customer/profile')
         } catch (error) {
             handleHttpError(error, setError)
         }
@@ -80,6 +79,9 @@ export const LoginForm = () => {
 
                 <Button text href="/auth/register">
                     Bạn chưa có tài khoản ?
+                </Button>
+                <Button text href="/auth/forgot-password">
+                    Quên mật khẩu
                 </Button>
             </form>
         </div>

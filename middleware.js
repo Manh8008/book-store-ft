@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-const privatePaths = ['/profile']
+const privatePaths = ['/customer/profile']
 const authPaths = ['/auth/login', '/auth/register']
 
 export function middleware(request) {
@@ -14,12 +14,12 @@ export function middleware(request) {
 
     // Đăng nhập rồi thì không cho vào /auth/login và /auth/register nữa
     if (authPaths.some((path) => pathname.startsWith(path)) && sessionToken) {
-        return NextResponse.redirect(new URL('/profile', request.url))
+        return NextResponse.redirect(new URL('/customer/profile', request.url))
     }
 
     return NextResponse.next()
 }
 
 export const config = {
-    matcher: ['/profile', '/auth/login', '/auth/register']
+    matcher: ['/customer/profile', '/auth/login', '/auth/register']
 }

@@ -2,13 +2,17 @@ export default function Footer() {
     return (
         <>
             {/* <!-- Footer --> */}
-            <footer class="iq-footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item"><a href="privacy-policy.html">Chính sách</a></li>
-                                <li class="list-inline-item"><a href="terms-of-service.html">Điều khoản</a></li>
+            <footer className="iq-footer">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-lg-6">
+                            <ul className="list-inline mb-0">
+                                <li className="list-inline-item">
+                                    <a href="privacy-policy.html">Chính sách</a>
+                                </li>
+                                <li className="list-inline-item">
+                                    <a href="terms-of-service.html">Điều khoản</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -16,5 +20,5 @@ export default function Footer() {
             </footer>
             {/* <!-- Footer END --> */}
         </>
-    );
+    )
 }

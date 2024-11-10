@@ -7,12 +7,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { AddressSchema } from '@/schemas'
 import addressApiRequest from '@/apiRequests/address'
 import Toast, { showToast } from '@/components/Toast/Toast'
-import styles from './create-address-form.module.scss'
+import styles from './update-address-form.module.scss'
 import { Button } from '@/components/ui/button'
 
 const cx = classNames.bind(styles)
 
-const AddAddressForm = () => {
+const UpdateAddressForm = ({ addressId }) => {
     const router = useRouter()
 
     const [provinces, setProvinces] = useState([])
@@ -58,7 +58,7 @@ const AddAddressForm = () => {
     }, [])
 
     useEffect(() => {
-        const fetchDistrict = async () => {
+        const fetchDistricts = async () => {
             try {
                 const response = await fetch(
                     `https://vapi.vnappmob.com/api/province/district/${province}`
@@ -70,11 +70,11 @@ const AddAddressForm = () => {
             }
         }
 
-        if (province) fetchDistrict()
+        if (province) fetchDistricts()
     }, [province])
 
     useEffect(() => {
-        const fetchWard = async () => {
+        const fetchWards = async () => {
             try {
                 const response = await fetch(
                     `https://vapi.vnappmob.com/api/province/ward/${district}`
@@ -86,24 +86,48 @@ const AddAddressForm = () => {
             }
         }
 
-        if (district) fetchWard()
+        if (district) fetchWards()
     }, [district])
+
+    useEffect(() => {
+        const fetchAddressById = async () => {
+            const result = await addressApiRequest.getAddressById(addressId)
+
+            if (result?.payload?.data) {
+                const addressData = result.payload.data
+
+                // Populate form fields with existing address data
+                setValue('name', addressData.name)
+                setValue('phone', addressData.phone)
+                setValue('address_line', addressData.address_line)
+                setValue('default', addressData.default ? true : false)
+
+                // Set initial dropdown selections to existing address data
+                setProvince(addressData.province)
+                setDistrict(addressData.district)
+                setWard(addressData.town)
+            }
+        }
+
+        if (addressId) fetchAddressById()
+    }, [addressId, setValue])
 
     const onSubmit = async (values) => {
         try {
-            // Cập nhật giá trị khi post lên là tên
             values.province = provinces.find((p) => p.province_id === province)?.province_name
             values.district = districts.find((d) => d.district_id === district)?.district_name
             values.town = wards.find((w) => w.ward_id === ward)?.ward_name
+
             values.default = isDefault ? 1 : 0
 
-            console.log(values)
+            const result = await addressApiRequest.updateAddress(addressId, values)
 
-            const result = await addressApiRequest.addAddress(values)
-            showToast('🦄 Địa chỉ đã được cập nhật thành công!')
-            setTimeout(() => {
-                router.push('/customer/address')
-            }, 1600)
+            if (result.status === 200) {
+                showToast('🦄 Địa chỉ đã được cập nhật thành công!')
+                setTimeout(() => {
+                    router.push('/customer/address')
+                }, 1600)
+            }
         } catch (error) {
             console.error(error)
         }
@@ -113,7 +137,7 @@ const AddAddressForm = () => {
         <>
             <Toast />
             <form onSubmit={handleSubmit(onSubmit)} className={cx('form-container')}>
-                <h2 className={cx('title')}>Thêm địa chỉ mới</h2>
+                <h2 className={cx('title')}>Chỉnh sửa địa chỉ</h2>
                 <div className={cx('form-group')}>
                     <label>Họ và tên:</label>
                     <input type="text" {...register('name')} className={cx('input')} />
@@ -131,7 +155,9 @@ const AddAddressForm = () => {
                         className={cx('select')}
                         onChange={(e) => {
                             setProvince(e.target.value)
-                            setValue('province', e.target.value) // Set value in react-hook-form
+                            setDistrict('')
+                            setWard('')
+                            setValue('province', e.target.value)
                         }}
                         value={province}
                     >
@@ -151,6 +177,7 @@ const AddAddressForm = () => {
                         className={cx('select')}
                         onChange={(e) => {
                             setDistrict(e.target.value)
+                            setWard('') // Reset ward when district changes
                             setValue('district', e.target.value)
                         }}
                         value={district}
@@ -211,4 +238,4 @@ const AddAddressForm = () => {
     )
 }
 
-export default AddAddressForm
+export default UpdateAddressForm

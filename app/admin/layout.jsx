@@ -1,13 +1,13 @@
-import "../../public/css/bootstrap.min.css";
-import "../../public/css/style.css";
+import '../../public/css/bootstrap.min.css'
+import '../../public/css/style.css'
 
 import Head from 'next/head'
-import Script from 'next/script';
-import 'remixicon/fonts/remixicon.css';
-import LeftBar from './components/leftBar';
-import TopBar from './components/topBar';
-import Footer from './components/footer';
-import "../../public/css/responsive.css";
+import Script from 'next/script'
+import 'remixicon/fonts/remixicon.css'
+import LeftBar from './components/leftBar'
+import TopBar from './components/topBar'
+import Footer from './components/footer'
+import '../../public/css/responsive.css'
 
 export const metadata = {
     title: 'Create Next App',
@@ -24,10 +24,9 @@ export default function RootLayout({ children }) {
             </Head>
             <body>
                 <div id="loading">
-                    <div id="loading-center">
-                    </div>
+                    <div id="loading-center"></div>
                 </div>
-                <div class="wrapper">
+                <div className="wrapper">
                     <LeftBar />
                     <TopBar />
                     {children}

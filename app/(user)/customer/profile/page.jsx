@@ -1,85 +1,40 @@
 'use client'
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { clientSessionToken } from '@/lib/http'
-import accountApiRequest from '@/apiRequests/account'
-import '@/public/styles/profile.scss'
-
-const Menu = () => {
-    return (
-        <div className="menu">
-            <Link className="active" href="#">
-                <i className="fas fa-user"></i> Thông tin tài khoản
-            </Link>
-            <Link href="#">
-                <i className="fas fa-id-card"></i> Hồ sơ cá nhân
-            </Link>
-            <Link href="#">
-                <i className="fas fa-map-marker-alt"></i> Số địa chỉ
-            </Link>
-            <Link href="/auth/change-password">
-                <i className="fas fa-key"></i> Đổi mật khẩu
-            </Link>
-            <Link href="#">
-                <i className="fas fa-file-invoice"></i> Thông tin xuất hóa đơn GTGT
-            </Link>
-            <Link href="#">
-                <i className="fas fa-gift"></i> Ưu đãi thành viên
-            </Link>
-            <Link href="#">
-                <i className="fas fa-box"></i> Đơn hàng của tôi
-            </Link>
-            <Link href="#">
-                <i className="fas fa-wallet"></i> Ví voucher{' '}
-                <span style={{ color: 'red' }}>14</span>
-            </Link>
-            <Link href="#">
-                <i className="fas fa-coins"></i> Tài Khoản F-Point / Freeship
-            </Link>
-        </div>
-    )
-}
+import { useUser } from '@/context/user-context'
+import { AccountSidebar } from '@/components/account-sidebar'
+import './profile.scss'
 
 export default function Profile() {
-    const [userData, setUserData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        address: ''
-    })
+    const { userData, setUserData } = useUser()
+
+    const [defaultAddress, setDefaultAddress] = useState('')
 
     useEffect(() => {
-        const fetchRequest = async () => {
-            const result = await accountApiRequest.profile(clientSessionToken.value)
-            const data = result.payload.data
+        if (userData && userData.address) {
+            const addressList = userData.address || []
+            const defaultAddr = addressList.find((address) => address.default == 1)
 
-            setUserData({
-                name: data.name || '',
-                email: data.email || '',
-                phone: data.phone || '',
-                address: ''
-            })
+            if (defaultAddr) {
+                setDefaultAddress(defaultAddr.address_line)
+            }
         }
-        fetchRequest()
-    }, [clientSessionToken])
+    }, [userData])
+
+    const handleChange = (e) => {
+        setUserData({
+            ...userData,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    if (!userData) {
+        return <div>Loading...</div>
+    }
 
     return (
         <main style={{ background: '#F5F5FA' }}>
             <div className="container">
-                <div className="sidebar">
-                    <img
-                        alt="User profile picture"
-                        height="100"
-                        src="https://tse2.mm.bing.net/th?id=OIP.HHd8yrds00omoiO_XM1x2AHaHa&pid=Api&P=0&h=220"
-                        width="100"
-                    />
-                    <div className="status">
-                        <div className="badge">Thành viên Bạc</div>
-                        <div className="points">F-Point tích lũy 0</div>
-                        <div className="points">Thêm 30.000 để nâng hạng Vàng</div>
-                    </div>
-                    <Menu />
-                </div>
+                <AccountSidebar idUser={userData.id} />
                 <div className="content-body">
                     <h2>Hồ sơ cá nhân</h2>
                     <form>
@@ -87,46 +42,44 @@ export default function Profile() {
                             <label htmlFor="fullname">Họ và tên*</label>
                             <input
                                 id="fullname"
+                                name="name"
                                 placeholder="Nhập họ và tên"
                                 type="text"
-                                value={userData.name}
-                                onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                                value={userData.name || ''}
+                                onChange={handleChange}
                             />
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email*</label>
                             <input
                                 id="email"
+                                name="email"
                                 placeholder="Email"
                                 type="text"
-                                value={userData.email}
-                                onChange={(e) =>
-                                    setUserData({ ...userData, email: e.target.value })
-                                }
+                                value={userData.email || ''}
+                                onChange={handleChange}
                             />
                         </div>
                         <div className="form-group">
                             <label htmlFor="phone">Số điện thoại*</label>
                             <input
                                 id="phone"
+                                name="phone"
                                 placeholder="Số điện thoại"
                                 type="text"
-                                value={userData.phone}
-                                onChange={(e) =>
-                                    setUserData({ ...userData, phone: e.target.value })
-                                }
+                                value={userData.phone || ''}
+                                onChange={handleChange}
                             />
                         </div>
                         <div className="form-group">
                             <label htmlFor="address">Địa chỉ*</label>
                             <input
                                 id="address"
+                                name="address"
                                 placeholder="Địa chỉ giao hàng"
                                 type="text"
-                                value={userData.address}
-                                onChange={(e) =>
-                                    setUserData({ ...userData, address: e.target.value })
-                                }
+                                value={defaultAddress || ''}
+                                onChange={handleChange}
                             />
                         </div>
                         <div className="form-group">
