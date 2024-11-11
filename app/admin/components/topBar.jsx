@@ -13,11 +13,11 @@ export default function TopBar() {
                             </div>
                             <div className="iq-navbar-logo d-flex justify-content-between">
                                 <a href="index.html" className="header-logo">
-                                    <img
+                                    {/* <img
                                         src="/images/logo.png"
                                         className="img-fluid rounded-normal"
                                         alt=""
-                                    />
+                                    /> */}
                                     <div className="logo-title">
                                         <span className="text-primary text-uppercase">
                                             NhasachTV
