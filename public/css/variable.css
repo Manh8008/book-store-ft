@@ -3,8 +3,8 @@
 :root {
   --iq-title-text: #11141b;
   --iq-body-text: #777D74;
-  --iq-body-bg : #fbfcff;
-  --iq-primary: #0dd6b8;
+  --iq-body-bg: #fbfcff;
+  --iq-primary: #F47830;
   --iq-secondary: #a09e9e;
   --iq-success: #49f0d3;
   --iq-warning: #ffba68;
@@ -22,8 +22,8 @@
   --iq-light-warning: #fffcf3;
   --iq-light-info: #eee6f5;
   --iq-light-dark: #f0efef;
-  --iq-primary-hover: #11e1c2;
-   --iq-secondary-hover: #807e7e;
+  --iq-primary-hover: orange;
+  --iq-secondary-hover: #807e7e;
   --iq-success-hover: #42f9d9;
   --iq-danger-hover: #f78673;
   --iq-warning-hover: #fdb45e;

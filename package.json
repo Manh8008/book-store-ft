@@ -20,6 +20,7 @@
         "@reduxjs/toolkit": "^2.3.0",
         "bootstrap": "^5.3.3",
         "classnames": "^2.5.1",
+        "datatables.net-bs4": "^2.1.8",
         "frontend": "file:",
         "js-cookie": "^3.0.5",
         "lottie-web": "^5.12.2",

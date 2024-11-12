@@ -215,7 +215,7 @@ th {}
 loading
 ------------------------------------------------*/
 #loading {
-  background: var(--iq-white) url(../images/loader.gif) no-repeat scroll center center;
+  background: var(--iq-white) url(../css/ajax-loader.gif) no-repeat scroll center center;
   height: 100%;
   width: 100%;
   background-size: 15%;

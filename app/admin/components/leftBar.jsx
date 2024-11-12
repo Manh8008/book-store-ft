@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function LeftBar() {
     return (
         <>
@@ -24,29 +26,29 @@ export default function LeftBar() {
                     <nav className="iq-sidebar-menu">
                         <ul id="iq-sidebar-toggle" className="iq-menu">
                             <li>
-                                <a href="admin-dashboard.html">
+                                <Link href="/admin">
                                     <i className="las la-home iq-arrow-left"></i>Bảng Điều Khiển
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="admin-category.html">
+                                <Link href="admin/categories">
                                     <i className="ri-record-circle-line"></i>Danh Mục Sách
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="admin-author.html">
+                                <Link href="admin-author.html">
                                     <i className="ri-record-circle-line"></i>Tác Giả
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="admin-books.html">
+                                <Link href="admin-books.html">
                                     <i className="ri-record-circle-line"></i>Sách
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="sign-in.html">
+                                <Link href="sign-in.html">
                                     <i className="ri-record-circle-line"></i>Đăng Xuất
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </nav>
