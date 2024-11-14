@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function TopBar() {
     return (
         <>
@@ -12,7 +14,7 @@ export default function TopBar() {
                                 </div>
                             </div>
                             <div className="iq-navbar-logo d-flex justify-content-between">
-                                <a href="index.html" className="header-logo">
+                                <Link href="index.html" className="header-logo">
                                     {/* <img
                                         src="/images/logo.png"
                                         className="img-fluid rounded-normal"
@@ -23,7 +25,7 @@ export default function TopBar() {
                                             NhasachTV
                                         </span>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="navbar-breadcrumb">
@@ -36,9 +38,9 @@ export default function TopBar() {
                                     className="text search-input"
                                     placeholder="Tìm kiếm sản phẩm..."
                                 />
-                                <a className="search-link" href="#">
+                                <Link className="search-link" href="#">
                                     <i className="ri-search-line"></i>
-                                </a>
+                                </Link>
                             </form>
                         </div>
                         <button
@@ -54,31 +56,31 @@ export default function TopBar() {
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav ml-auto navbar-list">
                                 <li className="nav-item nav-icon search-content">
-                                    <a
+                                    <Link
                                         href="#"
                                         className="search-toggle iq-waves-effect text-gray rounded"
                                     >
                                         <i className="ri-search-line"></i>
-                                    </a>
+                                    </Link>
                                     <form action="#" className="search-box p-0">
                                         <input
                                             type="text"
                                             className="text search-input"
                                             placeholder="Type here to search..."
                                         />
-                                        <a className="search-link" href="#">
+                                        <Link className="search-link" href="#">
                                             <i className="ri-search-line"></i>
-                                        </a>
+                                        </Link>
                                     </form>
                                 </li>
                                 <li className="nav-item nav-icon">
-                                    <a
+                                    <Link
                                         href="#"
                                         className="search-toggle iq-waves-effect text-gray rounded"
                                     >
                                         <i className="ri-notification-2-line"></i>
                                         <span className="bg-primary dots"></span>
-                                    </a>
+                                    </Link>
                                     <div className="iq-sub-dropdown">
                                         <div className="iq-card shadow-none m-0">
                                             <div className="iq-card-body p-0">
@@ -90,7 +92,7 @@ export default function TopBar() {
                                                         </small>
                                                     </h5>
                                                 </div>
-                                                <a href="#" className="iq-sub-card">
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -109,8 +111,8 @@ export default function TopBar() {
                                                             <p className="mb-0">95.000đ</p>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a href="#" className="iq-sub-card">
+                                                </Link>
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -129,8 +131,8 @@ export default function TopBar() {
                                                             <p className="mb-0">255.000đ</p>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a href="#" className="iq-sub-card">
+                                                </Link>
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -149,8 +151,8 @@ export default function TopBar() {
                                                             <p className="mb-0">79.000đ</p>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a href="#" className="iq-sub-card">
+                                                </Link>
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -169,19 +171,19 @@ export default function TopBar() {
                                                             <p className="mb-0">100.000đ</p>
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                                 <li className="nav-item nav-icon dropdown">
-                                    <a
+                                    <Link
                                         href="#"
                                         className="search-toggle iq-waves-effect text-gray rounded"
                                     >
                                         <i className="ri-mail-line"></i>
                                         <span className="bg-primary dots"></span>
-                                    </a>
+                                    </Link>
                                     <div className="iq-sub-dropdown">
                                         <div className="iq-card shadow-none m-0">
                                             <div className="iq-card-body p-0 ">
@@ -193,7 +195,7 @@ export default function TopBar() {
                                                         </small>
                                                     </h5>
                                                 </div>
-                                                <a href="#" className="iq-sub-card">
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -209,8 +211,8 @@ export default function TopBar() {
                                                             </small>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a href="#" className="iq-sub-card">
+                                                </Link>
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -228,8 +230,8 @@ export default function TopBar() {
                                                             </small>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a href="#" className="iq-sub-card">
+                                                </Link>
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -245,8 +247,8 @@ export default function TopBar() {
                                                             </small>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a href="#" className="iq-sub-card">
+                                                </Link>
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -264,8 +266,8 @@ export default function TopBar() {
                                                             </small>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a href="#" className="iq-sub-card">
+                                                </Link>
+                                                <Link href="#" className="iq-sub-card">
                                                     <div className="media align-items-center">
                                                         <div className="">
                                                             <img
@@ -281,13 +283,13 @@ export default function TopBar() {
                                                             </small>
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                                 <li className="line-height pt-3">
-                                    <a
+                                    <Link
                                         href="#"
                                         className="search-toggle iq-waves-effect d-flex align-items-center"
                                     >
@@ -300,7 +302,7 @@ export default function TopBar() {
                                             <h6 className="mb-1 line-height">Ông Trần Thuận</h6>
                                             <p className="mb-0 text-primary">Tài Khoản</p>
                                         </div>
-                                    </a>
+                                    </Link>
                                     <div className="iq-sub-dropdown iq-user-dropdown">
                                         <div className="iq-card shadow-none m-0">
                                             <div className="iq-card-body p-0 ">
@@ -309,8 +311,8 @@ export default function TopBar() {
                                                         Xin Chào Ông Trần Thuận
                                                     </h5>
                                                 </div>
-                                                <a
-                                                    href="profile.html"
+                                                <Link
+                                                    href="/admin/profile"
                                                     className="iq-sub-card iq-bg-primary-hover"
                                                 >
                                                     <div className="media align-items-center">
@@ -323,8 +325,8 @@ export default function TopBar() {
                                                             </h6>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a
+                                                </Link>
+                                                <Link
                                                     href="profile-edit.html"
                                                     className="iq-sub-card iq-bg-primary-hover"
                                                 >
@@ -336,8 +338,8 @@ export default function TopBar() {
                                                             <h6 className="mb-0 ">Sổ địa chỉ</h6>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a
+                                                </Link>
+                                                <Link
                                                     href="account-setting.html"
                                                     className="iq-sub-card iq-bg-primary-hover"
                                                 >
@@ -351,8 +353,8 @@ export default function TopBar() {
                                                             </h6>
                                                         </div>
                                                     </div>
-                                                </a>
-                                                <a
+                                                </Link>
+                                                <Link
                                                     href="wishlist.html"
                                                     className="iq-sub-card iq-bg-primary-hover"
                                                 >
@@ -364,16 +366,16 @@ export default function TopBar() {
                                                             <h6 className="mb-0 ">Yêu Thích</h6>
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                                 <div className="d-inline-block w-100 text-center p-3">
-                                                    <a
+                                                    <Link
                                                         className="bg-primary iq-sign-btn"
                                                         href="sign-in.html"
                                                         role="button"
                                                     >
                                                         Sign out
                                                         <i className="ri-login-box-line ml-2"></i>
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>

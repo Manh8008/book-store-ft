@@ -75,7 +75,7 @@ export default function DashBoard() {
                                 </div>
                             </div>
                         </div>
-                        <Chart></Chart>
+                        {/* <Chart></Chart>
                         <div className="col-md-4">
                             <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
                                 <div className="iq-card-header d-flex justify-content-between align-items-center">
@@ -176,7 +176,7 @@ export default function DashBoard() {
                                     <div id="wave-chart-7"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="col-sm-12">
                             <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
                                 <div className="iq-card-header d-flex justify-content-between">

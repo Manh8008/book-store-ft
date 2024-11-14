@@ -46,6 +46,11 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
+                                <Link href="/admin/auth/login">
+                                    <i className="ri-record-circle-line"></i>Đăng Nhập
+                                </Link>
+                            </li>
+                            <li>
                                 <Link href="sign-in.html">
                                     <i className="ri-record-circle-line"></i>Đăng Xuất
                                 </Link>

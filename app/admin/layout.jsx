@@ -54,17 +54,17 @@ export default function RootLayout({ children }) {
                 <Script src="/js/waypoints.min.js" strategy="lazyOnload" />
                 <Script src="/js/jquery.counterup.min.js" strategy="lazyOnload" />
                 <Script src="/js/wow.min.js" strategy="lazyOnload" />
-                <Script src="/js/apexcharts.js" strategy="lazyOnload" />
+                {/* <Script src="/js/apexcharts.js" strategy="lazyOnload" /> */}
                 <Script src="/js/slick.min.js" strategy="lazyOnload" />
                 <Script src="/js/owl.carousel.min.js" strategy="lazyOnload" />
                 <Script src="/js/smooth-scrollbar.js" strategy="lazyOnload" />
                 <Script src="/js/lottie.js" strategy="lazyOnload" />
                 <Script src="/js/core.js" strategy="lazyOnload" />
-                <Script src="/js/charts.js" strategy="lazyOnload" />
-                <Script src="/js/animated.js" strategy="lazyOnload" />
+                {/* <Script src="/js/charts.js" strategy="lazyOnload" /> */}
+                {/* <Script src="/js/animated.js" strategy="lazyOnload" />
                 <Script src="/js/kelly.js" strategy="lazyOnload" />
                 <Script src="/js/maps.js" strategy="lazyOnload" />
-                <Script src="/js/worldLow.js" strategy="lazyOnload" />
+                <Script src="/js/worldLow.js" strategy="lazyOnload" /> */}
                 <Script src="/js/raphael-min.js" strategy="lazyOnload" />
                 <Script src="/js/morris.js" strategy="lazyOnload" />
                 <Script src="/js/morris.min.js" strategy="lazyOnload" />
