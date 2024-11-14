@@ -12,11 +12,11 @@ export const Subcategory = (props) => {
                     props.data.map((category) => {
                         return (
                             <Link className={cx('category-link')} key={category.id} href={`/shop/productByCate/${category.id}`}>
-                                <Image
+                                <img
                                     width={96}
                                     height={90}
                                     quality={100}
-                                    src={"/img/product-1.png"}
+                                    src={category.image}
                                     //backend chưa có ảnh để load
                                     className={cx('category-image')}
                                     alt={category.name}

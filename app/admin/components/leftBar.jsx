@@ -31,18 +31,18 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="admin/categories">
+                                <Link href="/admin/categories">
                                     <i className="ri-record-circle-line"></i>Danh Mục Sách
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/product">
+                                    <i className="ri-record-circle-line"></i>Sách
                                 </Link>
                             </li>
                             <li>
                                 <Link href="admin-author.html">
                                     <i className="ri-record-circle-line"></i>Tác Giả
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="admin-books.html">
-                                    <i className="ri-record-circle-line"></i>Sách
                                 </Link>
                             </li>
                             <li>

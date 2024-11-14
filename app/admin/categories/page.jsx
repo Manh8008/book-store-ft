@@ -39,21 +39,21 @@ export default function Categories() {
                                             <thead>
                                                 <tr>
                                                     <th width="5%">STT</th>
-                                                    <th width="15%">Ảnh danh mục</th>
+                                                    <th width="5%">Ảnh danh mục</th>
                                                     <th width="25%">Tên danh mục</th>
-                                                    <th width="40%">Mô tả danh mục</th>
-                                                    <th width="10%">Hoạt động</th>
+                                                    {/* <th width="40%">Mô tả danh mục</th> */}
+                                                    <th width="5%">Hoạt động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {data.map((cate, index) => (
-                                                    <tr>
+                                                    <tr key={cate.id}>
                                                         <td>{index + 1}</td>
-                                                        <td>Ảnh</td>
+                                                        <td><img className="img-fluid rounded" src={cate.image} alt={cate.name} width="100" /></td>
                                                         <td>{cate.name}</td>
-                                                        <td>
-                                                            <p className="mb-0">Sách là một khái niệm mở, hình thức sách còn được thay đổi và cấu thành các dạng khác nhau theo các phương thức chế tác và nhân bản khác nhau, tùy thuộc vào môi trường sống và sự phát triển của khoa học công nghệ ở mỗi thời đại.</p>
-                                                        </td>
+                                                        {/* <td>
+                                                            <p className="mb-0">{cate.description}</p>
+                                                        </td> */}
                                                         <td>
                                                             <div className="flex align-items-center list-user-action">
                                                                 <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Sửa" href="/admin/categories/edit-categories"><i className="ri-pencil-line"></i></Link>

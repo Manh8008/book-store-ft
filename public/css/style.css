@@ -5515,3 +5515,7 @@ Add User Page
 .dataTables_filter {
   display: none !important;
 }
+
+.dataTables_empty {
+  display: none;
+}
