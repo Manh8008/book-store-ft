@@ -79,3 +79,10 @@ export const AddressSchema = z.object({
     district: z.string().min(1, { message: 'Quận/Huyện là bắt buộc!' }),
     town: z.string().min(1, { message: 'Phường/Xã là bắt buộc!' })
 })
+export const resendOtpSchema = z.object({
+    email: z
+        .string()
+        .email({ message: 'Email không hợp lệ!' })
+        .min(1, { message: 'Email là bắt buộc!' }),
+    otp_code: z.string().min(1, { message: 'Mã xác thực là bắt buộc!' })
+})

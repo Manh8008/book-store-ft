@@ -7,6 +7,7 @@ const authApiRequest = {
     changePassword: (body) => http.put('/api/changePassword', body),
     forgotPassword: (body) => http.post('/api/forgot-password', body),
     resetPassword: (body) => http.post('/api/reset-password', body),
+    resendOTP: (body) => http.post('/api/verify-otp', body),
     logoutFromNextServerToServer: (sessionToken) =>
         http.get('/api/logout', {
             headers: {

@@ -1,14 +1,16 @@
-import authApiRequest from '@/apiRequests/auth'
+import { authApiRequest } from '@/apiRequests/auth'
 import { cookies } from 'next/headers'
 
 export async function POST(request) {
     const cookieStore = cookies()
-    const sessionToken = cookieStore.get('sessionToken')
+    const sessionTokenUser = cookieStore.get('sessionTokenUser')
 
-    if (!sessionToken) {
+    console.log(sessionTokenUser.value)
+
+    if (!sessionTokenUser) {
         return Response.json(
             {
-                message: 'Không nhận được sessionToken!'
+                message: 'Không nhận được sessionTokenUser!'
             },
             {
                 status: 401
@@ -18,11 +20,11 @@ export async function POST(request) {
 
     try {
         //Xóa Token trên trình duyệt
-        const result = await authApiRequest.logoutFromNextServerToServer(sessionToken.value)
+        const result = await authApiRequest.logoutFromNextServerToServer(sessionTokenUser.value)
         return Response.json(result.payload, {
             status: 200,
             headers: {
-                'Set-Cookie': `sessionToken=; path=/; httpOnly; Max-age=0`
+                'Set-Cookie': `sessionTokenUser=; path=/; httpOnly; Max-age=0`
             }
         })
     } catch (error) {

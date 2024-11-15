@@ -4,4 +4,8 @@ const categoryApiRequest = {
     getAllCategories: () => http.get(`/api/getAllCategories`)
 }
 
-export default categoryApiRequest
+const categoryApiRequestAdmin = {
+    getAllCategories: () => http.get(`/api/getAllCategories`)
+}
+
+export { categoryApiRequest, categoryApiRequestAdmin }

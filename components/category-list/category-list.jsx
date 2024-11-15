@@ -3,7 +3,7 @@
 import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
 import styles from './category-list.module.scss'
-import categoryApiRequest from '@/apiRequests/category'
+import { categoryApiRequest } from '@/apiRequests/category'
 
 const cx = classNames.bind(styles)
 

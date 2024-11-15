@@ -36,8 +36,10 @@ export const RegisterForm = () => {
         try {
             const result = await authApiRequest.register(values)
 
-            console.log(result)
-            router.push('/auth/login')
+            if (result.status === 200) {
+                alert('Đăng kí thành công! Vui lòng nhập mã xác thực để hoàn tất.')
+                router.push('/auth/resend-otp')
+            }
         } catch (error) {
             handleHttpError(error, setError)
         }

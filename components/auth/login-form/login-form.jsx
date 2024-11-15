@@ -9,8 +9,8 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { clientSessionToken } from '@/lib/http'
 import { handleHttpError } from '@/lib/utils'
-import authApiRequest from '@/apiRequests/auth'
 import styles from './login-form.module.scss'
+import { authApiRequest } from '@/apiRequests/auth'
 
 const cx = classNames.bind(styles)
 
@@ -34,11 +34,14 @@ export const LoginForm = () => {
         setError('')
         try {
             const result = await authApiRequest.login(values)
-            console.log(result)
-            await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
-            clientSessionToken.value = result.payload.data.access_token
+            if (result.status === 200) {
+                await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
+                clientSessionToken.value = result.payload.data.access_token
 
-            router.push('/customer/profile')
+                console.log(clientSessionToken.value)
+                // alert('Đăng nhập thành công')
+                router.push('/')
+            }
         } catch (error) {
             handleHttpError(error, setError)
         }

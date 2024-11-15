@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button/button'
-import authApiRequest from '@/apiRequests/auth'
+import { authApiRequest } from '@/apiRequests/auth'
 
 export default function Buttonlogout() {
     const router = useRouter()
