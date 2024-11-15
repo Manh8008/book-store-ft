@@ -1,5 +1,6 @@
 'use client'
 
+import { authAdminApiRequest } from '@/apiRequests/auth'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -8,9 +9,8 @@ import * as Yup from 'Yup'
 export default function AddCategories() {
     const validationSchema = Yup.object({
         name: Yup.string().required('Nhập tên danh mục là bắt buộc'),
-        image: Yup.string().required('Chọn ảnh danh mục là bắt buộc ')
+        image: Yup.mixed().required('Chọn ảnh danh mục là bắt buộc ')
     })
-
     const [formValue, setFormValue] = useState(null)
     const router = useRouter()
 
@@ -20,30 +20,31 @@ export default function AddCategories() {
             image: null
         },
         validationSchema,
-        onSubmit: async (value) => {
-            setFormValue(value)
-            const formData = new FormData()
-            formData.append('name', value.name)
-            formData.append('image', value.image)
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/admin/storeCatalog`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: formData
-                }
-            )
-            const result = await res.json()
-            console.log(result)
+        onSubmit: async (values) => {
+            setFormValue(values);
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('image', values.image);
+
+            const res = await authAdminApiRequest.storeCatalog(formData);
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                console.error(`Error ${res.status}: ${errorText}`);
+                throw new Error('Failed to create category');
+            }
+
+            const result = await res.json();
+            console.log('Success:', result);
+
             if (result.error) {
-                console.error(result.error)
+                console.error(result.error);
             } else {
-                router.push('/admin/categories')
+                router.push('/admin/categories');
             }
         }
-    })
+    });
+
 
     return (
         <div id="content-page" className="content-page">
@@ -68,7 +69,6 @@ export default function AddCategories() {
                                             <input
                                                 type="file"
                                                 className="custom-file-input"
-                                                accept="image/png, image/jpeg"
                                                 name="image"
                                                 onBlur={formik.handleBlur}
                                                 onChange={(e) => {
