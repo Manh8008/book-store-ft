@@ -1,21 +1,18 @@
 export async function POST(request) {
     const res = await request.json()
-
-    const sessionToken = res?.sessionToken
-
+    const { sessionToken, isAdmin } = res
     if (!sessionToken) {
-        return Response.json(
-            { message: 'Không nhận được session token' },
-            {
-                status: 400
-            }
-        )
+        return new Response(JSON.stringify({ message: 'Không nhận được session token' }), {
+            status: 400
+        })
     }
 
-    return Response.json(res, {
+    const cookieName = isAdmin === 'admin' ? 'sessionTokenAdmin' : 'sessionTokenUser'
+
+    return new Response(JSON.stringify(res), {
         status: 200,
         headers: {
-            'set-cookie': `sessionToken=${sessionToken}; Path=/; httpOnly`
+            'Set-Cookie': `${cookieName}=${sessionToken}; Path=/; HttpOnly; SameSite=Strict`
         }
     })
 }

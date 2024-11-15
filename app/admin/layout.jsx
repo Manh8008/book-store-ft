@@ -1,20 +1,21 @@
 // Import các tệp CSS và tệp tĩnh
-import "../../public/css/bootstrap.min.css";
-import "../../public/css/dataTables.bootstrap4.min.css";
-import "../../public/css/style.css";
-import "../../public/css/responsive.css";
-import "../../public/css/typography.css";
+import '../../public/css/bootstrap.min.css'
+import '../../public/css/dataTables.bootstrap4.min.css'
+import '../../public/css/style.css'
+import '../../public/css/responsive.css'
+import '../../public/css/typography.css'
 
 // Import các thư viện bên ngoài
-import Head from 'next/head';
-import Script from 'next/script';
-import 'remixicon/fonts/remixicon.css';
+import Head from 'next/head'
+import Script from 'next/script'
+import 'remixicon/fonts/remixicon.css'
 
 // Import các component của dự án
-import LeftBar from './components/leftBar';
-import TopBar from './components/topBar';
-import Footer from './components/footer';
-
+import LeftBar from './components/leftBar'
+import TopBar from './components/topBar'
+import Footer from './components/footer'
+import AppProvider from '../AppProvider'
+import { cookies } from 'next/headers'
 
 export const metadata = {
     title: 'Create Next App',
@@ -22,6 +23,8 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+    const cookieStore = cookies()
+    const sessionTokenAdmin = cookieStore.get('sessionTokenAdmin')
     return (
         <html lang="en">
             <Head>
@@ -34,11 +37,16 @@ export default function RootLayout({ children }) {
                     <div id="loading-center">
                     </div>
                 </div> */}
-                <div class="wrapper">
-                    <LeftBar />
-                    <TopBar />
-                    {children}
-                </div>
+                <AppProvider
+                    initialAdminSessionToken={sessionTokenAdmin && sessionTokenAdmin.value}
+                >
+                    <div classname="wrapper">
+                        <LeftBar />
+                        <TopBar />
+
+                        {children}
+                    </div>
+                </AppProvider>
                 <Footer />
 
                 <Script src="/js/jquery.min.js" strategy="beforeInteractive" />
@@ -72,7 +80,6 @@ export default function RootLayout({ children }) {
                 <Script src="/js/style-customizer.js" strategy="lazyOnload" />
                 <Script src="/js/chart-custom.js" strategy="lazyOnload" />
                 <Script src="/js/custom.js" strategy="lazyOnload" />
-
             </body>
         </html>
     )

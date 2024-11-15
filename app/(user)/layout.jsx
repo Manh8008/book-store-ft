@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
             </Head>
             <body suppressHydrationWarning={true}>
                 <Providers>
-                    <AppProvider initialSessionToken={sessionToken?.value}>
+                    <AppProvider initialUserSessionToken={sessionToken?.value}>
                         <UserProvider>{children}</UserProvider>
                     </AppProvider>
                 </Providers>

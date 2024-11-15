@@ -34,6 +34,7 @@ export const LoginForm = () => {
         setError('')
         try {
             const result = await authApiRequest.login(values)
+            console.log(result)
             await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
             clientSessionToken.value = result.payload.data.access_token
 

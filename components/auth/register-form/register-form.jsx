@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { RegisterSchema } from '@/schemas'
-import authApiRequest from '@/apiRequests/auth'
+import { authApiRequest } from '@/apiRequests/auth'
 import styles from './register-form.module.scss'
 import { handleHttpError } from '@/lib/utils'
 
