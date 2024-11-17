@@ -33,7 +33,7 @@ export const ResendOtpForm = () => {
         try {
             const result = await authApiRequest.resendOTP(values)
 
-            if (result.status === 2000) {
+            if (result.status === 200) {
                 alert('Xác thực OTP thành công! Bạn có thể đăng nhập.')
                 router.push('/auth/login')
             }

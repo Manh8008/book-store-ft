@@ -86,3 +86,8 @@ export const resendOtpSchema = z.object({
         .min(1, { message: 'Email là bắt buộc!' }),
     otp_code: z.string().min(1, { message: 'Mã xác thực là bắt buộc!' })
 })
+
+export const createCatalogSchema = z.object({
+    name: z.string().min(1, 'Tên danh mục là bắt buộc'),
+    image: z.array(z.instanceof(File)).min(1, 'Ảnh là bắt buộc')
+})

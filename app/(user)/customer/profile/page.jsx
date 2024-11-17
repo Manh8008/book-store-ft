@@ -3,101 +3,124 @@ import React, { useEffect, useState } from 'react'
 import { useUser } from '@/context/user-context'
 import { AccountSidebar } from '@/components/account-sidebar'
 import './profile.scss'
+import accountApiRequest from '@/apiRequests/account'
 
 export default function Profile() {
-    const { userData, setUserData } = useUser()
-
-    const [defaultAddress, setDefaultAddress] = useState('')
+    const [userData, setUserData] = useState(null)
+    const [error, setError] = useState('')
 
     useEffect(() => {
-        if (userData && userData.address) {
-            const addressList = userData.address || []
-            const defaultAddr = addressList.find((address) => address.default == 1)
+        const fetchUserData = async () => {
+            try {
+                const result = await accountApiRequest.getProfile()
 
-            if (defaultAddr) {
-                setDefaultAddress(defaultAddr.address_line)
+                console.log(result)
+            } catch (error) {
+                handleHttpError(error, setError)
             }
         }
-    }, [userData])
 
-    const handleChange = (e) => {
-        setUserData({
-            ...userData,
-            [e.target.name]: e.target.value
-        })
-    }
+        fetchUserData()
+    }, [])
 
-    if (!userData) {
-        return <div>Loading...</div>
-    }
+    console.log(userData)
+
+    // const { userData, setUserData } = useUser()
+
+    // const [defaultAddress, setDefaultAddress] = useState('')
+
+    // console.log(userData)
+
+    // useEffect(() => {
+    //     if (userData && userData.address) {
+    //         const addressList = userData.address || []
+    //         const defaultAddr = addressList.find((address) => address.default == 1)
+
+    //         if (defaultAddr) {
+    //             setDefaultAddress(defaultAddr.address_line)
+    //         }
+    //     }
+    // }, [userData])
+
+    // const handleChange = (e) => {
+    //     setUserData({
+    //         ...userData,
+    //         [e.target.name]: e.target.value
+    //     })
+    // }
+
+    // if (!userData) {
+    //     return <div>Loading...</div>
+    // }
 
     return (
-        <main style={{ background: '#F5F5FA' }}>
-            <div className="container">
-                <AccountSidebar idUser={userData.id} />
-                <div className="content-body">
-                    <h2>Hồ sơ cá nhân</h2>
-                    <form>
-                        <div className="form-group">
-                            <label htmlFor="fullname">Họ và tên*</label>
-                            <input
-                                id="fullname"
-                                name="name"
-                                placeholder="Nhập họ và tên"
-                                type="text"
-                                value={userData.name || ''}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="email">Email*</label>
-                            <input
-                                id="email"
-                                name="email"
-                                placeholder="Email"
-                                type="text"
-                                value={userData.email || ''}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="phone">Số điện thoại*</label>
-                            <input
-                                id="phone"
-                                name="phone"
-                                placeholder="Số điện thoại"
-                                type="text"
-                                value={userData.phone || ''}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="address">Địa chỉ*</label>
-                            <input
-                                id="address"
-                                name="address"
-                                placeholder="Địa chỉ giao hàng"
-                                type="text"
-                                value={defaultAddress || ''}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Ngày sinh*</label>
-                            <div className="date-group">
-                                <input placeholder="DD" type="number" />
-                                <input placeholder="MM" type="number" />
-                                <input placeholder="YYYY" type="number" />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <button className="btn" type="submit">
-                                Lưu thay đổi
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </main>
+        <>Chào anh em </>
+        // <main style={{ background: '#F5F5FA' }}>
+        //     <div className="container">
+        //         <AccountSidebar idUser={userData.id} />
+        //         <div className="content-body">
+        //             <h2>Hồ sơ cá nhân</h2>
+        //             <form>
+        //                 <div className="form-group">
+        //                     <label htmlFor="fullname">Họ và tên*</label>
+        //                     <input
+        //                         id="fullname"
+        //                         name="name"
+        //                         placeholder="Nhập họ và tên"
+        //                         type="text"
+        //                         value={userData.name || ''}
+        //                         onChange={handleChange}
+        //                     />
+        //                 </div>
+        //                 <div className="form-group">
+        //                     <label htmlFor="email">Email*</label>
+        //                     <input
+        //                         id="email"
+        //                         name="email"
+        //                         placeholder="Email"
+        //                         type="text"
+        //                         value={userData.email || ''}
+        //                         onChange={handleChange}
+        //                     />
+        //                 </div>
+        //                 <div className="form-group">
+        //                     <label htmlFor="phone">Số điện thoại*</label>
+        //                     <input
+        //                         id="phone"
+        //                         name="phone"
+        //                         placeholder="Số điện thoại"
+        //                         type="text"
+        //                         value={userData.phone || ''}
+        //                         onChange={handleChange}
+        //                     />
+        //                 </div>
+        //                 <div className="form-group">
+        //                     <label htmlFor="address">Địa chỉ*</label>
+        //                     <input
+        //                         id="address"
+        //                         name="address"
+        //                         placeholder="Địa chỉ giao hàng"
+        //                         type="text"
+        //                         value={defaultAddress || ''}
+        //                         onChange={handleChange}
+        //                     />
+        //                 </div>
+        //                 <div className="form-group">
+        //                     <label>Ngày sinh*</label>
+        //                     <div className="date-group">
+        //                         <input placeholder="DD" type="number" />
+        //                         <input placeholder="MM" type="number" />
+        //                         <input placeholder="YYYY" type="number" />
+        //                     </div>
+        //                 </div>
+        //                 <div className="form-group">
+        //                     <button className="btn" type="submit">
+        //                         Lưu thay đổi
+        //                     </button>
+        //                 </div>
+        //             </form>
+        //         </div>
+        //     </div>
+        // </main>
     )
 }

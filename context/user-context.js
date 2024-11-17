@@ -5,6 +5,8 @@ import accountApiRequest from '@/apiRequests/account'
 
 const UserContext = createContext()
 
+console.log(clientSessionToken)
+
 export const useUser = () => useContext(UserContext)
 
 export const UserProvider = ({ children }) => {

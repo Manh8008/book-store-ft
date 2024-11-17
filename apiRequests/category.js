@@ -1,11 +1,12 @@
 import http from '@/lib/http'
 
 const categoryApiRequest = {
-    getAllCategories: () => http.get(`/api/getAllCategories`)
+    getCatalog: () => http.get(`/api/getAllCategories`)
 }
 
 const categoryApiRequestAdmin = {
-    getAllCategories: () => http.get(`/api/getAllCategories`)
+    getCatalog: () => http.get(`/api/getAllCategories`),
+    addCatalog: (body) => http.post(`/api/admin/storeCatalog`, body)
 }
 
 export { categoryApiRequest, categoryApiRequestAdmin }

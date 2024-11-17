@@ -14,7 +14,9 @@ export default function EditCategories() {
                                 <div className="iq-card-body">
                                     <form action="admin-category.html">
                                         <div className="form-group">
-                                            <label style={{ marginRight: 15 + "px" }}>Ảnh danh mục:</label>
+                                            <label style={{ marginRight: 15 + 'px' }}>
+                                                Ảnh danh mục:
+                                            </label>
                                             <input type="file" />
                                         </div>
                                         <div className="form-group">
@@ -26,8 +28,16 @@ export default function EditCategories() {
                                             <textarea className="form-control" rows="4"></textarea>
                                         </div>
                                         <div className="d-flex">
-                                            <button type="submit" className="btn btn-primary" style={{ marginRight: 10 + "px" }}>Thêm</button>
-                                            <button type="reset" className="btn btn-danger">Trở lại</button>
+                                            <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                                style={{ marginRight: 10 + 'px' }}
+                                            >
+                                                Thêm
+                                            </button>
+                                            <button type="reset" className="btn btn-danger">
+                                                Trở lại
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -37,5 +47,5 @@ export default function EditCategories() {
                 </div>
             </div>
         </>
-    );
+    )
 }

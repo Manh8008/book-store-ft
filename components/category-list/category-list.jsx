@@ -13,7 +13,7 @@ const CategoryList = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const categoriesResponse = await categoryApiRequest.getAllCategories()
+                const categoriesResponse = await categoryApiRequest.getCatalog()
                 setCategories(categoriesResponse.payload.data)
             } catch (error) {
                 console.error(error)
