@@ -5,12 +5,12 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { handleHttpError } from '@/lib/utils'
-import authApiRequest from '@/apiRequests/auth'
 import { resetPasswordSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Toast, { showToast } from '@/components/Toast/Toast'
 import styles from './reset-password-form.module.scss'
+import { authApiRequest } from '@/apiRequests/auth'
 
 const cx = classNames.bind(styles)
 
