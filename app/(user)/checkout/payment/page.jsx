@@ -12,10 +12,12 @@ import { ShippingInfo } from '@/components/payment/shipping-info'
 import { useUser } from '@/context/user-context'
 import { checkoutRequest } from '@/apiRequests/checkout'
 import styles from './payment.module.scss'
+import { useRouter } from 'next/navigation'
 
 const cx = classNames.bind(styles)
 
 const Payment = () => {
+    const router = useRouter()
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null)
 
     const { userData } = useUser()
@@ -56,20 +58,17 @@ const Payment = () => {
                 return
             } else if (selectedPaymentMethod === 'COD') {
                 result = await checkoutRequest.checkoutCOD(checkoutData)
+                if (result?.payload?.success == true)
+                    router.push('/checkout/payment/payment-success')
             } else if (selectedPaymentMethod === 'MoMo') {
                 result = await checkoutRequest.checkoutVnPay(checkoutData)
             } else if (selectedPaymentMethod === 'VNPAY') {
                 result = await checkoutRequest.checkoutVnPay(checkoutData)
             }
 
-            console.log('Order placed:', result)
             if (result?.payload?.data?.payment_url) {
                 window.location.href = result.payload.data.payment_url
             }
-
-            // if (result?.payload?.success == true) {
-            //     window.location.href = '/checkout/payment/payment-success'
-            // }
         } catch (error) {
             console.error('Error placing order:', error)
         }

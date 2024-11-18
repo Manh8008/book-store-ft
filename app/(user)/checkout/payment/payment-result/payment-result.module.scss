@@ -26,6 +26,10 @@
     &.success {
         color: #28a745;
     }
+
+    &.failed {
+        color: #dc3545;
+    }
 }
 
 .message {
