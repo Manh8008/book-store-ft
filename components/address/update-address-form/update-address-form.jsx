@@ -96,13 +96,11 @@ const UpdateAddressForm = ({ addressId }) => {
             if (result?.payload?.data) {
                 const addressData = result.payload.data
 
-                // Populate form fields with existing address data
                 setValue('name', addressData.name)
                 setValue('phone', addressData.phone)
                 setValue('address_line', addressData.address_line)
                 setValue('default', addressData.default ? true : false)
 
-                // Set initial dropdown selections to existing address data
                 setProvince(addressData.province)
                 setDistrict(addressData.district)
                 setWard(addressData.town)

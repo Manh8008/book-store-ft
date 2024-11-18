@@ -12,7 +12,7 @@ export async function POST(request) {
     return new Response(JSON.stringify(res), {
         status: 200,
         headers: {
-            'Set-Cookie': `${cookieName}=${sessionToken}; Path=/; HttpOnly; SameSite=Strict`
+            'Set-Cookie': `${cookieName}=${sessionToken}; Path=/; HttpOnly;`
         }
     })
 }

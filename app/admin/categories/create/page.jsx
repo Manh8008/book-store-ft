@@ -1,111 +1,129 @@
 'use client'
-import { useForm } from 'react-hook-form'
+import React, { useEffect } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createCatalogSchema } from '@/schemas'
-import { categoryApiRequestAdmin } from '@/apiRequests/category'
+import { z } from 'zod'
 
-const AddAddressForm = () => {
+// Function to fetch file from URL
+const getFileFromUrl = async (url) => {
+    const res = await fetch(url)
+    const blob = await res.blob()
+    return new File([blob], 'image', { type: blob.type })
+}
+
+// Schema validation
+const productForm1Schema = z.object({
+    name: z.string().min(1, { message: 'Name is required' }),
+    image: z
+        .custom((v) => v instanceof File, {
+            message: 'Image must be a valid file'
+        })
+        .refine((v) => v, { message: 'Image is required' })
+})
+
+// Product Form Component
+const CreateCatalog = ({ product }) => {
+    const isAddMode = !product
+
     const {
         register,
         handleSubmit,
-        formState: { errors },
-        setValue
+        control,
+        watch,
+        reset,
+        formState: { errors, isSubmitting, isDirty }
     } = useForm({
-        resolver: zodResolver(createCatalogSchema),
-        defaultValues: {
-            name: '',
-            image: null
-        }
+        resolver: zodResolver(productForm1Schema),
+        defaultValues: product
+            ? async () => ({
+                  name: product.name,
+                  image: await getFileFromUrl(product.image)
+              })
+            : {
+                  name: '',
+                  image: undefined
+              }
     })
 
-    const onSubmit = async (values) => {
-        console.log('Dữ liệu form: ', values)
-        try {
-            const formData = new FormData()
-            formData.append('name', values.name)
+    const image = watch('image')
+    const imagePreview = image ? URL.createObjectURL(image) : null
 
-            if (values.image && values.image[0]) {
-                formData.append('file', values.image[0])
-            } else {
-                console.error('Ảnh không được chọn!')
-                return
+    // Revoke object URL to prevent memory leaks
+    useEffect(() => {
+        return () => {
+            if (imagePreview) URL.revokeObjectURL(imagePreview)
+        }
+    }, [imagePreview])
+
+    const onSubmitHandler = async (data) => {
+        try {
+            // Build FormData for image upload
+
+            console.log(data)
+
+            const formData = new FormData()
+            formData.append('name', data.name)
+            formData.append('image', data.image)
+
+            // Call API to upload data
+            const response = await fetch('http://127.0.0.1:8000/api/admin/storeCatalog', {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer 151|28Np0nbt832sm1y5qZOMTGJoZZjWQQvBDPQAXF8ed12bf3d1'
+                },
+                body: formData
+            })
+
+            if (!response.ok) {
+                throw new Error('Failed to create catalog')
             }
 
-            const result = await categoryApiRequestAdmin.addCatalog(formData)
-            console.log('Thêm danh mục thành công:', result)
-        } catch (error) {
-            console.error('Có lỗi xảy ra khi gửi yêu cầu:', error)
-        }
-    }
+            const result = await response.json()
+            console.log('API Response:', result)
 
-    const handleImageChange = (e) => {
-        setValue('image', e.target.files[0])
+            // Reset form on success
+            reset()
+            alert('Catalog created successfully!')
+        } catch (error) {
+            console.error('Error:', error)
+            alert('Failed to create catalog. Please try again.')
+        }
     }
 
     return (
-        <div id="content-page" className="content-page">
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-sm-12">
-                        <div className="iq-card">
-                            <div className="iq-card-header d-flex justify-content-between">
-                                <div className="iq-header-title">
-                                    <h4 className="card-title">Thêm danh mục mới</h4>
-                                </div>
-                            </div>
-                            <div className="iq-card-body">
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="form-group">
-                                        <label style={{ marginRight: '15px' }}>Ảnh danh mục:</label>
-                                        <input
-                                            type="file"
-                                            {...register('image')}
-                                            name="image"
-                                            className="form-control"
-                                            onChange={handleImageChange}
-                                        />
-                                        {errors.image && (
-                                            <span className="text-danger">
-                                                {errors.image.message}
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    <div className="form-group">
-                                        <label>Tên danh mục:</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="name"
-                                            {...register('name')}
-                                        />
-                                        {errors.name && (
-                                            <span className="text-danger">
-                                                {errors.name.message}
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    <div className="d-flex">
-                                        <button
-                                            type="submit"
-                                            className="btn btn-primary"
-                                            style={{ marginRight: '10px' }}
-                                        >
-                                            Thêm
-                                        </button>
-                                        <button type="reset" className="btn btn-danger">
-                                            Trở lại
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+            <div>
+                <label>Product Name:</label>
+                <input {...register('name')} />
+                {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
             </div>
-        </div>
+
+            <div>
+                <label>Product Image:</label>
+                <Controller
+                    name="image"
+                    control={control}
+                    render={({ field: { ref, name, onBlur, onChange } }) => (
+                        <input
+                            type="file"
+                            ref={ref}
+                            name={name}
+                            onBlur={onBlur}
+                            onChange={(e) => onChange(e.target.files?.[0])}
+                        />
+                    )}
+                />
+                {imagePreview && (
+                    <img src={imagePreview} alt="Preview" style={{ maxWidth: '200px' }} />
+                )}
+                {errors.image && <span style={{ color: 'red' }}>{errors.image.message}</span>}
+            </div>
+
+            <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+            </button>
+        </form>
     )
 }
 
-export default AddAddressForm
+export default CreateCatalog

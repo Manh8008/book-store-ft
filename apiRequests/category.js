@@ -6,7 +6,10 @@ const categoryApiRequest = {
 
 const categoryApiRequestAdmin = {
     getCatalog: () => http.get(`/api/getAllCategories`),
-    addCatalog: (body) => http.post(`/api/admin/storeCatalog`, body)
+    addCatalog: (body) =>
+        http.post(`/api/admin/storeCatalog`, body, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
 }
 
 export { categoryApiRequest, categoryApiRequestAdmin }

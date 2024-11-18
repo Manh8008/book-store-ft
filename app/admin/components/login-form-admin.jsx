@@ -30,7 +30,11 @@ const LoginFormAdmin = () => {
         setError('')
         try {
             const result = await authAdminApiRequest.login(values)
-            console.log(result)
+
+            if (result.status === 200) {
+                alert('Đăng nhập thành công')
+                router.push('/admin')
+            }
 
             await authAdminApiRequest.auth({
                 sessionToken: result.payload.data.access_token

@@ -5,8 +5,6 @@ export async function POST(request) {
     const cookieStore = cookies()
     const sessionTokenUser = cookieStore.get('sessionTokenUser')
 
-    console.log(sessionTokenUser.value)
-
     if (!sessionTokenUser) {
         return Response.json(
             {

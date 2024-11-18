@@ -7,10 +7,10 @@ import { useRouter } from 'next/navigation'
 import { LoginSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { clientSessionToken } from '@/lib/http'
 import { handleHttpError } from '@/lib/utils'
 import styles from './login-form.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
+import { clientSessionToken } from '@/lib/http'
 
 const cx = classNames.bind(styles)
 
@@ -38,8 +38,7 @@ export const LoginForm = () => {
                 await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
                 clientSessionToken.value = result.payload.data.access_token
 
-                console.log(clientSessionToken.value)
-                // alert('Đăng nhập thành công')
+                alert('Đăng nhập thành công')
                 router.push('/')
             }
         } catch (error) {

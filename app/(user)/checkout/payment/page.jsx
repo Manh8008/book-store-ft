@@ -1,26 +1,86 @@
 'use client'
+import { useState } from 'react'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
 import classNames from 'classnames/bind'
-import { CiDeliveryTruck } from 'react-icons/ci'
 
 import { Button } from '@/components/ui/button'
-import styles from './payment.module.scss'
 import { PackageItem } from '@/components/payment/package-item'
-import { ShippingMethod } from '@/components/payment/shipping-method'
 import { PaymentOptions } from '@/components/payment/payment-options'
 import { BannerSlider } from '@/components/cart'
+import { ShippingInfo } from '@/components/payment/shipping-info'
+import { useUser } from '@/context/user-context'
+import { checkoutRequest } from '@/apiRequests/checkout'
+import styles from './payment.module.scss'
+
 const cx = classNames.bind(styles)
 
 const Payment = () => {
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null)
+
+    const { userData } = useUser()
+    const cart = useSelector((state) => state.cart)
+
+    const total = cart.reduce((sum, product) => {
+        return sum + parseFloat(product.price) * product.quantity
+    }, 0)
+
+    const formattedTotal = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    }).format(total)
+
+    const checkoutData = {
+        items: cart.map((product) => ({
+            book_id: product.id,
+            quantity: product.quantity,
+            price: product.price
+        })),
+        total_amount: total
+    }
+    const addressInfo = userData?.address || []
+    const addressInfoDefault = Array.isArray(addressInfo)
+        ? addressInfo.find((addressInfoItem) => addressInfoItem.default === 1)
+        : null
+
+    const handlePaymentMethodChange = (paymentMethod) => {
+        setSelectedPaymentMethod(paymentMethod)
+    }
+
+    const handleOrder = async () => {
+        try {
+            let result
+
+            if (selectedPaymentMethod == null) {
+                alert('Vui lòng chọn phương thức thanh toán.')
+                return
+            } else if (selectedPaymentMethod === 'COD') {
+                result = await checkoutRequest.checkoutCOD(checkoutData)
+            } else if (selectedPaymentMethod === 'MoMo') {
+                result = await checkoutRequest.checkoutVnPay(checkoutData)
+            } else if (selectedPaymentMethod === 'VNPAY') {
+                result = await checkoutRequest.checkoutVnPay(checkoutData)
+            }
+
+            console.log('Order placed:', result)
+            if (result?.payload?.data?.payment_url) {
+                window.location.href = result.payload.data.payment_url
+            }
+
+            // if (result?.payload?.success == true) {
+            //     window.location.href = '/checkout/payment/payment-success'
+            // }
+        } catch (error) {
+            console.error('Error placing order:', error)
+        }
+    }
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('left')}>
                     <div className={cx('section-container')}>
-                        <h3 className={cx('title')}>Chọn hình thức giao hàng</h3>
-
-                        <ShippingMethod />
-
+                        <h3 className={cx('title')}>Các sản phẩm bạn đã thêm</h3>
                         <div className={cx('shipping-package')}>
                             <div className={cx('package-time')}>
                                 <div className={cx('package-title')}>
@@ -30,10 +90,9 @@ const Payment = () => {
                                         alt="icon"
                                         src="https://salt.tikicdn.com/ts/upload/ad/b7/93/7094a85d0b6d299f30ed89b03511deb9.png"
                                     />
-                                    Gói: giao siêu tốc trước 11h ngày mai
+                                    Các sản phẩm của bạn
                                 </div>
                             </div>
-
                             <div className={cx('left-content')}>
                                 <div className={cx('package-summary')}>
                                     <div className={cx('align-center')}>
@@ -48,24 +107,8 @@ const Payment = () => {
                                         <span className={cx('current-fee text')}>21.000đ</span>
                                     </div>
                                 </div>
-
                                 <div className={cx('package-item-list')}>
-                                    <PackageItem />
-                                    <PackageItem />
-                                </div>
-                            </div>
-                            <div className={cx('right-content')}>
-                                <div className={cx('content-wrapper')}>
-                                    <div className={cx('content-icon')}>
-                                        <CiDeliveryTruck />
-                                    </div>
-                                    <div>
-                                        <p className={cx('content-text')}>
-                                            Được giao bởi TikiNOW Smart Logistics (giao từ Hồ Chí
-                                            Minh)
-                                        </p>
-                                        <p className={cx('content-text')}></p>
-                                    </div>
+                                    <PackageItem cart={cart} />
                                 </div>
                             </div>
                         </div>
@@ -73,30 +116,12 @@ const Payment = () => {
 
                     <div className={cx('section-container')}>
                         <h3 className={cx('title')}>Chọn hình thức thanh toán</h3>
-                        <PaymentOptions />
+                        <PaymentOptions onPaymentMethodChange={handlePaymentMethodChange} />
                     </div>
                 </div>
 
                 <div className={cx('right')}>
-                    <div className={cx('shipping-info')}>
-                        <div className={cx('block-header')}>
-                            <h3 className={cx('block-header-title')}>Giao tới</h3>
-                            <Link className={cx('block-header-nav')} href={'/checkout/shipping'}>
-                                Thay đổi
-                            </Link>
-                        </div>
-                        <div className={cx('customer_info')}>
-                            <p className={cx('customer_info__name')}>Nguyễn Hữu Mạnh</p>
-                            <i></i>
-                            <p className={cx('customer_info__phone')}>0865587127</p>
-                        </div>
-
-                        <div className={cx('address')}>
-                            <span className={cx('address__type', 'address__type--home')}>Nhà</span>
-                            xóm 1 thanh tiên thanh chuong nghe an, Phường An Khánh, Thành phố Thủ
-                            Đức, Hồ Chí Minh
-                        </div>
-                    </div>
+                    <ShippingInfo addressInfoDefault={addressInfoDefault} />
 
                     <div className={cx('order-summary')}>
                         <div className={cx('summary-header')}>
@@ -119,9 +144,9 @@ const Payment = () => {
                         </div>
                         <div className={cx('summary-total')}>
                             <span>Tổng tiền</span>
-                            <span className={cx('total-amount')}>330.000đ</span>
+                            <span className={cx('total-amount')}>{formattedTotal}</span>
                         </div>
-                        <Button primary className={cx('checkout-button')}>
+                        <Button onClick={handleOrder} primary className={cx('checkout-button')}>
                             Đặt hàng
                         </Button>
                     </div>

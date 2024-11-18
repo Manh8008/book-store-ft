@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 export default function Categories() {
     const [data, setData] = useState([])
-
+    console.log(data)
     useEffect(() => {
         const fetchCategories = async () => {
             const res = await fetch(

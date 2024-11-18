@@ -89,5 +89,11 @@ export const resendOtpSchema = z.object({
 
 export const createCatalogSchema = z.object({
     name: z.string().min(1, 'Tên danh mục là bắt buộc'),
-    image: z.array(z.instanceof(File)).min(1, 'Ảnh là bắt buộc')
+    image:
+        z.custom <
+        File >
+        ((v) => v instanceof File,
+        {
+            message: 'Image is required'
+        })
 })
