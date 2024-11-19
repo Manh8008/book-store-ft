@@ -2,21 +2,67 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
+
 
 export default function Categories() {
     const [data, setData] = useState([])
-    console.log(data)
+    // console.log(data)
+
+    const fetchCategories = async () => {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllCategories`,
+            { cache: 'no-store' }
+        )
+        const newData = await res.json()
+        setData(newData.data)
+    }
+
     useEffect(() => {
-        const fetchCategories = async () => {
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllCategories`,
-                { cache: 'no-store' }
-            )
-            const newData = await res.json()
-            setData(newData.data)
-        }
         fetchCategories()
     }, [])
+
+    const messageDelete = (id) => {
+        Swal.fire({
+            title: "Bạn chắc muốn xóa danh mục này?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Có, tôi muốn xóa"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/admin/destroyCatalog/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer 142|15ljjS6w9x1Nu82BykKQHkvd4IMlP9OWya6EI2u7b4b9cea6`
+                    },
+                });
+                const deleteResult = await res.json();
+                if (deleteResult.message) {
+                    Swal.fire({
+                        title: "Xóa thành công",
+                        text: "Danh mục của bạn đã được xóa.",
+                        confirmButtonColor: "#3085d6",
+                        icon: "success"
+                    });
+                    fetchCategories();
+                } else {
+                    Swal.fire({
+                        title: "Lỗi",
+                        text: "Có lỗi xảy ra khi xóa danh mục.",
+                        confirmButtonColor: "#3085d6",
+                        icon: "error"
+                    });
+                }
+            }
+        });
+    };
+
+    const deleteCategories = (id) => {
+        messageDelete(id);
+    };
+
 
     return (
         <>
@@ -89,6 +135,7 @@ export default function Categories() {
                                                                     title=""
                                                                     data-original-title="Xoá"
                                                                     href="#"
+                                                                    onClick={() => deleteCategories(cate.id)}
                                                                 >
                                                                     <i className="ri-delete-bin-line"></i>
                                                                 </Link>

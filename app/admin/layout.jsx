@@ -41,8 +41,8 @@ export default function RootLayout({ children }) {
                     initialAdminSessionToken={sessionTokenAdmin && sessionTokenAdmin.value}
                 >
                     <div classname="wrapper">
-                        {/* <LeftBar />
-                        <TopBar /> */}
+                        <LeftBar />
+                        <TopBar />
 
                         {children}
                     </div>
