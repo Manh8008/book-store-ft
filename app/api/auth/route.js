@@ -1,6 +1,7 @@
 export async function POST(request) {
     const res = await request.json()
     const { sessionToken, isAdmin } = res
+
     if (!sessionToken) {
         return new Response(JSON.stringify({ message: 'Không nhận được session token' }), {
             status: 400

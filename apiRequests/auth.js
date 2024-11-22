@@ -18,9 +18,8 @@ const authApiRequest = {
 }
 
 const authAdminApiRequest = {
-    login: (body) => http.post('/api/admin/login', { ...body, type: 'admin' }),
-    auth: (body) => http.post('/api/auth', { ...body, isAdmin: 'admin' }, { baseUrl: '' }),
-    storeCatalog: (body) => http.post('/api/admin/storeCatalog', body)
+    login: (body) => http.post('/api/admin/login', body, { type: 'admin' }),
+    auth: (body) => http.post('/api/auth', { ...body, isAdmin: 'admin' }, { baseUrl: '' })
 }
 
 export { authApiRequest, authAdminApiRequest }

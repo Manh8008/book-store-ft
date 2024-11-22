@@ -1,14 +1,10 @@
 'use client'
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { clientSessionToken } from '@/lib/http'
+import accountApiRequest from '@/apiRequests/account'
 
 const UserContext = createContext()
 
 export const useUser = () => useContext(UserContext)
-
-const sessionTokenUser = localStorage.getItem('sessionToken')
-
-console.log(sessionTokenUser)
 export const UserProvider = ({ children }) => {
     const [userData, setUserData] = useState({
         id: '',
@@ -21,43 +17,26 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const fetchRequest = async () => {
             try {
-                // Lấy token từ clientSessionToken
-                const token = clientSessionToken.value
-                if (!token) {
-                    console.log('Không có token, bỏ qua fetch profile.')
-                    return
+                const result = await accountApiRequest.getProfile()
+
+                if (result.status === 200) {
+                    setUserData({
+                        id: result.payload.data.user.id,
+                        name: result.payload.data.user.name || '',
+                        email: result.payload.data.user.email || '',
+                        phone: result.payload.data.user.phone || '',
+                        address: result.payload.data.user.address || ''
+                    })
+                } else {
+                    console.log('Chưa nhận được dữ liệu')
                 }
-
-                const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/profile`,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                )
-
-                if (!response.ok) {
-                    throw new Error('Lỗi khi lấy dữ liệu người dùng')
-                }
-
-                const { data } = await response.json()
-
-                setUserData({
-                    id: data.user.id,
-                    name: data.user.name || '',
-                    email: data.user.email || '',
-                    phone: data.user.phone || '',
-                    address: data.user.address || ''
-                })
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu người dùng:', error)
             }
         }
 
         fetchRequest()
-    }, [sessionTokenUser])
+    }, [])
 
     return <UserContext.Provider value={{ userData, setUserData }}>{children}</UserContext.Provider>
 }

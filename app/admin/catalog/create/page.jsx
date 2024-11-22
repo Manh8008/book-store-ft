@@ -1,11 +1,12 @@
-"use client"
+'use client'
 
 import React, { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useRouter } from 'next/navigation'
-import Cookies from 'js-cookie';
+import { categoryApiRequest, categoryApiRequestAdmin } from '@/apiRequests/category'
+import { handleHttpError } from '@/lib/utils'
 
 const getFileFromUrl = async (url) => {
     const res = await fetch(url)
@@ -22,60 +23,55 @@ const categoryForm1Schema = z.object({
         .refine((v) => v, { message: 'Nhập ảnh danh mục là bắt buộc' })
 })
 
-const CreateCatalog = ({ categories, sessionTokenAdmin }) => {
-    const router = useRouter();
+const CreateCatalog = ({ categories }) => {
+    const [error, setError] = useState('')
+    const router = useRouter()
+    const [imagePreview, setImagePreview] = useState(null)
+
     const {
         register,
         handleSubmit,
         control,
-        watch,
+        reset,
         formState: { errors, isSubmitting, isDirty }
     } = useForm({
         resolver: zodResolver(categoryForm1Schema),
         defaultValues: categories
-            ? async () => ({
-                name: categories.name,
-                image: await getFileFromUrl(categories.image)
-            })
+            ? {
+                  name: categories.name,
+                  image: undefined
+              }
             : {
-                name: '',
-                image: undefined
-            }
+                  name: '',
+                  image: undefined
+              }
     })
 
-    const image = watch('image')
-    const imagePreview = image ? URL.createObjectURL(image) : null
-
-    // Revoke object URL to prevent memory leaks
     useEffect(() => {
-        return () => {
-            if (imagePreview) URL.revokeObjectURL(imagePreview)
+        if (categories?.image) {
+            getFileFromUrl(categories.image).then((file) => {
+                reset({ name: categories.name, image: file })
+                setImagePreview(URL.createObjectURL(file))
+            })
         }
-    }, [imagePreview])
+    }, [categories, reset])
 
     const onSubmit = async (data) => {
-        const formData = new FormData()
-        formData.append('name', data.name)
-        formData.append('image', data.image)
+        try {
+            console.log(data)
 
-        const res = await fetch('http://127.0.0.1:8000/api/admin/storeCatalog', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer 142|15ljjS6w9x1Nu82BykKQHkvd4IMlP9OWya6EI2u7b4b9cea6`
-            },
-            body: formData
-        })
+            // const formData = new FormData()
+            // formData.append('name', data.name)
+            // formData.append('image', data.image)
 
-        if (!res.ok) {
-            throw new Error('Failed to create catalog')
-        }
+            const result = await categoryApiRequestAdmin.addCatalog(data)
 
-        const result = await res.json()
-        if (result.error) {
-            console.error(result.error);
-        } else {
-            alert('Thêm danh mục thành công!')
-            router.push('/admin/categories');
+            if (result.status === 200) {
+                alert('Thêm danh mục thành công!')
+                router.push('/admin/categories')
+            }
+        } catch (error) {
+            handleHttpError(error, setError)
         }
     }
 
@@ -92,32 +88,52 @@ const CreateCatalog = ({ categories, sessionTokenAdmin }) => {
                             </div>
                             <div className="iq-card-body">
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <label>Ảnh danh mục:</label>
-                                        <div class="custom-file">
+                                        <div className="custom-file">
                                             <Controller
+                                                style={{ width: 70, height: 100 }}
                                                 name="image"
                                                 control={control}
-                                                render={({ field: { ref, name, onBlur, onChange } }) => (
-                                                    <input type="file" class="custom-file-input" ref={ref}
+                                                render={({
+                                                    field: { ref, name, onBlur, onChange }
+                                                }) => (
+                                                    <input
+                                                        type="file"
+                                                        className="custom-file-input"
+                                                        ref={ref}
                                                         name={name}
                                                         onBlur={onBlur}
-                                                        onChange={(e) => onChange(e.target.files?.[0])} />
+                                                        onChange={(e) => {
+                                                            onChange(e.target.files?.[0])
+                                                            if (e.target.files?.[0]) {
+                                                                setImagePreview(
+                                                                    URL.createObjectURL(
+                                                                        e.target.files[0]
+                                                                    )
+                                                                )
+                                                            }
+                                                        }}
+                                                    />
                                                 )}
                                             />
                                             {imagePreview && (
                                                 <img
                                                     src={imagePreview}
                                                     alt="Preview"
-                                                    style={{ maxWidth: "300px", marginTop: "20px", marginBottom: "180px" }}
+                                                    style={{
+                                                        maxWidth: '300px',
+                                                        marginTop: '20px',
+                                                        marginBottom: '20px'
+                                                    }}
                                                 />
                                             )}
                                             {errors.image && (
-                                                <span style={{ color: "red" }}>
+                                                <span style={{ color: 'red' }}>
                                                     {errors.image.message}
                                                 </span>
                                             )}
-                                            <label class="custom-file-label">Choose file</label>
+                                            <label className="custom-file-label">Choose file</label>
                                         </div>
                                     </div>
                                     <div className="form-group">
@@ -125,10 +141,12 @@ const CreateCatalog = ({ categories, sessionTokenAdmin }) => {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            {...register("name", { required: "Tên danh mục là bắt buộc" })}
+                                            {...register('name', {
+                                                required: 'Tên danh mục là bắt buộc'
+                                            })}
                                         />
                                         {errors.name && (
-                                            <span style={{ color: "red" }}>
+                                            <span style={{ color: 'red' }}>
                                                 {errors.name.message}
                                             </span>
                                         )}
@@ -137,12 +155,16 @@ const CreateCatalog = ({ categories, sessionTokenAdmin }) => {
                                         <button
                                             type="submit"
                                             className="btn btn-primary"
-                                            style={{ marginRight: "10px" }}
+                                            style={{ marginRight: '10px' }}
                                             disabled={isSubmitting}
                                         >
-                                            {isSubmitting ? "Đang xử lý..." : "Thêm"}
+                                            {isSubmitting ? 'Đang xử lý...' : 'Thêm'}
                                         </button>
-                                        <button type="reset" className="btn btn-danger">
+                                        <button
+                                            type="reset"
+                                            className="btn btn-danger"
+                                            onClick={() => reset({ name: '', image: undefined })}
+                                        >
                                             Trở lại
                                         </button>
                                     </div>
@@ -153,7 +175,7 @@ const CreateCatalog = ({ categories, sessionTokenAdmin }) => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default CreateCatalog

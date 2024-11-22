@@ -42,6 +42,8 @@ const LoginFormAdmin = () => {
 
             clientAdminSessionToken.value = result.payload.data.access_token
 
+            console.log(clientAdminSessionToken)
+
             router.push('/admin')
         } catch (error) {
             handleHttpError(error, setError)

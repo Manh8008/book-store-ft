@@ -3,7 +3,7 @@
 import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
 import styles from './category-list.module.scss'
-import { categoryApiRequest } from '@/apiRequests/category'
+import { catalogApiRequest } from '@/apiRequests/category'
 
 const cx = classNames.bind(styles)
 
@@ -13,7 +13,7 @@ const CategoryList = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const categoriesResponse = await categoryApiRequest.getCatalog()
+                const categoriesResponse = await catalogApiRequest.getAllCatalog()
                 setCategories(categoriesResponse.payload.data)
             } catch (error) {
                 console.error(error)

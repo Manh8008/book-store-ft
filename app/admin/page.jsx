@@ -1,5 +1,4 @@
-
-import Chart from "./components/chart";
+import Chart from './components/chart'
 export default function DashBoard() {
     return (
         <>
