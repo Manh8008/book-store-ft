@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 export default function TopBar() {
     return (
@@ -294,12 +294,12 @@ export default function TopBar() {
                                         className="search-toggle iq-waves-effect d-flex align-items-center"
                                     >
                                         <img
-                                            src="/images/user/1.jpg"
+                                            src="#"
                                             className="img-fluid rounded-circle mr-3"
-                                            alt="user"
+                                            alt="avatar admin"
                                         />
                                         <div className="caption">
-                                            <h6 className="mb-1 line-height">Ông Trần Thuận</h6>
+                                            <h6 className="mb-1 line-height">Nguyễn Văn A</h6>
                                             <p className="mb-0 text-primary">Tài Khoản</p>
                                         </div>
                                     </Link>
@@ -308,7 +308,7 @@ export default function TopBar() {
                                             <div className="iq-card-body p-0 ">
                                                 <div className="bg-primary p-3">
                                                     <h5 className="mb-0 text-white line-height">
-                                                        Xin Chào Ông Trần Thuận
+                                                        Xin Chào Nguyễn Văn A
                                                     </h5>
                                                 </div>
                                                 <Link

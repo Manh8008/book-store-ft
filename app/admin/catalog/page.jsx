@@ -1,20 +1,20 @@
 'use client'
 
 import { catalogApiRequestAdmin } from '@/apiRequests/category'
+import Cookies from 'js-cookie'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 
 export default function Categories() {
     const [data, setData] = useState([])
-    // console.log(data)
+    const token = Cookies.get('sessionTokenAdmin')
 
     const fetchCategories = async () => {
         const result = await catalogApiRequestAdmin.getAllCatalog()
         console.log(result)
         setData(result.payload.data)
     }
-
     useEffect(() => {
         fetchCategories()
     }, [])
@@ -34,7 +34,7 @@ export default function Categories() {
                     {
                         method: 'DELETE',
                         headers: {
-                            Authorization: `Bearer 142|15ljjS6w9x1Nu82BykKQHkvd4IMlP9OWya6EI2u7b4b9cea6`
+                            Authorization: `Bearer ${token}`
                         }
                     }
                 )
@@ -77,7 +77,7 @@ export default function Categories() {
                                     </div>
                                     <div className="iq-card-header-toolbar d-flex align-items-center">
                                         <Link
-                                            href="/admin/categories/create"
+                                            href="/admin/catalog/create"
                                             className="btn btn-primary"
                                         >
                                             Thêm danh mục mới

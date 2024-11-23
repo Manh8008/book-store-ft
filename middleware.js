@@ -13,10 +13,10 @@ export function middleware(request) {
         return NextResponse.redirect(new URL('/auth/login', request.url))
     }
 
-    // Đăng nhập rồi thì không cho vào /auth/login và /auth/register nữa
-    if (authPaths.some((path) => pathname.startsWith(path)) && sessionTokenUser) {
-        return NextResponse.redirect(new URL('/customer/profile', request.url))
-    }
+    // // Đăng nhập rồi thì không cho vào /auth/login và /auth/register nữa
+    // if (authPaths.some((path) => pathname.startsWith(path)) && sessionTokenUser) {
+    //     return NextResponse.redirect(new URL('/customer/profile', request.url))
+    // }
 
     if (!sessionTokenAdmin && pathname.startsWith('/admin')) {
         return NextResponse.redirect(new URL('/admin/auth/login', req.url))

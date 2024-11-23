@@ -6,6 +6,7 @@ const catalogApiRequest = {
 
 const catalogApiRequestAdmin = {
     getAllCatalog: () => http.get(`/api/getAllCategories`),
+    destroyCatalog: (id) => http.delete(`/api/destroyCatalog/${id}`, { type: 'admin' }),
     addCatalog: (body) =>
         http.post(`/api/admin/storeCatalog`, body, {
             type: 'admin',

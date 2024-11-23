@@ -11,11 +11,15 @@ import { handleHttpError } from '@/lib/utils'
 import styles from './login-form.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
 import { clientSessionToken } from '@/lib/http'
+import { useUser } from '@/context/user-context'
+import accountApiRequest from '@/apiRequests/account'
 
 const cx = classNames.bind(styles)
 
 export const LoginForm = () => {
     const router = useRouter()
+    const { userData, setUserData } = useUser()
+
     const [error, setError] = useState('')
     const {
         register,
@@ -38,8 +42,14 @@ export const LoginForm = () => {
                 await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
                 clientSessionToken.value = result.payload.data.access_token
 
-                alert('Đăng nhập thành công')
-                router.push('/')
+                const profileResult = await accountApiRequest.getProfile()
+                if (profileResult.status === 200) {
+                    setUserData(profileResult.payload.data.user)
+                    alert('Đăng nhập thành công')
+                    router.push('/')
+                } else {
+                    console.log('Không thể lấy thông tin người dùng')
+                }
             }
         } catch (error) {
             handleHttpError(error, setError)

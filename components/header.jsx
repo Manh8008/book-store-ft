@@ -1,10 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import Buttonlogout from './ui/button-logout/button-logout'
 import CategoryList from './category-list/category-list'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import UserHeader from './ui/user-header'
 
 export const Header = () => {
     const cart = useSelector((state) => state.cart)
@@ -48,12 +48,7 @@ export const Header = () => {
                                     </Link>
                                 </div>
                                 <div className="item">
-                                    <Link href="/auth/login" className="link">
-                                        <i className="fa-regular fa-user"></i>
-                                        <div className="text text-user">
-                                            <span>Đăng nhập</span>
-                                        </div>
-                                    </Link>
+                                    <UserHeader />
                                 </div>
                                 <div className="item">
                                     <Link href="/cart" className="link">
@@ -63,9 +58,6 @@ export const Header = () => {
                                             <span>Giỏ hàng</span>
                                         </div>
                                     </Link>
-                                </div>
-                                <div className="item">
-                                    <Buttonlogout />
                                 </div>
                             </div>
                         </div>

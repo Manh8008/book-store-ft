@@ -16,9 +16,7 @@ export default function Home() {
                             <h2 className="sub-title">TOP SÁCH BÁN CHẠY</h2>
                         </div>
 
-                        <div className="list-product">
-                            <ProductList />
-                        </div>
+                        <div className="list-product">{/* <ProductList /> */}</div>
                     </div>
                 </div>
 
@@ -56,9 +54,7 @@ export default function Home() {
                             src="/img/sachkinhte-taichinh.png"
                             alt="Sách tư duy - kỹ năng"
                         />
-                        <div className="list-product">
-                            <ProductList />
-                        </div>
+                        <div className="list-product">{/* <ProductList /> */}</div>
                     </div>
                     <div className="content">
                         <div className="title-cate">
@@ -69,9 +65,7 @@ export default function Home() {
                             src="/img/tusachgiadinh.png"
                             alt="Sách tư duy - kỹ năng"
                         />
-                        <div className="list-product">
-                            <ProductList />
-                        </div>
+                        <div className="list-product">{/* <ProductList /> */}</div>
                     </div>
                     <div className="content">
                         <div className="title-cate">
@@ -82,9 +76,7 @@ export default function Home() {
                             src="/img/sachlichsu-chinhtri.png"
                             alt="Sách tư duy - kỹ năng"
                         />
-                        <div className="list-product">
-                            <ProductList />
-                        </div>
+                        <div className="list-product">{/* <ProductList /> */}</div>
                     </div>
                 </div>
 

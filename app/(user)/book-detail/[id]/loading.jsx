@@ -1,5 +1,7 @@
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
+
 function Loading() {
-    return <div>Đang tải dữ liệu</div>
+    return <LoadingSkeleton />
 }
 
 export default Loading

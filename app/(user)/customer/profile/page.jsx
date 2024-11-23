@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useUser } from '@/context/user-context'
 import { AccountSidebar } from '@/components/account-sidebar'
 import './profile.scss'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
+import { Input } from '@/components/ui/input'
 
 export default function Profile() {
     const { userData, setUserData } = useUser()
@@ -15,7 +17,9 @@ export default function Profile() {
             const defaultAddr = addressList.find((address) => address.default == 1)
 
             if (defaultAddr) {
-                setDefaultAddress(defaultAddr.address_line)
+                setDefaultAddress(
+                    `${defaultAddr.address_line}, ${defaultAddr.town}, ${defaultAddr.district}, ${defaultAddr.province}`
+                )
             }
         }
     }, [userData])
@@ -27,8 +31,8 @@ export default function Profile() {
         })
     }
 
-    if (!userData) {
-        return <div>Loading...</div>
+    if (!userData || !userData.id) {
+        return <LoadingSkeleton />
     }
 
     return (
@@ -40,7 +44,7 @@ export default function Profile() {
                     <form>
                         <div className="form-group">
                             <label htmlFor="fullname">Họ và tên*</label>
-                            <input
+                            <Input
                                 id="fullname"
                                 name="name"
                                 placeholder="Nhập họ và tên"
@@ -51,7 +55,7 @@ export default function Profile() {
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email*</label>
-                            <input
+                            <Input
                                 id="email"
                                 name="email"
                                 placeholder="Email"
@@ -62,7 +66,7 @@ export default function Profile() {
                         </div>
                         <div className="form-group">
                             <label htmlFor="phone">Số điện thoại*</label>
-                            <input
+                            <Input
                                 id="phone"
                                 name="phone"
                                 placeholder="Số điện thoại"
@@ -73,7 +77,7 @@ export default function Profile() {
                         </div>
                         <div className="form-group">
                             <label htmlFor="address">Địa chỉ*</label>
-                            <input
+                            <Input
                                 id="address"
                                 name="address"
                                 placeholder="Địa chỉ giao hàng"

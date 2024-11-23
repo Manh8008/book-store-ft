@@ -9,10 +9,13 @@ import addressApiRequest from '@/apiRequests/address'
 import Toast, { showToast } from '@/components/Toast/Toast'
 import styles from './create-address-form.module.scss'
 import { Button } from '@/components/ui/button'
+import { useUser } from '@/context/user-context'
+import { Input } from '@/components/ui/input'
 
 const cx = classNames.bind(styles)
 
 const AddAddressForm = () => {
+    const { userData, setUserData } = useUser()
     const router = useRouter()
 
     const [provinces, setProvinces] = useState([])
@@ -91,21 +94,37 @@ const AddAddressForm = () => {
 
     const onSubmit = async (values) => {
         try {
-            // Cập nhật giá trị khi post lên là tên
             values.province = provinces.find((p) => p.province_id === province)?.province_name
             values.district = districts.find((d) => d.district_id === district)?.district_name
             values.town = wards.find((w) => w.ward_id === ward)?.ward_name
             values.default = isDefault ? 1 : 0
 
-            console.log(values)
-
             const result = await addressApiRequest.addAddress(values)
-            showToast('🦄 Địa chỉ đã được cập nhật thành công!')
-            setTimeout(() => {
+
+            if (result.status === 200 && result.payload) {
+                const newAddress = result.payload.data
+
+                const updatedAddressList = [...userData.address, newAddress]
+
+                if (values.default) {
+                    updatedAddressList.forEach(
+                        (addr) => (addr.default = addr.id === newAddress.id ? 1 : 0)
+                    )
+                }
+
+                setUserData({
+                    ...userData,
+                    address: updatedAddressList
+                })
+
                 router.push('/customer/address')
-            }, 1600)
+            } else {
+                console.error('Không thể thêm địa chỉ mới. Vui lòng thử lại.')
+                showToast('error', 'Không thể thêm địa chỉ mới. Vui lòng thử lại.')
+            }
         } catch (error) {
             console.error(error)
+            showToast('error', 'Đã xảy ra lỗi trong quá trình thêm địa chỉ.')
         }
     }
 
@@ -116,7 +135,7 @@ const AddAddressForm = () => {
                 <h2 className={cx('title')}>Thêm địa chỉ mới</h2>
                 <div className={cx('form-group')}>
                     <label>Họ và tên:</label>
-                    <input type="text" {...register('name')} className={cx('input')} />
+                    <Input type="text" {...register('name')} className={cx('input')} />
                     {errors.name && <p className={cx('error')}>{errors.name.message}</p>}
                 </div>
                 <div className={cx('form-group')}>
@@ -131,7 +150,7 @@ const AddAddressForm = () => {
                         className={cx('select')}
                         onChange={(e) => {
                             setProvince(e.target.value)
-                            setValue('province', e.target.value) // Set value in react-hook-form
+                            setValue('province', e.target.value)
                         }}
                         value={province}
                     >

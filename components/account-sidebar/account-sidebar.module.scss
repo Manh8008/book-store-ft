@@ -1,7 +1,5 @@
 .sidebar {
     width: 350px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-right: 20px;
 }
@@ -19,7 +17,7 @@
 }
 .sidebar .status .badge {
     background-color: #e0e0e0;
-    color: #333;
+    color: #3f3a3a;
     padding: 5px 10px;
     border-radius: 20px;
     display: inline-block;
@@ -38,13 +36,12 @@
     color: #333;
     text-decoration: none;
     padding: 10px 0;
-    border-bottom: 1px solid #e0e0e0;
     font-size: 14px;
-} // hồ sơ
+}
 .sidebar .menu a.active {
     color: #f47830;
     font-weight: bold;
-} // thông tin tài khoản
+}
 .sidebar .menu a i {
     margin-right: 10px;
 }
@@ -56,7 +53,6 @@
     color: #333;
     text-decoration: none;
     padding: 10px 0;
-    border-bottom: 1px solid #e0e0e0;
     font-size: 14px;
 }
 .menu a.active {

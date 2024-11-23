@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev -p 9000",
+        "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint"
@@ -24,6 +24,7 @@
         "formik": "^2.4.6",
         "frontend": "file:",
         "js-cookie": "^3.0.5",
+        "lottie-react": "^2.4.0",
         "lottie-web": "^5.12.2",
         "next": "14.2.14",
         "nookies": "^2.5.2",

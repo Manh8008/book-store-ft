@@ -5,8 +5,10 @@ import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useRouter } from 'next/navigation'
-import { categoryApiRequest, categoryApiRequestAdmin } from '@/apiRequests/category'
 import { handleHttpError } from '@/lib/utils'
+import { catalogApiRequestAdmin } from '@/apiRequests/category'
+
+import Cookies from 'js-cookie'
 
 const getFileFromUrl = async (url) => {
     const res = await fetch(url)
@@ -24,6 +26,7 @@ const categoryForm1Schema = z.object({
 })
 
 const CreateCatalog = ({ categories }) => {
+    const token = Cookies.get('sessionTokenAdmin')
     const [error, setError] = useState('')
     const router = useRouter()
     const [imagePreview, setImagePreview] = useState(null)
@@ -58,17 +61,29 @@ const CreateCatalog = ({ categories }) => {
 
     const onSubmit = async (data) => {
         try {
-            console.log(data)
+            const formData = new FormData()
+            formData.append('name', data.name)
+            formData.append('image', data.image)
 
-            // const formData = new FormData()
-            // formData.append('name', data.name)
-            // formData.append('image', data.image)
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/admin/storeCatalog`,
+                {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'multipart/form-data',
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: formData
+                }
+            )
+            const resData = await res.json()
 
-            const result = await categoryApiRequestAdmin.addCatalog(data)
+            console.log(resData)
 
-            if (result.status === 200) {
-                alert('Thêm danh mục thành công!')
-                router.push('/admin/categories')
+            // const result = await catalogApiRequestAdmin.addCatalog(data)
+
+            if (resData.success == true) {
+                router.push('/admin/catalog')
             }
         } catch (error) {
             handleHttpError(error, setError)

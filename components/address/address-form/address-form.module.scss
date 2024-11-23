@@ -1,33 +1,31 @@
 .address-container {
     padding: 16px;
     background-color: #f7f7fb;
+    width: 100%;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.new {
+    width: 100%;
     margin-bottom: 16px;
+}
 
-    h2 {
-        font-size: 18px;
-        font-weight: 500;
-    }
+.new a {
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    font-size: 15px;
+    height: 60px;
+    border: 1px dashed rgb(216, 216, 216);
+    margin: 0px 0px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
 
-    .add-address-btn {
-        display: flex;
-        align-items: center;
-        color: #1e90ff;
-        font-weight: 500;
-        border: none;
-        background: none;
-        cursor: pointer;
-
-        span {
-            font-size: 24px;
-            margin-right: 4px;
-        }
-    }
+.new svg {
+    color: rgb(120, 120, 120);
+    font-size: 28px;
+    margin: 0px 20px;
 }
 
 .address-list {
@@ -37,66 +35,67 @@
 }
 
 .address-item {
-    padding: 12px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    background-color: rgb(255, 255, 255);
+    padding: 17px;
+    border-radius: 4px;
+    margin: 0px 0px 10px;
     display: flex;
+    -webkit-box-pack: justify;
     justify-content: space-between;
-    align-items: flex-start;
+    font-size: 13px;
+    line-height: 19px;
 
     &.default {
         border: 1px solid #4caf50;
     }
+}
 
-    .info {
-        h3 {
-            margin: 0;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
+.info {
+    .name {
+        text-transform: uppercase;
+        margin: 0px 0px 10px;
+
+        .default-label {
+            font-size: 12px;
+            margin: 0px 0px 0px 15px;
+            display: inline-block;
+            -webkit-box-align: center;
             align-items: center;
-
-            .default-label {
-                font-size: 14px;
-                color: #4caf50;
-                margin-left: 8px;
-                display: flex;
-                align-items: center;
-
-                &:before {
-                    content: '✔';
-                    margin-right: 4px;
-                    color: #4caf50;
-                }
-            }
-        }
-
-        p {
-            margin: 4px 0;
-            font-size: 14px;
-            color: #555;
+            color: rgb(38, 188, 78);
+            text-transform: none;
         }
     }
 
-    .actions {
-        display: flex;
-        gap: 8px;
+    .address {
+        margin: 0px 0px 5px;
 
-        .edit-btn {
-            color: #1e90ff;
-            font-size: 14px;
-            background: none;
-            border: none;
-            cursor: pointer;
+        span {
+            color: rgb(120, 120, 120);
         }
+    }
 
-        .delete-btn {
-            color: #f44336;
-            font-size: 14px;
-            background: none;
-            border: none;
-            cursor: pointer;
+    .phone {
+        span {
+            color: rgb(120, 120, 120);
         }
+    }
+}
+
+.actions {
+    .edit {
+        font-size: 14px;
+        color: rgb(27, 168, 255);
+        display: inline-block;
+        padding: 6px 12px;
+    }
+
+    .delete {
+        font-size: 14px;
+        color: rgb(255, 66, 78);
+        border: 0px;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+        outline: 0px;
     }
 }

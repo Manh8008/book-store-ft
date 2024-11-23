@@ -1,0 +1,65 @@
+//  user
+.header__user {
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 25px;
+
+    .user-icon {
+        cursor: pointer;
+    }
+}
+
+.sub-action {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: #fff;
+    z-index: 2;
+    border: 1px solid #e7e8e9;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: max-content;
+    min-width: 206px;
+}
+
+.top-action {
+    padding: 24px 24px 20px;
+    position: relative;
+    border-bottom: 1px solid #f7f8f9;
+    margin-bottom: 24px;
+}
+
+.header_icon {
+    position: relative;
+    color: #221f20;
+    font-size: 14px;
+    margin-right: 18px;
+}
+
+.sub-action h3 {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color: #221f20;
+}
+
+.sub-action ul {
+    padding: 0 24px;
+}
+
+.sub-action ul li a {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    color: #808285;
+    margin-bottom: 24px;
+    display: block;
+    cursor: pointer;
+}
+
+.sub-action ul li a i {
+    display: inline-block;
+    margin-right: 12px;
+    vertical-align: middle;
+}

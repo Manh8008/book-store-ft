@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 export default function LeftBar() {
     return (
@@ -31,7 +31,7 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/admin/categories">
+                                <Link href="/admin/catalog">
                                     <i className="ri-record-circle-line"></i>Danh Mục Sách
                                 </Link>
                             </li>

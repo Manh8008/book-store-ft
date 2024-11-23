@@ -1,11 +1,10 @@
 'use client'
 import classNames from 'classnames/bind'
+import Link from 'next/link'
+import { toast } from 'react-toastify'
 import styles from './address-form.module.scss'
 import { useUser } from '@/context/user-context'
-import Link from 'next/link'
 import addressApiRequest from '@/apiRequests/address'
-import { toast } from 'react-toastify'
-import Swal from 'sweetalert2'
 import 'react-toastify/dist/ReactToastify.css'
 
 const cx = classNames.bind(styles)
@@ -14,72 +13,81 @@ const AddressForm = () => {
     const { userData, setUserData } = useUser()
 
     if (!userData || !userData.address || userData.address.length === 0) {
-        return <div>Chưa có địa chỉ nào</div>
+        return (
+            <div className={cx('new')}>
+                <a href="/customer/address/create">
+                    <AddAddressIcon />
+                    <span>Thêm địa chỉ mới</span>
+                </a>
+            </div>
+        )
     }
 
-    const handleDelete = async (id) => {
-        const result = await Swal.fire({
-            title: 'Bạn có chắc chắn muốn xóa địa chỉ này?',
-            text: 'Hành động này không thể hoàn tác!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Đồng ý',
-            cancelButtonText: 'Hủy'
-        })
+    console.log(userData)
 
-        if (result.isConfirmed) {
+    // Handle delete address
+    const handleDelete = async (id) => {
+        if (confirm('Bạn có thật sự muốn xóa!') == true) {
             try {
                 await addressApiRequest.destroy(id)
                 setUserData({
                     ...userData,
                     address: userData.address.filter((address) => address.id !== id)
                 })
+
+                console.log(userData)
             } catch (error) {
-                toast('Không thể xóa địa chỉ. Vui lòng thử lại.')
+                toast.error('Không thể xóa địa chỉ. Vui lòng thử lại.')
             }
+        } else {
+            return
         }
     }
 
     return (
         <div className={cx('address-container')}>
-            <div className={cx('header')}>
-                <h2>Sổ địa chỉ</h2>
-                <Link href="/customer/address/create" className={cx('add-address-btn')}>
-                    <span>+</span> Thêm địa chỉ mới
-                </Link>
+            <div className={cx('new')}>
+                <a href="/customer/address/create">
+                    <AddAddressIcon />
+                    <span>Thêm địa chỉ mới</span>
+                </a>
             </div>
             <div className={cx('address-list')}>
                 {userData.address.map((address) => (
                     <div
                         key={address.id}
-                        className={cx('address-item', address.default ? 'default' : '')}
+                        className={cx('address-item', { default: address.default === 1 })}
                     >
                         <div className={cx('info')}>
-                            <h3>
-                                {address.name}{' '}
+                            <div className={cx('name')}>
+                                {address.name}
                                 {address.default === 1 && (
                                     <span className={cx('default-label')}>Địa chỉ mặc định</span>
                                 )}
-                            </h3>
-                            <p>
-                                Địa chỉ: {address.address_line}, {address.town}, {address.district}{' '}
-                                ,{address.province}
-                            </p>
-                            <p>Điện thoại: {address.phone}</p>
+                            </div>
+                            <div className={cx('address')}>
+                                <span>Địa chỉ:</span> {address.address_line}, {address.town},
+                                {address.district}, {address.province}
+                            </div>
+                            <div className={cx('phone')}>
+                                <span>Điện thoại:</span> {address.phone}
+                            </div>
                         </div>
                         <div className={cx('actions')}>
                             <Link
                                 href={`/customer/address/update/${address.id}`}
-                                className={cx('edit-btn')}
+                                className={cx('edit')}
                             >
                                 Chỉnh sửa
                             </Link>
-                            <button
-                                className={cx('delete-btn')}
-                                onClick={() => handleDelete(address.id)}
-                            >
-                                Xóa
-                            </button>
+                            {address.default !== 1 && (
+                                <button
+                                    className={cx('delete')}
+                                    onClick={() => handleDelete(address.id)}
+                                >
+                                    Xóa
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}
@@ -87,5 +95,20 @@ const AddressForm = () => {
         </div>
     )
 }
+
+// SVG icon for adding new address
+const AddAddressIcon = () => (
+    <svg
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 24 24"
+        height="1em"
+        width="1em"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+    </svg>
+)
 
 export default AddressForm
