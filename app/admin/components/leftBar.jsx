@@ -31,7 +31,7 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/admin/categories">
+                                <Link href="/admin/catalog">
                                     <i className="ri-record-circle-line"></i>Danh Mục Sách
                                 </Link>
                             </li>
@@ -41,8 +41,23 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="admin-author.html">
+                                <Link href="/admin/authors">
                                     <i className="ri-record-circle-line"></i>Tác Giả
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/order">
+                                    <i className="ri-record-circle-line"></i>Đơn Hàng
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/review">
+                                    <i className="ri-record-circle-line"></i>Bài Viết
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/customer">
+                                    <i className="ri-record-circle-line"></i>Người Dùng
                                 </Link>
                             </li>
                             <li>

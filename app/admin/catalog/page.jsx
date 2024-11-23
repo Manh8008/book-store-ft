@@ -77,7 +77,7 @@ export default function Categories() {
                                     </div>
                                     <div className="iq-card-header-toolbar d-flex align-items-center">
                                         <Link
-                                            href="/admin/categories/create"
+                                            href="/admin/catalog/create"
                                             className="btn btn-primary"
                                         >
                                             Thêm danh mục mới
@@ -123,7 +123,7 @@ export default function Categories() {
                                                                     data-placement="top"
                                                                     title=""
                                                                     data-original-title="Sửa"
-                                                                    href="/admin/categories/edit-categories"
+                                                                    href="/admin/catalog/update/1"
                                                                 >
                                                                     <i className="ri-pencil-line"></i>
                                                                 </Link>
