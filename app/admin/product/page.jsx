@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Product() {
@@ -29,7 +30,7 @@ export default function Product() {
                                         <h4 className="card-title">Danh sách sách</h4>
                                     </div>
                                     <div className="iq-card-header-toolbar d-flex align-items-center">
-                                        <a href="admin-add-book.html" className="btn btn-primary">Thêm sách</a>
+                                        <a href="/admin/product/create" className="btn btn-primary">Thêm sách</a>
                                     </div>
                                 </div>
                                 <div className="iq-card-body">
@@ -61,8 +62,8 @@ export default function Product() {
                                                         <td>{parseFloat(product.price).toLocaleString('vi-VN')}đ</td>
                                                         <td>
                                                             <div className="flex align-items-center list-user-action">
-                                                                <a className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href=""><i className="ri-pencil-line"></i></a>
-                                                                <a className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#"><i className="ri-delete-bin-line"></i></a>
+                                                                <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/admin/product/update/1"><i className="ri-pencil-line"></i></Link>
+                                                                <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#"><i className="ri-delete-bin-line"></i></Link>
                                                             </div>
                                                         </td>
                                                     </tr>

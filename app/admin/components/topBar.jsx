@@ -299,7 +299,7 @@ export default function TopBar() {
                                             alt="avatar admin"
                                         />
                                         <div className="caption">
-                                            <h6 className="mb-1 line-height">Nguyễn Văn A</h6>
+                                            <h6 className="mb-1 line-height">Admin</h6>
                                             <p className="mb-0 text-primary">Tài Khoản</p>
                                         </div>
                                     </Link>

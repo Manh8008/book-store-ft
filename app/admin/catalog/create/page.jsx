@@ -41,13 +41,13 @@ const CreateCatalog = ({ categories }) => {
         resolver: zodResolver(categoryForm1Schema),
         defaultValues: categories
             ? {
-                  name: categories.name,
-                  image: undefined
-              }
+                name: categories.name,
+                image: undefined
+            }
             : {
-                  name: '',
-                  image: undefined
-              }
+                name: '',
+                image: undefined
+            }
     })
 
     useEffect(() => {
@@ -98,7 +98,7 @@ const CreateCatalog = ({ categories }) => {
                         <div className="iq-card">
                             <div className="iq-card-header d-flex justify-content-between">
                                 <div className="iq-header-title">
-                                    <h4 className="card-title">Sửa danh mục</h4>
+                                    <h4 className="card-title">Thêm danh mục</h4>
                                 </div>
                             </div>
                             <div className="iq-card-body">
