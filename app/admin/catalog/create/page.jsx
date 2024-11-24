@@ -41,13 +41,13 @@ const CreateCatalog = ({ categories }) => {
         resolver: zodResolver(categoryForm1Schema),
         defaultValues: categories
             ? {
-                name: categories.name,
-                image: undefined
-            }
+                  name: categories.name,
+                  image: undefined
+              }
             : {
-                name: '',
-                image: undefined
-            }
+                  name: '',
+                  image: undefined
+              }
     })
 
     useEffect(() => {
@@ -77,10 +77,6 @@ const CreateCatalog = ({ categories }) => {
                 }
             )
             const resData = await res.json()
-
-            console.log(resData)
-
-            // const result = await catalogApiRequestAdmin.addCatalog(data)
 
             if (resData.success == true) {
                 router.push('/admin/catalog')

@@ -1,103 +1,184 @@
-import Link from "next/link";
+'use client'
+import { Button } from '@/components/ui/button'
+import Cookies from 'js-cookie'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function Order() {
+    const token = Cookies.get('sessionTokenAdmin')
+    const [orderData, setOrderData] = useState(null)
+    const [error, setError] = useState('')
+
+    useEffect(() => {
+        const fetchOrder = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllOrder`, {
+                    method: 'GET'
+                })
+                const resData = await res.json()
+
+                if (res.ok && resData.success) {
+                    setOrderData(resData.data)
+                } else {
+                    setError('Không thể lấy dữ liệu đơn hàng!')
+                }
+            } catch (err) {
+                setError('Lỗi kết nối tới server!')
+            }
+        }
+
+        fetchOrder()
+    }, [])
+
+    const handleChangeStatus = async (id) => {
+        try {
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/admin/updateOrderStatus/${id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ order_status: 'Đã xác nhận' })
+                }
+            )
+
+            const resData = await res.json()
+
+            console.log(resData)
+
+            if (res.ok && resData.success) {
+                setOrderData((prevData) =>
+                    prevData.map((order) =>
+                        order.id === id ? { ...order, order_status: 'Đã xác nhận' } : order
+                    )
+                )
+            } else {
+                setError('Không thể cập nhật trạng thái đơn hàng!')
+            }
+        } catch (err) {
+            setError('Lỗi kết nối tới server!')
+        }
+    }
+
     return (
         <>
-            <div id="content-page" class="content-page">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="iq-card">
-                                <div class="iq-card-header d-flex justify-content-between">
-                                    <div class="iq-header-title">
-                                        <h4 class="card-title">Danh sách đơn hàng</h4>
+            <div id="content-page" className="content-page">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-sm-12">
+                            <div className="iq-card">
+                                <div className="iq-card-header d-flex justify-content-between">
+                                    <div className="iq-header-title">
+                                        <h4 className="card-title">Danh sách đơn hàng</h4>
                                     </div>
-                                    {/* <div class="iq-card-header-toolbar d-flex align-items-center">
-                                        <Link href="/admin/authors/create" class="btn btn-primary">Thêm tác giả</Link>
-                                    </div> */}
                                 </div>
-                                <div class="iq-card-body">
-                                    <div class="table-responsive">
-                                        <table class="data-tables table table-striped table-bordered" style={{ width: 100 + "%" }}>
+                                <div className="iq-card-body">
+                                    {error && <p className="text-danger">{error}</p>}
+                                    {orderData && orderData.length === 0 && (
+                                        <p>Không có đơn hàng nào!</p>
+                                    )}
+                                    <div className="table-responsive">
+                                        <table
+                                            className="data-tables table table-striped table-bordered"
+                                            style={{ width: '100%' }}
+                                        >
                                             <thead>
                                                 <tr>
-                                                    <th style={{ width: 15 + "%" }}>Mã đơn hàng</th>
-                                                    <th className="text-start" colSpan="1" style={{ width: 15 + "%" }}>Thông tin khách hàng</th>
-                                                    <th style={{ width: 25 + "%" }}>Địa chỉ nhận hàng</th>
-                                                    <th style={{ width: 10 + "%" }}>Ngày đặt hàng</th>
-                                                    <th style={{ width: 10 + "%" }}>Trạng thái</th>
-                                                    <th style={{ width: 8 + "%" }}>Hoạt động</th>
+                                                    <th style={{ width: '15%' }}>Mã đơn hàng</th>
+                                                    <th
+                                                        className="text-start"
+                                                        style={{ width: '15%' }}
+                                                    >
+                                                        Thông tin khách hàng
+                                                    </th>
+                                                    <th style={{ width: '25%' }}>
+                                                        Địa chỉ nhận hàng
+                                                    </th>
+                                                    <th style={{ width: '10%' }}>Ngày đặt hàng</th>
+                                                    <th style={{ width: '10%' }}>Trạng thái</th>
+                                                    <th style={{ width: '8%' }}>Hoạt động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>ORDER-1730980644</td>
-                                                    <td className="text-start">
-                                                        <small>
-                                                            Họ và tên: <strong>Nguyễn Minh Thịnh</strong>
-                                                        </small>
-                                                        <br />
-                                                        <small>
-                                                            Số điện thoại: <strong>0968575978</strong><br />
-                                                        </small>
-                                                    </td>
-                                                    <td>
-                                                        <small>
-                                                            Quận/Huyện: <strong>Định Quán</strong>
-                                                        </small>
-                                                        <br />
-                                                        <small>
-                                                            Phường/Xã: <strong>Gia canh</strong><br />
-                                                        </small>
-                                                        <small>
-                                                            Tỉnh thành: <strong>Đồng Nai</strong><br />
-                                                        </small>
-                                                        <small>
-                                                            Địa chỉ chi tiết: <strong>Số nhà 1 , Ấp Hiệp Quyết, Thị trấn Định Quán</strong><br />
-                                                        </small>
-                                                    </td>
-                                                    <td>2024-11-07</td>
-                                                    <td>Chờ xác nhận</td>
-                                                    <td>
-                                                        <div class="flex align-items-center list-user-action">
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xem" href=""><i class="ri-eye-line"></i></Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>ORDER-1730980644</td>
-                                                    <td className="text-start">
-                                                        <small>
-                                                            Họ và tên: <strong>Nguyễn Minh Thịnh</strong>
-                                                        </small>
-                                                        <br />
-                                                        <small>
-                                                            Số điện thoại: <strong>0968575978</strong><br />
-                                                        </small>
-                                                    </td>
-                                                    <td>
-                                                        <small>
-                                                            Quận/Huyện: <strong>Định Quán</strong>
-                                                        </small>
-                                                        <br />
-                                                        <small>
-                                                            Phường/Xã: <strong>Gia canh</strong><br />
-                                                        </small>
-                                                        <small>
-                                                            Tỉnh thành: <strong>Đồng Nai</strong><br />
-                                                        </small>
-                                                        <small>
-                                                            Địa chỉ chi tiết: <strong>Số nhà 1 , Ấp Hiệp Quyết, Thị trấn Định Quán</strong><br />
-                                                        </small>
-                                                    </td>
-                                                    <td>2024-11-07</td>
-                                                    <td>Chờ xác nhận</td>
-                                                    <td>
-                                                        <div class="flex align-items-center list-user-action">
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xem" href=""><i class="ri-eye-line"></i></Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                {orderData &&
+                                                    orderData.map((item) => (
+                                                        <tr key={item?.id}>
+                                                            <td>
+                                                                {item?.orderId || 'ORDER-123456'}
+                                                            </td>
+                                                            <td className="text-start">
+                                                                <small>
+                                                                    Họ và tên:{' '}
+                                                                    <strong>{item?.name}</strong>
+                                                                </small>
+                                                                <br />
+                                                                <small>
+                                                                    Số điện thoại:{' '}
+                                                                    <strong>
+                                                                        {item?.phone || '---'}
+                                                                    </strong>
+                                                                </small>
+                                                            </td>
+                                                            <td>
+                                                                <small>
+                                                                    Quận/Huyện:{' '}
+                                                                    <strong>
+                                                                        {item?.district || '---'}
+                                                                    </strong>
+                                                                </small>
+                                                                <br />
+                                                                <small>
+                                                                    Phường/Xã:
+                                                                    <strong>
+                                                                        {item?.town || '---'}
+                                                                    </strong>
+                                                                </small>
+                                                                <br />
+                                                                <small>
+                                                                    Tỉnh/Thành phố:{' '}
+                                                                    <strong>
+                                                                        {item?.province || '---'}
+                                                                    </strong>
+                                                                </small>
+                                                                <br />
+                                                                <small>
+                                                                    Địa chỉ chi tiết:{' '}
+                                                                    <strong>
+                                                                        {item?.address_line ||
+                                                                            '---'}
+                                                                    </strong>
+                                                                </small>
+                                                            </td>
+                                                            <td>{item?.updated_at || '---'}</td>
+                                                            <td>{item?.order_status}</td>
+                                                            <td>
+                                                                <div className="flex align-items-center list-user-action">
+                                                                    {item.order_status ===
+                                                                    'Chờ xác nhận' ? (
+                                                                        <Button
+                                                                            outline
+                                                                            onClick={() =>
+                                                                                handleChangeStatus(
+                                                                                    item?.id
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            Xác nhận
+                                                                        </Button>
+                                                                    ) : (
+                                                                        <Link
+                                                                            className="bg-primary"
+                                                                            href={`/order/${item.id}`}
+                                                                        >
+                                                                            <i className="ri-eye-line"></i>
+                                                                        </Link>
+                                                                    )}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
                                             </tbody>
                                         </table>
                                     </div>

@@ -13,10 +13,13 @@ import { useUser } from '@/context/user-context'
 import { checkoutRequest } from '@/apiRequests/checkout'
 import styles from './payment.module.scss'
 import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
+import { clearCart } from '@/redux/slices/cartslice'
 
 const cx = classNames.bind(styles)
 
 const Payment = () => {
+    const dispatch = useDispatch()
     const router = useRouter()
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null)
 
@@ -58,12 +61,23 @@ const Payment = () => {
                 return
             } else if (selectedPaymentMethod === 'COD') {
                 result = await checkoutRequest.checkoutCOD(checkoutData)
-                if (result?.payload?.success == true)
-                    router.push('/checkout/payment/payment-success')
+
+                if (result?.payload?.success == true) {
+                    dispatch(clearCart())
+                    router.push(
+                        `/checkout/payment/payment-success?order_code=${result.payload.data.order_code}`
+                    )
+                }
             } else if (selectedPaymentMethod === 'MoMo') {
                 result = await checkoutRequest.checkoutVnPay(checkoutData)
+                if (result?.payload?.success == true) {
+                    dispatch(clearCart())
+                }
             } else if (selectedPaymentMethod === 'VNPAY') {
                 result = await checkoutRequest.checkoutVnPay(checkoutData)
+                if (result?.payload?.success == true) {
+                    dispatch(clearCart())
+                }
             }
 
             if (result?.payload?.data?.payment_url) {

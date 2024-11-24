@@ -71,7 +71,7 @@ const UpdateAddressForm = ({ addressId }) => {
         }
 
         if (province) fetchDistricts()
-    }, [province])
+    }, [province, watch('province')])
 
     useEffect(() => {
         const fetchWards = async () => {
@@ -87,7 +87,7 @@ const UpdateAddressForm = ({ addressId }) => {
         }
 
         if (district) fetchWards()
-    }, [district])
+    }, [district, watch('district')])
 
     useEffect(() => {
         const fetchAddressById = async () => {
@@ -100,7 +100,9 @@ const UpdateAddressForm = ({ addressId }) => {
                 setValue('phone', addressData.phone)
                 setValue('address_line', addressData.address_line)
                 setValue('default', addressData.default ? true : false)
-
+                setValue('province', addressData.province)
+                setValue('district', addressData.district)
+                setValue('town', addressData.town)
                 setProvince(addressData.province)
                 setDistrict(addressData.district)
                 setWard(addressData.town)
@@ -131,6 +133,10 @@ const UpdateAddressForm = ({ addressId }) => {
         }
     }
 
+    // - Them provinceId, districtId, townId --> dung de goi API
+
+    console.log('View', watch(), districts, provinces, province)
+
     return (
         <>
             <Toast />
@@ -156,12 +162,13 @@ const UpdateAddressForm = ({ addressId }) => {
                             setDistrict('')
                             setWard('')
                             setValue('province', e.target.value)
+                            // setValue('provinceId', e.target.value)
                         }}
                         value={province}
                     >
                         <option value="">Chọn tỉnh/thành phố</option>
                         {provinces?.map((province) => (
-                            <option key={province?.province_id} value={province?.province_id}>
+                            <option key={province?.province_id} value={province?.province_name}>
                                 {province?.province_name}
                             </option>
                         ))}
@@ -182,7 +189,7 @@ const UpdateAddressForm = ({ addressId }) => {
                     >
                         <option value="">Chọn quận/huyện</option>
                         {districts.map((district) => (
-                            <option key={district.district_id} value={district.district_id}>
+                            <option key={district.district_id} value={district.district_name}>
                                 {district.district_name}
                             </option>
                         ))}
@@ -203,7 +210,7 @@ const UpdateAddressForm = ({ addressId }) => {
                     >
                         <option value="">Chọn phường/xã</option>
                         {wards.map((ward) => (
-                            <option key={ward.ward_id} value={ward.ward_id}>
+                            <option key={ward.ward_id} value={ward.ward_name}>
                                 {ward.ward_name}
                             </option>
                         ))}

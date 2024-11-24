@@ -15,27 +15,13 @@ const PaymentResult = ({ offlinePaymentData }) => {
     const [orderRef, setOrderRef] = useState(null)
 
     useEffect(() => {
-        // Nếu có offlinePaymentData, ưu tiên dùng dữ liệu này
-        if (offlinePaymentData) {
-            const { order_code, payment_status } = offlinePaymentData
-            setPaymentStatus(payment_status === 'Đã thanh toán' ? 'success' : 'failed')
-            setTransactionId(offlinePaymentData.id)
-            setOrderRef(order_code)
-            return
-        }
-
-        // Nếu không có offlinePaymentData, xử lý thanh toán online
-        const vnp_ResponseCode = searchParams.get('vnp_ResponseCode')
+        const order_code = searchParams.get('order_code')
         const vnp_TransactionNo = searchParams.get('vnp_TransactionNo')
-        const vnp_TxnRef = searchParams.get('vnp_TxnRef')
+        const payment_status = searchParams.get('payment_status')
 
-        if (vnp_ResponseCode === '00') {
-            setPaymentStatus('success')
-            setTransactionId(vnp_TransactionNo)
-            setOrderRef(vnp_TxnRef)
-        } else {
-            setPaymentStatus('failed')
-        }
+        setPaymentStatus(payment_status)
+        setTransactionId(vnp_TransactionNo)
+        setOrderRef(order_code)
     }, [searchParams, offlinePaymentData])
 
     const handleGoHome = () => {
@@ -63,6 +49,11 @@ const PaymentResult = ({ offlinePaymentData }) => {
                             Đã có lỗi xảy ra trong quá trình xử lý giao dịch của bạn.
                             <br />
                             Vui lòng thử lại hoặc liên hệ bộ phận hỗ trợ.
+                        </p>
+                        <p className={cx('message')}>
+                            Mã giao dịch: <strong>{transactionId}</strong>
+                            <br />
+                            Mã đơn hàng: <strong>{orderRef}</strong>
                         </p>
                     </>
                 )}

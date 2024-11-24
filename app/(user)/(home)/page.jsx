@@ -1,9 +1,52 @@
+'use client'
 import '@/public/styles/main.scss'
 import { Banner } from '@/components/banner'
 import MainLayout from '@/layouts/main-layout'
 import { ProductList } from '@/components/product-list'
+import { useEffect, useState } from 'react'
+import productApiRequest from '@/apiRequests/product'
 
 export default function Home() {
+    const [bestsellingBooks, setBestsellingBooks] = useState([])
+
+    //Sách tư duy kỹ năng
+    const [thinkingSkillsBook, setThinkingSkillsBook] = useState([])
+
+    //sách kinh tế tài chính
+    const [financialEconomicsBooks, setFinancialEconomicsBooks] = useState([])
+
+    //sách gia đình
+    const [educationalScienceBooks, setEducationalScienceBooks] = useState([])
+
+    //sách lịch sử chính trị
+    const [politicalBooks, setPoliticalBooks] = useState([])
+
+    useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const [thinkingSkills, financialEconomics, educationalScience, political] =
+                    await Promise.all([
+                        productApiRequest.getBookByCatalog(1),
+                        productApiRequest.getBookByCatalog(5),
+                        productApiRequest.getBookByCatalog(3),
+                        productApiRequest.getBookByCatalog(2)
+                    ])
+
+                if (thinkingSkills.status === 200)
+                    setThinkingSkillsBook(thinkingSkills.payload.data)
+                if (financialEconomics.status === 200)
+                    setFinancialEconomicsBooks(financialEconomics.payload.data)
+                if (educationalScience.status === 200)
+                    setEducationalScienceBooks(educationalScience.payload.data)
+                if (political.status === 200) setPoliticalBooks(political.payload.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchBooks()
+    }, [])
+
     return (
         <MainLayout>
             <main style={{ background: '#F5F5FA' }}>
@@ -42,7 +85,7 @@ export default function Home() {
                             alt="Sách tư duy - kỹ năng"
                         />
                         <div className="list-product">
-                            <ProductList />
+                            <ProductList title="" data={thinkingSkillsBook} />
                         </div>
                     </div>
                     <div className="content">
@@ -54,7 +97,9 @@ export default function Home() {
                             src="/img/sachkinhte-taichinh.png"
                             alt="Sách tư duy - kỹ năng"
                         />
-                        <div className="list-product">{/* <ProductList /> */}</div>
+                        <div className="list-product">
+                            <ProductList title="" data={financialEconomicsBooks} />
+                        </div>
                     </div>
                     <div className="content">
                         <div className="title-cate">
@@ -65,7 +110,10 @@ export default function Home() {
                             src="/img/tusachgiadinh.png"
                             alt="Sách tư duy - kỹ năng"
                         />
-                        <div className="list-product">{/* <ProductList /> */}</div>
+                        <div className="list-product">
+                            {' '}
+                            <ProductList title="" data={educationalScienceBooks} />
+                        </div>
                     </div>
                     <div className="content">
                         <div className="title-cate">
@@ -76,7 +124,9 @@ export default function Home() {
                             src="/img/sachlichsu-chinhtri.png"
                             alt="Sách tư duy - kỹ năng"
                         />
-                        <div className="list-product">{/* <ProductList /> */}</div>
+                        <div className="list-product">
+                            <ProductList title="" data={politicalBooks} />
+                        </div>
                     </div>
                 </div>
 

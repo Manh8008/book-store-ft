@@ -74,7 +74,7 @@ export default function ProductDetail({ params }) {
                                             <span className="price-retail">169.000đ</span>
                                         </p>
                                         <p className="product-description">
-                                            {product?.short_summary}
+                                            {/* {product?.short_summary} */}
                                         </p>
 
                                         <div className="quantity-control">
