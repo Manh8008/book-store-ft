@@ -31,6 +31,8 @@ export default function Profile() {
         })
     }
 
+    console.log(userData)
+
     if (!userData || !userData.id) {
         return <LoadingSkeleton />
     }

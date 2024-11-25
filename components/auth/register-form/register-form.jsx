@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Toast, { showToast } from '@/components/ui/Toast'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { RegisterSchema } from '@/schemas'
@@ -15,6 +16,7 @@ const cx = classNames.bind(styles)
 
 export const RegisterForm = () => {
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     const {
@@ -33,20 +35,24 @@ export const RegisterForm = () => {
     })
 
     const onSubmit = async (values) => {
+        if (loading) return
+        setLoading(true)
         try {
             const result = await authApiRequest.register(values)
-
             if (result.status === 200) {
-                alert('Đăng kí thành công! Vui lòng nhập mã xác thực để hoàn tất.')
+                showToast('Đăng ký thành công!')
                 router.push('/auth/resend-otp')
             }
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 
     return (
         <div className={cx('container')}>
+            <Toast />
             <form className={cx('form')} onSubmit={handleSubmit(onSubmit)}>
                 <h2 className={cx('title')}>Đăng ký</h2>
 

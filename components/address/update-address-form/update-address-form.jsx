@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AddressSchema } from '@/schemas'
 import addressApiRequest from '@/apiRequests/address'
-import Toast, { showToast } from '@/components/Toast/Toast'
+// import Toast, { showToast } from '@/components/Toast/Toast'
 import styles from './update-address-form.module.scss'
 import { Button } from '@/components/ui/button'
 
@@ -37,6 +37,9 @@ const UpdateAddressForm = ({ addressId }) => {
             town: '',
             district: '',
             province: '',
+            address_line: '',
+            districtCode: '',
+            provinceCode: '',
             address_line: '',
             default: false
         }
@@ -139,7 +142,7 @@ const UpdateAddressForm = ({ addressId }) => {
 
     return (
         <>
-            <Toast />
+            {/* <Toast /> */}
             <form onSubmit={handleSubmit(onSubmit)} className={cx('form-container')}>
                 <h2 className={cx('title')}>Chỉnh sửa địa chỉ</h2>
                 <div className={cx('form-group')}>
@@ -162,7 +165,7 @@ const UpdateAddressForm = ({ addressId }) => {
                             setDistrict('')
                             setWard('')
                             setValue('province', e.target.value)
-                            // setValue('provinceId', e.target.value)
+                            setValue('provinceId', e.target.value)
                         }}
                         value={province}
                     >

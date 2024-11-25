@@ -10,27 +10,38 @@ import { FilterBooks } from '@/components/ui/filter-books'
 import { ProductList } from '@/components/product-list'
 import styles from './book-collection.scss'
 import { Pagination } from '@/components/ui/pagination'
+import { catalogApiRequest } from '@/apiRequests/category'
+import productApiRequest from '@/apiRequests/product'
 const cx = classNames.bind(styles)
 
 const BookCollection = () => {
     const totalPages = 10
+    const [books, setBooks] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
+    const [categories, setCategories] = useState([])
+
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber)
-        // console.log(`Chuyển sang trang: ${pageNumber}`)
+        console.log(`Chuyển sang trang: ${pageNumber}`)
     }
 
-    const [categories, setCategories] = useState([])
     useEffect(() => {
         const fetchCategories = async () => {
-            const listCategories = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllCategories`, { cache: 'no-store' })
-                .then(res => res.json())
-            setCategories(listCategories.data)
+            const result = await catalogApiRequest.getAllCatalog()
+            setCategories(result.payload.data)
         }
 
-        fetchCategories();
+        fetchCategories()
     }, [])
-    // console.log(categories)
+
+    useEffect(() => {
+        const fetchBooks = async () => {
+            const result = await productApiRequest.getAllBooks()
+            setBooks(result.payload.data)
+        }
+
+        fetchBooks()
+    }, [])
 
     return (
         <div className={cx('wrapper')}>
@@ -49,7 +60,7 @@ const BookCollection = () => {
 
                 <FilterBooks />
 
-                <ProductList title={'Tất cả sản phẩm'} />
+                <ProductList title="Tất cả sản phẩm" data={books} />
             </div>
 
             <div className={cx('pagination')}>

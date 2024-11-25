@@ -8,7 +8,7 @@ import { handleHttpError } from '@/lib/utils'
 import { resetPasswordSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import Toast, { showToast } from '@/components/Toast/Toast'
+import Toast, { showToast } from '@/components/review-book/Toast'
 import styles from './reset-password-form.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
 

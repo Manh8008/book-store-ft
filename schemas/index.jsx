@@ -78,18 +78,6 @@ export const AddressSchema = z.object({
     province: z.string().min(1, { message: 'Tỉnh/Thành phố là bắt buộc!' }),
     district: z.string().min(1, { message: 'Quận/Huyện là bắt buộc!' }),
     town: z.string().min(1, { message: 'Phường/Xã là bắt buộc!' })
-    // provinceCode: z
-    //     .string()
-    //     .min(1, { message: 'Trường này là bắt buộc' })
-    //     .regex(/^[A-Za-z0-9]+$/, { message: 'Mã tỉnh không hợp lệ!' }),
-    // districtCode: z
-    //     .string()
-    //     .min(1, { message: 'Trường này là bắt buộc' })
-    //     .regex(/^[A-Za-z0-9]+$/, { message: 'Mã quận không hợp lệ!' }),
-    // townCode: z
-    //     .string()
-    //     .min(1, { message: 'Trường này là bắt buộc' })
-    //     .regex(/^[A-Za-z0-9]+$/, { message: 'Mã xã không hợp lệ!' })
 })
 
 export const resendOtpSchema = z.object({

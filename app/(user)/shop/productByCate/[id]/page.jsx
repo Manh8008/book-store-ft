@@ -1,14 +1,14 @@
-"use client"
+'use client'
 
 import classNames from 'classnames/bind'
-import { FilterBooks } from "@/components/ui/filter-books";
-import { Subcategory } from "@/components/ui/subcategory";
-import Image from "next/image";
+import { FilterBooks } from '@/components/ui/filter-books'
+import { Subcategory } from '@/components/ui/subcategory'
+import Image from 'next/image'
 import styles from '../../book-collection.scss'
 import { Pagination } from '@/components/ui/pagination'
-import { useEffect, useState } from 'react';
-import { ProductCard } from '@/components/product-card';
-import { Beardcrumb } from '@/components/ui/breadcrumb';
+import { useEffect, useState } from 'react'
+import { ProductCard } from '@/components/product-card'
+import { Beardcrumb } from '@/components/ui/breadcrumb'
 const cx = classNames.bind(styles)
 
 export default function ProductByCategories({ params }) {
@@ -25,22 +25,26 @@ export default function ProductByCategories({ params }) {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const listCategories = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllCategories`, { cache: 'no-store' })
-                .then(res => res.json())
+            const listCategories = await fetch(
+                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllCategories`,
+                { cache: 'no-store' }
+            ).then((res) => res.json())
             setCategories(listCategories.data)
         }
 
-        fetchCategories();
+        fetchCategories()
     }, [])
 
     useEffect(() => {
         const fetchProductByCate = async () => {
-            const listProductByCate = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getBookByCategory/${idCate}`, { cache: 'no-store' })
-                .then(res => res.json())
+            const listProductByCate = await fetch(
+                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getBookByCategory/${idCate}`,
+                { cache: 'no-store' }
+            ).then((res) => res.json())
             setProductByCate(listProductByCate.data)
         }
 
-        fetchProductByCate();
+        fetchProductByCate()
     }, [])
 
     return (
@@ -75,5 +79,5 @@ export default function ProductByCategories({ params }) {
                 </div>
             </div>
         </>
-    );
+    )
 }

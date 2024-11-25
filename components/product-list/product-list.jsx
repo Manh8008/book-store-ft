@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react'
 import { ProductCard } from '@/components/product-card'
 import styles from './product-list.module.scss'
 import productApiRequest from '@/apiRequests/product'
+import { Button } from '../ui/button'
 
 const cx = classNames.bind(styles)
 
-export default function ProductList({ title, data }) {
+export default function ProductList({ title, data, seeMore }) {
     return (
         <>
             <div className={cx('wrapper')}>
@@ -17,11 +18,13 @@ export default function ProductList({ title, data }) {
                     <ProductCard data={data} />
                 </div>
             </div>
-            {/* <div className={cx('see_more_button')}>
-                <Button outline large>
-                    Xem thêm
-                </Button>
-            </div> */}
+            <div className={cx('see_more_button')}>
+                {seeMore && (
+                    <Button outline large>
+                        Xem thêm
+                    </Button>
+                )}
+            </div>
         </>
     )
 }

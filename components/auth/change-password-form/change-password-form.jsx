@@ -8,9 +8,9 @@ import { handleHttpError } from '@/lib/utils'
 import { changePasswordSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import Toast, { showToast } from '@/components/Toast/Toast'
 import styles from './change-password-form.scss'
 import { authApiRequest } from '@/apiRequests/auth'
+import Toast, { showToast } from '@/components/ui/Toast'
 
 const cx = classNames.bind(styles)
 

@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import productApiRequest from '@/apiRequests/product'
 
 export default function Home() {
+    const [loading, setLoading] = useState(false)
+
     const [bestsellingBooks, setBestsellingBooks] = useState([])
 
     //Sách tư duy kỹ năng
@@ -23,6 +25,8 @@ export default function Home() {
 
     useEffect(() => {
         const fetchBooks = async () => {
+            if (loading) return
+
             try {
                 const [thinkingSkills, financialEconomics, educationalScience, political] =
                     await Promise.all([
@@ -41,6 +45,8 @@ export default function Home() {
                 if (political.status === 200) setPoliticalBooks(political.payload.data)
             } catch (error) {
                 console.log(error)
+            } finally {
+                setLoading(false)
             }
         }
 
@@ -85,7 +91,7 @@ export default function Home() {
                             alt="Sách tư duy - kỹ năng"
                         />
                         <div className="list-product">
-                            <ProductList title="" data={thinkingSkillsBook} />
+                            <ProductList title="" seeMore={true} data={thinkingSkillsBook} />
                         </div>
                     </div>
                     <div className="content">
@@ -98,7 +104,7 @@ export default function Home() {
                             alt="Sách tư duy - kỹ năng"
                         />
                         <div className="list-product">
-                            <ProductList title="" data={financialEconomicsBooks} />
+                            <ProductList title="" seeMore={true} data={financialEconomicsBooks} />
                         </div>
                     </div>
                     <div className="content">
@@ -112,7 +118,7 @@ export default function Home() {
                         />
                         <div className="list-product">
                             {' '}
-                            <ProductList title="" data={educationalScienceBooks} />
+                            <ProductList title="" seeMore={true} data={educationalScienceBooks} />
                         </div>
                     </div>
                     <div className="content">
@@ -125,7 +131,7 @@ export default function Home() {
                             alt="Sách tư duy - kỹ năng"
                         />
                         <div className="list-product">
-                            <ProductList title="" data={politicalBooks} />
+                            <ProductList title="" seeMore={true} data={politicalBooks} />
                         </div>
                     </div>
                 </div>

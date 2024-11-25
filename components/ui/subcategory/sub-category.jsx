@@ -8,24 +8,25 @@ export const Subcategory = (props) => {
     return (
         <>
             <div className={cx('list-category')}>
-                {
-                    props.data.map((category) => {
-                        return (
-                            <Link className={cx('category-link')} key={category.id} href={`/shop/productByCate/${category.id}`}>
-                                <img
-                                    width={96}
-                                    height={90}
-                                    quality={100}
-                                    src={category.image}
-                                    //backend chưa có ảnh để load
-                                    className={cx('category-image')}
-                                    alt={category.name}
-                                />
-                                <p>{category.name}</p>
-                            </Link>
-                        )
-                    })
-                }
+                {props.data.map((category) => {
+                    return (
+                        <Link
+                            className={cx('category-link')}
+                            key={category.id}
+                            href={`/shop/productByCate/${category.id}`}
+                        >
+                            <img
+                                width={96}
+                                height={90}
+                                quality={100}
+                                src={category.image}
+                                className={cx('category-image')}
+                                alt={category.name}
+                            />
+                            <p>{category.name}</p>
+                        </Link>
+                    )
+                })}
             </div>
         </>
     )

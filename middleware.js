@@ -1,30 +1,40 @@
 import { NextResponse } from 'next/server'
 
-const privatePaths = ['/customer/profile']
+// Định nghĩa các đường dẫn cần kiểm tra quyền truy cập
+const privatePaths = [
+    '/auth/change-password',
+    '/customer/address',
+    '/customer/address/create',
+    '/customer/address/update'
+]
 const authPaths = ['/auth/login', '/auth/register']
 
+// Middleware xử lý
 export function middleware(request) {
     const { pathname } = request.nextUrl
     const sessionTokenUser = request.cookies.get('sessionTokenUser')?.value
     const sessionTokenAdmin = request.cookies.get('sessionTokenAdmin')?.value
 
-    // Chưa đăng nhập thì không cho vào privatePaths và chuyển hướng sang login
+    // Chặn người dùng chưa đăng nhập truy cập vào các đường dẫn private (customer)
     if (privatePaths.some((path) => pathname.startsWith(path)) && !sessionTokenUser) {
         return NextResponse.redirect(new URL('/auth/login', request.url))
     }
 
-    // // Đăng nhập rồi thì không cho vào /auth/login và /auth/register nữa
-    // if (authPaths.some((path) => pathname.startsWith(path)) && sessionTokenUser) {
-    //     return NextResponse.redirect(new URL('/customer/profile', request.url))
-    // }
-
-    if (!sessionTokenAdmin && pathname.startsWith('/admin')) {
-        return NextResponse.redirect(new URL('/admin/auth/login', req.url))
+    // Chặn người dùng đã đăng nhập truy cập vào các trang đăng nhập/đăng ký
+    if (authPaths.some((path) => pathname.startsWith(path)) && sessionTokenUser) {
+        return NextResponse.redirect(new URL('/customer/profile', request.url))
     }
 
+    // Bảo vệ các trang admin (trừ /admin/auth/login)
+    if (pathname.startsWith('/admin') && pathname !== '/admin/auth/login' && !sessionTokenAdmin) {
+        return NextResponse.redirect(new URL('/admin/auth/login', request.url))
+    }
+
+    // 4. Cho phép tiếp tục nếu không vi phạm điều kiện nào
     return NextResponse.next()
 }
 
+// Config matcher
 export const config = {
-    matcher: ['/customer/profile', '/auth/login', '/auth/register']
+    matcher: ['/customer/:path*', '/auth/:path*', '/admin/:path*']
 }

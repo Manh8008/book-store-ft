@@ -19,6 +19,7 @@ const cx = classNames.bind(styles)
 export const LoginForm = () => {
     const router = useRouter()
     const { userData, setUserData } = useUser()
+    const [loading, setLoading] = useState(false)
 
     const [error, setError] = useState('')
     const {
@@ -35,6 +36,9 @@ export const LoginForm = () => {
     })
 
     const onSubmit = async (values) => {
+        if (loading) return
+        setLoading(true)
+
         setError('')
         try {
             const result = await authApiRequest.login(values)
@@ -53,6 +57,8 @@ export const LoginForm = () => {
             }
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 

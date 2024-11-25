@@ -7,6 +7,7 @@ const UserContext = createContext()
 export const useUser = () => useContext(UserContext)
 
 export const UserProvider = ({ children }) => {
+    const token = localStorage.getItem('sessionTokenUser')
     const [userData, setUserData] = useState({
         id: '',
         name: '',
@@ -17,32 +18,36 @@ export const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const result = await accountApiRequest.getProfile()
+        if (token) {
+            const fetchProfile = async () => {
+                try {
+                    const result = await accountApiRequest.getProfile()
 
-                if (result.status === 200) {
-                    const profileInfo = result.payload.data
+                    if (result.status === 200) {
+                        const profileInfo = result.payload.data
 
-                    setUserData({
-                        id: profileInfo.user.id,
-                        name: profileInfo.user.name || '',
-                        email: profileInfo.user.email || '',
-                        phone: profileInfo.user.phone || '',
-                        address: profileInfo.user.address || ''
-                    })
-                } else {
-                    console.log('Chưa nhận được dữ liệu')
+                        setUserData({
+                            id: profileInfo.user.id,
+                            name: profileInfo.user.name || '',
+                            email: profileInfo.user.email || '',
+                            phone: profileInfo.user.phone || '',
+                            address: profileInfo.user.address || ''
+                        })
+                    } else {
+                        console.log('Chưa nhận được dữ liệu')
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi lấy dữ liệu người dùng:', error)
+                } finally {
+                    setLoading(false)
                 }
-            } catch (error) {
-                console.error('Lỗi khi lấy dữ liệu người dùng:', error)
-            } finally {
-                setLoading(false)
             }
-        }
 
-        fetchProfile()
-    }, [])
+            fetchProfile()
+        } else {
+            setLoading(false)
+        }
+    }, [token])
 
     return (
         <UserContext.Provider value={{ userData, setUserData, loading }}>

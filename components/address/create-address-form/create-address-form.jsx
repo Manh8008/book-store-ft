@@ -43,6 +43,9 @@ const AddAddressForm = () => {
             town: '',
             district: '',
             province: '',
+            townCode: '',
+            districtCode: '',
+            provinceCode: '',
             address_line: '',
             default: false
         }
@@ -97,9 +100,18 @@ const AddAddressForm = () => {
 
     const onSubmit = async (values) => {
         try {
-            values.province = provinces.find((p) => p.province_id === province)?.province_name
-            values.district = districts.find((d) => d.district_id === district)?.district_name
-            values.town = wards.find((w) => w.ward_id === ward)?.ward_name
+            // Lấy các thông tin province, district, ward từ các id đã chọn
+            const selectedProvince = provinces.find((p) => p.province_id === province)
+            const selectedDistrict = districts.find((d) => d.district_id === district)
+            const selectedWard = wards.find((w) => w.ward_id === ward)
+
+            // Cập nhật các giá trị provinceName, provinceCode và các giá trị khác vào form
+            values.province = selectedProvince ? selectedProvince.province_name : ''
+            values.provinceCode = selectedProvince ? selectedProvince.province_id : ''
+            values.district = selectedDistrict ? selectedDistrict.district_name : ''
+            values.districtCode = selectedDistrict ? selectedDistrict.district_id : ''
+            values.town = selectedWard ? selectedWard.ward_name : ''
+            values.townCode = selectedWard ? selectedWard.ward_id : ''
             values.default = isDefault ? 1 : 0
 
             const result = await addressApiRequest.addAddress(values)
@@ -152,6 +164,14 @@ const AddAddressForm = () => {
                         onChange={(e) => {
                             setProvince(e.target.value)
                             setValue('province', e.target.value)
+
+                            const selectedProvince = provinces.find(
+                                (province) => province.province_id === e.target.value
+                            )
+                            setValue(
+                                'provinceCode',
+                                selectedProvince ? selectedProvince.province_id : ''
+                            )
                         }}
                         value={province}
                     >
@@ -172,6 +192,14 @@ const AddAddressForm = () => {
                         onChange={(e) => {
                             setDistrict(e.target.value)
                             setValue('district', e.target.value)
+
+                            const selectedDistrict = districts.find(
+                                (district) => district.district_id === e.target.value
+                            )
+                            setValue(
+                                'districtCode',
+                                selectedDistrict ? selectedDistrict.district_id : ''
+                            )
                         }}
                         value={district}
                     >
@@ -191,8 +219,24 @@ const AddAddressForm = () => {
                         {...register('town')}
                         className={cx('select')}
                         onChange={(e) => {
+                            const selectedWard = wards.find(
+                                (ward) => ward.ward_id === e.target.value
+                            )
                             setWard(e.target.value)
                             setValue('town', e.target.value)
+
+                            const selectedProvince = provinces.find(
+                                (province) => province.province_id === province
+                            )
+
+                            setValue(
+                                'provinceCode',
+                                selectedProvince ? selectedProvince.province_id : ''
+                            )
+                            setValue(
+                                'provinceName',
+                                selectedProvince ? selectedProvince.province_name : ''
+                            )
                         }}
                         value={ward}
                     >
@@ -229,7 +273,9 @@ const AddAddressForm = () => {
                     </label>
                 </div>
 
-                <Button primary>Lưu địa chỉ</Button>
+                <Button primary type="submit" className={cx('submit-btn')}>
+                    Lưu địa chỉ
+                </Button>
             </form>
         </>
     )
