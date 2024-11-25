@@ -1,5 +1,5 @@
 'use client'
-import Cookies from 'js-cookie'
+import accountApiRequest from '@/apiRequests/account'
 import React, { createContext, useContext, useState, useEffect } from 'react'
 
 const UserContext = createContext()
@@ -7,9 +7,6 @@ const UserContext = createContext()
 export const useUser = () => useContext(UserContext)
 
 export const UserProvider = ({ children }) => {
-    const tokenUser = Cookies.get('sessionTokenUser')
-
-    console.log
     const [userData, setUserData] = useState({
         id: '',
         name: '',
@@ -22,29 +19,17 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/profile`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${tokenUser}`
-                        }
-                    }
-                )
+                const result = await accountApiRequest.getProfile()
 
-                console.log(response)
-
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log(result.data.user.address)
+                if (result.status === 200) {
+                    const profileInfo = result.payload.data
 
                     setUserData({
-                        id: result.data.user.id,
-                        name: result.data.user.name || '',
-                        email: result.data.user.email || '',
-                        phone: result.data.user.phone || '',
-                        address: result.data.user.address || ''
+                        id: profileInfo.user.id,
+                        name: profileInfo.user.name || '',
+                        email: profileInfo.user.email || '',
+                        phone: profileInfo.user.phone || '',
+                        address: profileInfo.user.address || ''
                     })
                 } else {
                     console.log('Chưa nhận được dữ liệu')

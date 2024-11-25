@@ -1,9 +1,8 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames/bind'
 import Link from 'next/link'
-import { useUser } from '@/context/user-context'
 import styles from './user-header.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
 
@@ -11,11 +10,11 @@ const cx = classNames.bind(styles)
 
 function UserHeader() {
     const [showAccountMenu, setShowAccountMenu] = useState(false)
-    const { userData, setUserData } = useUser()
+    const token = localStorage.getItem('sessionTokenUser')
     const router = useRouter()
 
     const toggleAccountMenu = () => {
-        if (userData) {
+        if (token) {
             setShowAccountMenu(!showAccountMenu)
         } else {
             router.push('/auth/login')
@@ -24,12 +23,10 @@ function UserHeader() {
 
     const handleLogout = async () => {
         try {
-            setUserData(null)
             setShowAccountMenu(false)
 
-            await authApiRequest.logoutFromNextClientToServer()
-
-            router.push('/')
+            const result = await authApiRequest.logoutFromNextClientToServer()
+            if (result.status === 200) router.push('/')
         } catch (error) {
             console.error('Đăng xuất thất bại', error)
         }
@@ -37,14 +34,13 @@ function UserHeader() {
 
     return (
         <div className={cx('header__user')}>
-            {userData ? (
+            {token && token ? (
                 <>
                     <div className={cx('user-icon')} onClick={toggleAccountMenu}>
                         <div className="link">
                             <i className="fa-regular fa-user"></i>
                             <div className="text text-user">
-                                <span>{userData.username || 'Tài khoản'}</span>{' '}
-                                {/* Hiển thị tên người dùng */}
+                                <span>{'Tài khoản'}</span>
                             </div>
                         </div>
                     </div>

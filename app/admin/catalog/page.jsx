@@ -29,17 +29,9 @@ export default function Categories() {
             confirmButtonText: 'Có, tôi muốn xóa'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/admin/destroyCatalog/${id}`,
-                    {
-                        method: 'DELETE',
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                )
-                const deleteResult = await res.json()
-                if (deleteResult.message) {
+                const result = await catalogApiRequestAdmin.destroyCatalog(id)
+
+                if (result.status === 200) {
                     Swal.fire({
                         title: 'Xóa thành công',
                         text: 'Danh mục của bạn đã được xóa.',

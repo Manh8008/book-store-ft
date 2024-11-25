@@ -6,7 +6,7 @@ const authPaths = ['/auth/login', '/auth/register']
 export function middleware(request) {
     const { pathname } = request.nextUrl
     const sessionTokenUser = request.cookies.get('sessionTokenUser')?.value
-    const sessionTokenAdmin = request.cookies.get('adminSessionToken')?.value
+    const sessionTokenAdmin = request.cookies.get('sessionTokenAdmin')?.value
 
     // Chưa đăng nhập thì không cho vào privatePaths và chuyển hướng sang login
     if (privatePaths.some((path) => pathname.startsWith(path)) && !sessionTokenUser) {

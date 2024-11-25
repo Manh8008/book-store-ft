@@ -37,7 +37,7 @@ const PaymentResult = ({ offlinePaymentData }) => {
                         <p className={cx('message')}>
                             Đơn hàng của bạn đã được xử lý thành công.
                             <br />
-                            Mã giao dịch: <strong>{transactionId}</strong>
+                            {/* Mã giao dịch: <strong>{transactionId}</strong> */}
                             <br />
                             Mã đơn hàng: <strong>{orderRef}</strong>
                         </p>

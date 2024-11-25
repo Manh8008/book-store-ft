@@ -4,13 +4,15 @@ import { useState, useEffect } from 'react'
 import classNames from 'classnames/bind'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+
 import { AddressSchema } from '@/schemas'
 import addressApiRequest from '@/apiRequests/address'
-import Toast, { showToast } from '@/components/Toast/Toast'
+import { ToastError } from '@/components/ui/ToastError'
 import styles from './create-address-form.module.scss'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@/context/user-context'
 import { Input } from '@/components/ui/input'
+import { handleHttpError } from '@/lib/utils'
 
 const cx = classNames.bind(styles)
 
@@ -24,6 +26,7 @@ const AddAddressForm = () => {
     const [province, setProvince] = useState('')
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
+    const [error, setError] = useState('')
 
     const {
         register,
@@ -54,7 +57,7 @@ const AddAddressForm = () => {
                 const data = await response.json()
                 setProvinces(data?.results)
             } catch (error) {
-                console.error('Error fetching provinces:', error)
+                handleHttpError(error, setError)
             }
         }
         fetchProvinces()
@@ -69,7 +72,7 @@ const AddAddressForm = () => {
                 const data = await response.json()
                 setDistricts(data?.results)
             } catch (error) {
-                console.error('Error fetching districts:', error)
+                handleHttpError(error, setError)
             }
         }
 
@@ -85,7 +88,7 @@ const AddAddressForm = () => {
                 const data = await response.json()
                 setWards(data?.results)
             } catch (error) {
-                console.error('Error fetching wards:', error)
+                handleHttpError(error, setError)
             }
         }
 
@@ -119,18 +122,16 @@ const AddAddressForm = () => {
 
                 router.push('/customer/address')
             } else {
-                console.error('Không thể thêm địa chỉ mới. Vui lòng thử lại.')
-                showToast('error', 'Không thể thêm địa chỉ mới. Vui lòng thử lại.')
+                handleHttpError(result, setError)
             }
         } catch (error) {
-            console.error(error)
-            showToast('error', 'Đã xảy ra lỗi trong quá trình thêm địa chỉ.')
+            handleHttpError(error, setError)
         }
     }
 
     return (
         <>
-            <Toast />
+            <ToastError errorMessage={error} />
             <form onSubmit={handleSubmit(onSubmit)} className={cx('form-container')}>
                 <h2 className={cx('title')}>Thêm địa chỉ mới</h2>
                 <div className={cx('form-group')}>
@@ -216,15 +217,19 @@ const AddAddressForm = () => {
                         <p className={cx('error')}>{errors.address_line.message}</p>
                     )}
                 </div>
+
                 <div className={cx('form-group')}>
                     <label>
-                        <input type="checkbox" {...register('default')} />
+                        <input
+                            type="checkbox"
+                            {...register('default')}
+                            className={cx('checkbox')}
+                        />
                         Đặt làm địa chỉ mặc định
                     </label>
                 </div>
-                <Button primary className={cx('submit-button')}>
-                    Cập nhật
-                </Button>
+
+                <Button primary>Lưu địa chỉ</Button>
             </form>
         </>
     )

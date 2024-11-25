@@ -1,54 +1,30 @@
 'use client'
+import orderApiRequest from '@/apiRequests/order'
 import { Button } from '@/components/ui/button'
-import Cookies from 'js-cookie'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function Order() {
-    const token = Cookies.get('sessionTokenAdmin')
-    const [orderData, setOrderData] = useState(null)
+    const [orderData, setOrderData] = useState([])
     const [error, setError] = useState('')
 
     useEffect(() => {
-        const fetchOrder = async () => {
+        const fetchOrders = async () => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllOrder`, {
-                    method: 'GET'
-                })
-                const resData = await res.json()
-
-                if (res.ok && resData.success) {
-                    setOrderData(resData.data)
-                } else {
-                    setError('Không thể lấy dữ liệu đơn hàng!')
-                }
+                const data = await orderApiRequest.getAll()
+                setOrderData(data.payload.data)
             } catch (err) {
-                setError('Lỗi kết nối tới server!')
+                setError('Không thể lấy dữ liệu đơn hàng!')
             }
         }
 
-        fetchOrder()
+        fetchOrders()
     }, [])
 
     const handleChangeStatus = async (id) => {
         try {
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/admin/updateOrderStatus/${id}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ order_status: 'Đã xác nhận' })
-                }
-            )
-
-            const resData = await res.json()
-
-            console.log(resData)
-
-            if (res.ok && resData.success) {
+            const res = await orderApiRequest.updateStatus(id, { order_status: 'Đã xác nhận' })
+            if (res) {
                 setOrderData((prevData) =>
                     prevData.map((order) =>
                         order.id === id ? { ...order, order_status: 'Đã xác nhận' } : order
@@ -76,9 +52,7 @@ export default function Order() {
                                 </div>
                                 <div className="iq-card-body">
                                     {error && <p className="text-danger">{error}</p>}
-                                    {orderData && orderData.length === 0 && (
-                                        <p>Không có đơn hàng nào!</p>
-                                    )}
+                                    {orderData.length === 0 && <p>Không có đơn hàng nào!</p>}
                                     <div className="table-responsive">
                                         <table
                                             className="data-tables table table-striped table-bordered"
@@ -104,20 +78,20 @@ export default function Order() {
                                             <tbody>
                                                 {orderData &&
                                                     orderData.map((item) => (
-                                                        <tr key={item?.id}>
+                                                        <tr key={item.id}>
                                                             <td>
-                                                                {item?.orderId || 'ORDER-123456'}
+                                                                {item.orderId || 'ORDER-123456'}
                                                             </td>
                                                             <td className="text-start">
                                                                 <small>
                                                                     Họ và tên:{' '}
-                                                                    <strong>{item?.name}</strong>
+                                                                    <strong>{item.name}</strong>
                                                                 </small>
                                                                 <br />
                                                                 <small>
                                                                     Số điện thoại:{' '}
                                                                     <strong>
-                                                                        {item?.phone || '---'}
+                                                                        {item.phone || '---'}
                                                                     </strong>
                                                                 </small>
                                                             </td>
@@ -125,34 +99,33 @@ export default function Order() {
                                                                 <small>
                                                                     Quận/Huyện:{' '}
                                                                     <strong>
-                                                                        {item?.district || '---'}
+                                                                        {item.district || '---'}
                                                                     </strong>
                                                                 </small>
                                                                 <br />
                                                                 <small>
-                                                                    Phường/Xã:
+                                                                    Phường/Xã:{' '}
                                                                     <strong>
-                                                                        {item?.town || '---'}
+                                                                        {item.town || '---'}
                                                                     </strong>
                                                                 </small>
                                                                 <br />
                                                                 <small>
                                                                     Tỉnh/Thành phố:{' '}
                                                                     <strong>
-                                                                        {item?.province || '---'}
+                                                                        {item.province || '---'}
                                                                     </strong>
                                                                 </small>
                                                                 <br />
                                                                 <small>
                                                                     Địa chỉ chi tiết:{' '}
                                                                     <strong>
-                                                                        {item?.address_line ||
-                                                                            '---'}
+                                                                        {item.address_line || '---'}
                                                                     </strong>
                                                                 </small>
                                                             </td>
-                                                            <td>{item?.updated_at || '---'}</td>
-                                                            <td>{item?.order_status}</td>
+                                                            <td>{item.updated_at || '---'}</td>
+                                                            <td>{item.order_status}</td>
                                                             <td>
                                                                 <div className="flex align-items-center list-user-action">
                                                                     {item.order_status ===
@@ -161,7 +134,7 @@ export default function Order() {
                                                                             outline
                                                                             onClick={() =>
                                                                                 handleChangeStatus(
-                                                                                    item?.id
+                                                                                    item.id
                                                                                 )
                                                                             }
                                                                         >

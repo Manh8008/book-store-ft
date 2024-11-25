@@ -65,20 +65,9 @@ const CreateCatalog = ({ categories }) => {
             formData.append('name', data.name)
             formData.append('image', data.image)
 
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/admin/storeCatalog`,
-                {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'multipart/form-data',
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: formData
-                }
-            )
-            const resData = await res.json()
+            const result = await catalogApiRequestAdmin.addCatalog(formData)
 
-            if (resData.success == true) {
+            if (result.status === 200) {
                 router.push('/admin/catalog')
             }
         } catch (error) {
