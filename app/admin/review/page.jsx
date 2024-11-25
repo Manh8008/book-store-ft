@@ -31,7 +31,7 @@ export default function Review() {
                                             <tbody>
                                                 <tr>
                                                     <td>1</td>
-                                                    <td><img className="img-fluid rounded" src="http://localhost:9000/img/review.jpg" alt="" /></td>
+                                                    <td><img className="img-fluid rounded" src="http://localhost:3000/img/review.jpg" alt="" /></td>
                                                     <td>
                                                         <p class="mb-0">Thiết Kế Game Nâng Cao – Nâng Nghệ Thuật Thiết Kế Game Lên Tầm Cao Mới.</p>
                                                     </td>
@@ -45,7 +45,7 @@ export default function Review() {
                                                 </tr>
                                                 <tr>
                                                     <td>1</td>
-                                                    <td><img className="img-fluid rounded" src="http://localhost:9000/img/review.jpg" alt="" /></td>
+                                                    <td><img className="img-fluid rounded" src="http://localhost:3000/img/review.jpg" alt="" /></td>
                                                     <td>
                                                         <p class="mb-0">Thiết Kế Game Nâng Cao – Nâng Nghệ Thuật Thiết Kế Game Lên Tầm Cao Mới.</p>
                                                     </td>
@@ -59,7 +59,7 @@ export default function Review() {
                                                 </tr>
                                                 <tr>
                                                     <td>1</td>
-                                                    <td><img className="img-fluid rounded" src="http://localhost:9000/img/review.jpg" alt="" /></td>
+                                                    <td><img className="img-fluid rounded" src="http://localhost:3000/img/review.jpg" alt="" /></td>
                                                     <td>
                                                         <p class="mb-0">Thiết Kế Game Nâng Cao – Nâng Nghệ Thuật Thiết Kế Game Lên Tầm Cao Mới.</p>
                                                     </td>
@@ -73,7 +73,7 @@ export default function Review() {
                                                 </tr>
                                                 <tr>
                                                     <td>1</td>
-                                                    <td><img className="img-fluid rounded" src="http://localhost:9000/img/review.jpg" alt="" /></td>
+                                                    <td><img className="img-fluid rounded" src="http://localhost:3000/img/review.jpg" alt="" /></td>
                                                     <td>
                                                         <p class="mb-0">Thiết Kế Game Nâng Cao – Nâng Nghệ Thuật Thiết Kế Game Lên Tầm Cao Mới.</p>
                                                     </td>

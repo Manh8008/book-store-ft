@@ -44,6 +44,7 @@ export default function Product() {
                                                     <th width="15%">Thể loại sách</th>
                                                     <th width="15%">Tác giả sách</th>
                                                     <th width="18%">Mô tả sách</th>
+                                                    <th width="5%">Số lượng</th>
                                                     <th width="10%">Giá</th>
                                                     <th width="15%">Hoạt động</th>
                                                 </tr>
@@ -54,10 +55,13 @@ export default function Product() {
                                                         <td>{index + 1}</td>
                                                         <td><img className="img-fluid rounded" src={product.images[0]?.url} alt={product.name} /></td>
                                                         <td>{product.name}</td>
-                                                        <td>{product.category_id}</td>
+                                                        <td>{product.category.name}</td>
                                                         <td>{product.author.name}</td>
                                                         <td>
                                                             <p className="mb-0">{product.short_summary}</p>
+                                                        </td>
+                                                        <td>
+                                                            {product.stock}
                                                         </td>
                                                         <td>{parseFloat(product.price).toLocaleString('vi-VN')}đ</td>
                                                         <td>

@@ -1,4 +1,5 @@
 import Chart from './components/chart'
+import RecentOrder from './components/order/recent-order'
 export default function DashBoard() {
     return (
         <>
@@ -176,125 +177,7 @@ export default function DashBoard() {
                                 </div>
                             </div>
                         </div> */}
-                        <div className="col-sm-12">
-                            <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
-                                <div className="iq-card-header d-flex justify-content-between">
-                                    <div className="iq-header-title">
-                                        <h4 className="card-title">Mở hóa đơn</h4>
-                                    </div>
-                                    <div className="iq-card-header-toolbar d-flex align-items-center">
-                                        <div className="dropdown">
-                                            <span
-                                                className="dropdown-toggle text-primary"
-                                                id="dropdownMenuButton5"
-                                                data-toggle="dropdown"
-                                            >
-                                                <i className="ri-more-fill"></i>
-                                            </span>
-                                            <div
-                                                className="dropdown-menu dropdown-menu-right"
-                                                aria-labelledby="dropdownMenuButton5"
-                                            >
-                                                <a className="dropdown-item" href="#">
-                                                    <i className="ri-eye-fill mr-2"></i>Xem
-                                                </a>
-                                                <a className="dropdown-item" href="#">
-                                                    <i className="ri-delete-bin-6-fill mr-2"></i>Xoá
-                                                </a>
-                                                <a className="dropdown-item" href="#">
-                                                    <i className="ri-pencil-fill mr-2"></i>Sửa
-                                                </a>
-                                                <a className="dropdown-item" href="#">
-                                                    <i className="ri-printer-fill mr-2"></i>In
-                                                </a>
-                                                <a className="dropdown-item" href="#">
-                                                    <i className="ri-file-download-fill mr-2"></i>
-                                                    Tải xuống
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="iq-card-body">
-                                    <div className="table-responsive">
-                                        <table className="table mb-0 table-borderless">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Khách hàng</th>
-                                                    <th scope="col">Ngày</th>
-                                                    <th scope="col">Hóa đơn</th>
-                                                    <th scope="col">Số tiền</th>
-                                                    <th scope="col">Tình trạng</th>
-                                                    <th scope="col">Hoạt động</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Ông Trần Thuận</td>
-                                                    <td>18/10/2019</td>
-                                                    <td>20156</td>
-                                                    <td>150.000đ</td>
-                                                    <td>
-                                                        <div className="badge badge-pill badge-success">
-                                                            Đã thanh toán
-                                                        </div>
-                                                    </td>
-                                                    <td>Sao chép</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Hoàng Vũ</td>
-                                                    <td>26/10/2019</td>
-                                                    <td>7859</td>
-                                                    <td>200.000đ</td>
-                                                    <td>
-                                                        <div className="badge badge-pill badge-success">
-                                                            Đã thanh toán
-                                                        </div>
-                                                    </td>
-                                                    <td>Gửi Email</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>QT shop</td>
-                                                    <td>18/11/2019</td>
-                                                    <td>6396</td>
-                                                    <td>250.000đ</td>
-                                                    <td>
-                                                        <div className="badge badge-pill badge-danger">
-                                                            Chưa thanh toán
-                                                        </div>
-                                                    </td>
-                                                    <td>Trước hạn</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Quang Minh</td>
-                                                    <td>14/12/2019</td>
-                                                    <td>7854</td>
-                                                    <td>500.000đ</td>
-                                                    <td>
-                                                        <div className="badge badge-pill badge-success">
-                                                            Đã thanh toán
-                                                        </div>
-                                                    </td>
-                                                    <td>Sao chép</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>QT Store</td>
-                                                    <td>24/12/2019</td>
-                                                    <td>568569</td>
-                                                    <td>10000đ</td>
-                                                    <td>
-                                                        <div className="badge badge-pill badge-success">
-                                                            Đã thanh toán
-                                                        </div>
-                                                    </td>
-                                                    <td>Gửi Email</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <RecentOrder></RecentOrder>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,8 @@ const BookCollection = () => {
     }
 
     const [categories, setCategories] = useState([])
+    const [products, setProducts] = useState([])
+
     useEffect(() => {
         const fetchCategories = async () => {
             const listCategories = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllCategories`, { cache: 'no-store' })
@@ -31,6 +33,15 @@ const BookCollection = () => {
         fetchCategories();
     }, [])
     // console.log(categories)
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const listProduct = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllBooks`, { cache: 'no-store' })
+                .then(res => res.json())
+            setProducts(listProduct.data)
+        }
+        fetchProducts();
+    }, [])
 
     return (
         <div className={cx('wrapper')}>
@@ -49,7 +60,7 @@ const BookCollection = () => {
 
                 <FilterBooks />
 
-                <ProductList title={'Tất cả sản phẩm'} />
+                <ProductList title={'Tất cả sản phẩm'} data={products} />
             </div>
 
             <div className={cx('pagination')}>

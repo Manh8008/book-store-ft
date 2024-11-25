@@ -86,7 +86,7 @@ export default function Categories() {
                                                 <tr>
                                                     <th width="5%">STT</th>
                                                     <th width="5%">Ảnh danh mục</th>
-                                                    <th width="25%">Tên danh mục</th>
+                                                    <th width="20%">Tên danh mục</th>
                                                     {/* <th width="40%">Mô tả danh mục</th> */}
                                                     <th width="5%">Hoạt động</th>
                                                 </tr>

@@ -71,7 +71,7 @@ export default function Order() {
                                                         Địa chỉ nhận hàng
                                                     </th>
                                                     <th style={{ width: '10%' }}>Ngày đặt hàng</th>
-                                                    <th style={{ width: '10%' }}>Trạng thái</th>
+                                                    <th style={{ width: '15%' }}>Trạng thái</th>
                                                     <th style={{ width: '8%' }}>Hoạt động</th>
                                                 </tr>
                                             </thead>
@@ -129,7 +129,7 @@ export default function Order() {
                                                             <td>
                                                                 <div className="flex align-items-center list-user-action">
                                                                     {item.order_status ===
-                                                                    'Chờ xác nhận' ? (
+                                                                        'Chờ xác nhận' ? (
                                                                         <Button
                                                                             outline
                                                                             onClick={() =>
