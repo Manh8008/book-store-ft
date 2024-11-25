@@ -8,8 +8,6 @@ import { useRouter } from 'next/navigation'
 import { handleHttpError } from '@/lib/utils'
 import { catalogApiRequestAdmin } from '@/apiRequests/category'
 
-import Cookies from 'js-cookie'
-
 const getFileFromUrl = async (url) => {
     const res = await fetch(url)
     const blob = await res.blob()
@@ -26,7 +24,6 @@ const categoryForm1Schema = z.object({
 })
 
 const CreateCatalog = ({ categories }) => {
-    const token = Cookies.get('sessionTokenAdmin')
     const [error, setError] = useState('')
     const router = useRouter()
     const [imagePreview, setImagePreview] = useState(null)
@@ -41,13 +38,13 @@ const CreateCatalog = ({ categories }) => {
         resolver: zodResolver(categoryForm1Schema),
         defaultValues: categories
             ? {
-                  name: categories.name,
-                  image: undefined
-              }
+                name: categories.name,
+                image: undefined
+            }
             : {
-                  name: '',
-                  image: undefined
-              }
+                name: '',
+                image: undefined
+            }
     })
 
     useEffect(() => {
