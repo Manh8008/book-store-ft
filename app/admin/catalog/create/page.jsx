@@ -115,15 +115,19 @@ const CreateCatalog = ({ categories }) => {
                                                 )}
                                             />
                                             {imagePreview && (
-                                                <img
-                                                    src={imagePreview}
-                                                    alt="Preview"
-                                                    style={{
-                                                        maxWidth: '300px',
-                                                        marginTop: '20px',
-                                                        marginBottom: '20px'
-                                                    }}
-                                                />
+                                                <div className="mt-3">
+                                                    <img
+                                                        src={imagePreview}
+                                                        alt="Preview"
+                                                        style={{
+                                                            maxWidth: "100%",
+                                                            maxHeight: "200px",
+                                                            objectFit: "cover",
+                                                            border: "1px solid #ddd",
+                                                            borderRadius: "8px"
+                                                        }}
+                                                    />
+                                                </div>
                                             )}
                                             {errors.image && (
                                                 <span style={{ color: 'red' }}>

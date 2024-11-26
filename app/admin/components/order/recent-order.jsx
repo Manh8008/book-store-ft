@@ -24,6 +24,10 @@ export default function RecentOrder() {
         return `${day}/${month}/${year}`;
     }
 
+    const filterPendingOrders = (orders) => {
+        return orders.filter((order) => order.order_status === "Chờ xác nhận")
+    }
+
 
 
 
@@ -84,8 +88,8 @@ export default function RecentOrder() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {order.map((order) => (
-                                        <tr>
+                                    {filterPendingOrders(order).map((order) => (
+                                        <tr key={order.id}>
                                             <td>{order.name}</td>
                                             <td>{formatDate(order.order_date)}</td>
                                             <td>{order.order_code}</td>

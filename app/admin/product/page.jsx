@@ -1,21 +1,59 @@
 "use client"
 
+import { productApiRequestAdmin } from "@/apiRequests/product";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Swal from 'sweetalert2'
+
 
 export default function Product() {
-
     const [product, setData] = useState([])
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllBooks`, { cache: 'no-store' })
-            const newData = await res.json()
-            setData(newData.data)
-        }
+    const fetchProduct = async () => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllBooks`, { cache: 'no-store' })
+        const newData = await res.json()
+        setData(newData.data)
+    }
 
+    useEffect(() => {
         fetchProduct()
     }, [])
+
+    const messageDelete = (id) => {
+        Swal.fire({
+            title: 'Bạn chắc muốn xóa sản phẩm này?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có, tôi muốn xóa'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const result = await productApiRequestAdmin.destroyProduct(id)
+
+                if (result.status === 200) {
+                    Swal.fire({
+                        title: 'Xóa thành công',
+                        text: 'Sản phẩm của bạn đã được xóa.',
+                        confirmButtonColor: '#3085d6',
+                        icon: 'success'
+                    })
+                    fetchProduct()
+                } else {
+                    Swal.fire({
+                        title: 'Lỗi',
+                        text: 'Có lỗi xảy ra khi xóa sản phẩm.',
+                        confirmButtonColor: '#3085d6',
+                        icon: 'error'
+                    })
+                }
+            }
+        })
+    }
+
+    const deleteProduct = (id) => {
+        messageDelete(id)
+    }
 
 
     return (
@@ -55,7 +93,7 @@ export default function Product() {
                                                         <td>{index + 1}</td>
                                                         <td><img className="img-fluid rounded" src={product.images[0]?.url} alt={product.name} /></td>
                                                         <td>{product.name}</td>
-                                                        <td>{product.category.name}</td>
+                                                        <td>{product.category?.name}</td>
                                                         <td>{product.author.name}</td>
                                                         <td>
                                                             <p className="mb-0">{product.short_summary}</p>
@@ -66,8 +104,10 @@ export default function Product() {
                                                         <td>{parseFloat(product.price).toLocaleString('vi-VN')}đ</td>
                                                         <td>
                                                             <div className="flex align-items-center list-user-action">
-                                                                <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/admin/product/update/1"><i className="ri-pencil-line"></i></Link>
-                                                                <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#"><i className="ri-delete-bin-line"></i></Link>
+                                                                <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href={`/admin/product/update/${product.id}`}><i className="ri-pencil-line"></i></Link>
+                                                                <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#" onClick={() =>
+                                                                    deleteProduct(product.id)
+                                                                }><i className="ri-delete-bin-line"></i></Link>
                                                             </div>
                                                         </td>
                                                     </tr>
