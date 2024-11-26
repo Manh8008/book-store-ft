@@ -38,13 +38,13 @@ const CreateCatalog = ({ categories }) => {
         resolver: zodResolver(categoryForm1Schema),
         defaultValues: categories
             ? {
-                name: categories.name,
-                image: undefined
-            }
+                  name: categories.name,
+                  image: undefined
+              }
             : {
-                name: '',
-                image: undefined
-            }
+                  name: '',
+                  image: undefined
+              }
     })
 
     useEffect(() => {
@@ -120,17 +120,17 @@ const CreateCatalog = ({ categories }) => {
                                                         src={imagePreview}
                                                         alt="Preview"
                                                         style={{
-                                                            maxWidth: "100%",
-                                                            maxHeight: "200px",
-                                                            objectFit: "cover",
-                                                            border: "1px solid #ddd",
-                                                            borderRadius: "8px"
+                                                            maxWidth: '100%',
+                                                            maxHeight: '200px',
+                                                            objectFit: 'cover',
+                                                            border: '1px solid #ddd',
+                                                            borderRadius: '8px'
                                                         }}
                                                     />
                                                 </div>
                                             )}
                                             {errors.image && (
-                                                <span style={{ color: 'red' }}>
+                                                <span className="error" style={{ marginTop: 16 }}>
                                                     {errors.image.message}
                                                 </span>
                                             )}
@@ -147,9 +147,7 @@ const CreateCatalog = ({ categories }) => {
                                             })}
                                         />
                                         {errors.name && (
-                                            <span style={{ color: 'red' }}>
-                                                {errors.name.message}
-                                            </span>
+                                            <span className="error">{errors.name.message}</span>
                                         )}
                                     </div>
                                     <div className="d-flex">

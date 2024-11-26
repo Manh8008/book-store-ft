@@ -1,4 +1,5 @@
 // Import các tệp CSS và tệp tĩnh
+import '../globals.scss'
 import '../../public/css/bootstrap.min.css'
 import '../../public/css/dataTables.bootstrap4.min.css'
 import '../../public/css/style.css'

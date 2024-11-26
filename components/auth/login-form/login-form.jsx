@@ -25,7 +25,6 @@ export const LoginForm = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
-    const [_, startTransition] = useTransition()
 
     const {
         register,
@@ -48,8 +47,6 @@ export const LoginForm = () => {
         setSuccess('')
         try {
             const result = await authApiRequest.login(values)
-
-            console.log(result)
 
             if (result.status === 200) {
                 await authApiRequest.auth({ sessionToken: result.payload.data.access_token })

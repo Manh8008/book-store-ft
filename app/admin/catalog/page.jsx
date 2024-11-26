@@ -114,7 +114,7 @@ export default function Categories() {
                                                                     data-placement="top"
                                                                     title=""
                                                                     data-original-title="Sửa"
-                                                                    href="/admin/catalog/update/1"
+                                                                    href={`/admin/catalog/update/${cate.id}`}
                                                                 >
                                                                     <i className="ri-pencil-line"></i>
                                                                 </Link>

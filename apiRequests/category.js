@@ -10,6 +10,11 @@ const catalogApiRequestAdmin = {
     addCatalog: (body) =>
         http.post(`/api/admin/storeCatalog`, body, {
             type: 'admin'
+        }),
+
+    updateCatalog: (id, body) =>
+        http.put(`/api/admin/updateCatalog/${id}`, body, {
+            type: 'admin'
         })
 }
 

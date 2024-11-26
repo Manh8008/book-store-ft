@@ -8,10 +8,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { LoginSchema } from '@/schemas'
 import { handleHttpError } from '@/lib/utils'
 import { clientAdminSessionToken } from '@/lib/http'
+import { FormError } from '@/components/auth/form-error'
+import { FormSuccess } from '@/components/auth/form-success'
 
 const LoginFormAdmin = () => {
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
 
     const {
         register,
@@ -27,24 +31,29 @@ const LoginFormAdmin = () => {
     })
 
     const onSubmit = async (values) => {
+        if (loading) return
         setError('')
+        setSuccess('')
+
         try {
             const result = await authAdminApiRequest.login(values)
-
-            if (result.status === 200) {
-                alert('Đăng nhập thành công')
-                router.push('/admin')
-            }
 
             await authAdminApiRequest.auth({
                 sessionToken: result.payload.data.access_token
             })
+
+            if (result.status === 200) {
+                setSuccess('Đăng nhập thành công!')
+                router.push('/admin')
+            }
 
             clientAdminSessionToken.value = result.payload.data.access_token
 
             router.push('/admin')
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -119,11 +128,8 @@ const LoginFormAdmin = () => {
                                                 </label>
                                             </div>
                                         </div>
-                                        {error && (
-                                            <div className="alert alert-danger mt-3" role="alert">
-                                                {error}
-                                            </div>
-                                        )}
+                                        {error && <FormError message={error} />}
+                                        <FormSuccess message={success} />
                                         <div className="sign-info text-center">
                                             <button
                                                 type="submit"
@@ -132,7 +138,7 @@ const LoginFormAdmin = () => {
                                                 Sign in
                                             </button>
                                             <span className="text-dark dark-color d-inline-block line-height-2">
-                                                Don't have an account?{' '}
+                                                Don't have an account?
                                                 <Link
                                                     href="/admin/auth/register"
                                                     className="text-white"
