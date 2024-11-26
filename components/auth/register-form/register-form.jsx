@@ -11,12 +11,15 @@ import { RegisterSchema } from '@/schemas'
 import { authApiRequest } from '@/apiRequests/auth'
 import styles from './register-form.module.scss'
 import { handleHttpError } from '@/lib/utils'
+import { FormError } from '../form-error'
+import { FormSuccess } from '../form-success'
 
 const cx = classNames.bind(styles)
 
 export const RegisterForm = () => {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
 
     const {
@@ -37,10 +40,12 @@ export const RegisterForm = () => {
     const onSubmit = async (values) => {
         if (loading) return
         setLoading(true)
+        setError('')
+        setSuccess('')
         try {
             const result = await authApiRequest.register(values)
             if (result.status === 200) {
-                showToast('Đăng ký thành công!')
+                setSuccess('Đăng ký thành công!')
                 router.push('/auth/resend-otp')
             }
         } catch (error) {
@@ -52,7 +57,6 @@ export const RegisterForm = () => {
 
     return (
         <div className={cx('container')}>
-            <Toast />
             <form className={cx('form')} onSubmit={handleSubmit(onSubmit)}>
                 <h2 className={cx('title')}>Đăng ký</h2>
 
@@ -108,10 +112,12 @@ export const RegisterForm = () => {
                         <p className={cx('error')}>{errors.password_confirm.message}</p>
                     )}
                 </div>
-                {error && <p className={cx('error')}>{error}</p>}
 
-                <Button primary fullWidth type="submit">
-                    Đăng ký
+                <FormSuccess message={success} />
+                {/* <FormError message={error} /> */}
+
+                <Button primary fullWidth type="submit" disabled={loading}>
+                    {loading ? 'Đang xử lý...' : 'Đăng ký'}
                 </Button>
 
                 <Button text href="/auth/login">

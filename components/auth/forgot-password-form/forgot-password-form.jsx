@@ -8,7 +8,6 @@ import { handleHttpError } from '@/lib/utils'
 import { ForgotPasswordSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import Toast, { showToast } from '@/components/review-book/Toast'
 import styles from './forgot-password-form.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
 
@@ -44,7 +43,6 @@ export const ForgotPasswordForm = () => {
 
     return (
         <>
-            <Toast />
             <div className={cx('wrapper')}>
                 <form className={cx('form')} onSubmit={handleSubmit(onSubmit)}>
                     <h2 className={cx('title')}>Quên mật khẩu</h2>

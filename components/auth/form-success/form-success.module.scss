@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.2rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+
+    & p {
+        font-size: 1.2rem;
+    }
+}
+
+.success {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.icon {
+    width: 1.2rem;
+    height: 1.2rem;
+}

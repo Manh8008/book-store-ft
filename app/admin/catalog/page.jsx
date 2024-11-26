@@ -8,7 +8,6 @@ import Swal from 'sweetalert2'
 
 export default function Categories() {
     const [data, setData] = useState([])
-    const token = Cookies.get('sessionTokenAdmin')
 
     const fetchCategories = async () => {
         const result = await catalogApiRequestAdmin.getAllCatalog()

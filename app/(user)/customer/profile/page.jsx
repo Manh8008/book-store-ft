@@ -33,9 +33,9 @@ export default function Profile() {
 
     console.log(userData)
 
-    if (!userData || !userData.id) {
-        return <LoadingSkeleton />
-    }
+    // if (!userData || !userData.id) {
+    //     return <LoadingSkeleton />
+    // }
 
     return (
         <main style={{ background: '#F5F5FA' }}>

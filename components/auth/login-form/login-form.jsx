@@ -1,6 +1,6 @@
 'use client'
 import classNames from 'classnames/bind'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
@@ -8,20 +8,25 @@ import { LoginSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { handleHttpError } from '@/lib/utils'
-import styles from './login-form.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
 import { clientSessionToken } from '@/lib/http'
 import { useUser } from '@/context/user-context'
+import { FormSuccess } from '@/components/auth/form-success'
+
 import accountApiRequest from '@/apiRequests/account'
+import styles from './login-form.module.scss'
+import { FormError } from '../form-error'
 
 const cx = classNames.bind(styles)
 
 export const LoginForm = () => {
     const router = useRouter()
-    const { userData, setUserData } = useUser()
+    const { setUserData } = useUser()
     const [loading, setLoading] = useState(false)
-
     const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
+    const [_, startTransition] = useTransition()
+
     const {
         register,
         handleSubmit,
@@ -40,8 +45,12 @@ export const LoginForm = () => {
         setLoading(true)
 
         setError('')
+        setSuccess('')
         try {
             const result = await authApiRequest.login(values)
+
+            console.log(result)
+
             if (result.status === 200) {
                 await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
                 clientSessionToken.value = result.payload.data.access_token
@@ -49,10 +58,10 @@ export const LoginForm = () => {
                 const profileResult = await accountApiRequest.getProfile()
                 if (profileResult.status === 200) {
                     setUserData(profileResult.payload.data.user)
-                    alert('Đăng nhập thành công')
+                    setSuccess('Đăng nhập thành công!')
                     router.push('/')
                 } else {
-                    console.log('Không thể lấy thông tin người dùng')
+                    setError('Không thể lấy thông tin người dùng')
                 }
             }
         } catch (error) {
@@ -90,10 +99,12 @@ export const LoginForm = () => {
                     />
                     {errors.password && <p className={cx('error')}>{errors.password.message}</p>}
                 </div>
-                {error && <p className={cx('error')}>{error}</p>}
 
-                <Button primary fullWidth type="submit">
-                    Đăng nhập
+                <FormSuccess message={success} />
+                {error && <FormError message={error} />}
+
+                <Button primary fullWidth type="submit" disabled={loading}>
+                    {loading ? 'Đang xử lý...' : 'Đăng nhập'}
                 </Button>
 
                 <Button text href="/auth/register">

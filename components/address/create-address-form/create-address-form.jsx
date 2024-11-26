@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, startTransition } from 'react'
 import classNames from 'classnames/bind'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -100,12 +100,10 @@ const AddAddressForm = () => {
 
     const onSubmit = async (values) => {
         try {
-            // Lấy các thông tin province, district, ward từ các id đã chọn
             const selectedProvince = provinces.find((p) => p.province_id === province)
             const selectedDistrict = districts.find((d) => d.district_id === district)
             const selectedWard = wards.find((w) => w.ward_id === ward)
 
-            // Cập nhật các giá trị provinceName, provinceCode và các giá trị khác vào form
             values.province = selectedProvince ? selectedProvince.province_name : ''
             values.provinceCode = selectedProvince ? selectedProvince.province_id : ''
             values.district = selectedDistrict ? selectedDistrict.district_name : ''
@@ -118,21 +116,22 @@ const AddAddressForm = () => {
 
             if (result.status === 200 && result.payload) {
                 const newAddress = result.payload.data
+                startTransition(() => {
+                    const updatedAddressList = [...userData.address, newAddress]
 
-                const updatedAddressList = [...userData.address, newAddress]
+                    if (values.default) {
+                        updatedAddressList.forEach(
+                            (addr) => (addr.default = addr.id === newAddress.id ? 1 : 0)
+                        )
+                    }
 
-                if (values.default) {
-                    updatedAddressList.forEach(
-                        (addr) => (addr.default = addr.id === newAddress.id ? 1 : 0)
-                    )
-                }
+                    setUserData({
+                        ...userData,
+                        address: updatedAddressList
+                    })
 
-                setUserData({
-                    ...userData,
-                    address: updatedAddressList
+                    router.push('/customer/address')
                 })
-
-                router.push('/customer/address')
             } else {
                 handleHttpError(result, setError)
             }
