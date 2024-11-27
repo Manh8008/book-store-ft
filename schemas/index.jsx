@@ -17,7 +17,7 @@ export const RegisterSchema = z
             .min(1, { message: 'Email là bắt buộc!' }),
         password: z
             .string()
-            .min(8, { message: 'Mật khẩu cần ít nhất 6 kí tự!' })
+            .min(8, { message: 'Mật khẩu cần ít nhất 8 kí tự!' })
             .min(1, { message: 'Mật khẩu là bắt buộc!' }),
         password_confirm: z.string()
     })

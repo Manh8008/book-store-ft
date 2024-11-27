@@ -11,7 +11,7 @@ import { ProductList } from '@/components/product-list'
 import styles from './book-collection.scss'
 import { Pagination } from '@/components/ui/pagination'
 import { catalogApiRequest } from '@/apiRequests/category'
-import productApiRequest from '@/apiRequests/product'
+import { productApiRequest } from '@/apiRequests/product'
 const cx = classNames.bind(styles)
 
 const BookCollection = () => {

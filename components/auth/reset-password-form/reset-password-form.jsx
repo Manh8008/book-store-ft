@@ -8,18 +8,20 @@ import { handleHttpError } from '@/lib/utils'
 import { resetPasswordSchema } from '@/schemas'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import Toast, { showToast } from '@/components/review-book/Toast'
 import styles from './reset-password-form.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
+import { FormSuccess } from '../form-success'
 
 const cx = classNames.bind(styles)
 
 export const ResetPasswordForm = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
+    const [success, setSuccess] = useState('')
     const [error, setError] = useState('')
     const [token, setToken] = useState('')
     const [email, setEmail] = useState('')
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const tokenFromUrl = searchParams.get('token')
@@ -47,6 +49,10 @@ export const ResetPasswordForm = () => {
     })
 
     const onSubmit = async (values) => {
+        if (loading) return
+
+        setLoading(true)
+        setSuccess('')
         setError('')
         try {
             // Gửi yêu cầu reset password tới backend
@@ -56,21 +62,21 @@ export const ResetPasswordForm = () => {
                 email
             })
 
-            console.log(result.payload)
-
-            showToast('Đã thay đổi mật khẩu!')
-
-            setTimeout(() => {
-                router.push('/')
-            }, 2000)
+            if (result.status === 200) {
+                setSuccess('Đã thay đổi mật khẩu!')
+                setTimeout(() => {
+                    router.push('/')
+                }, 2000)
+            }
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 
     return (
         <>
-            <Toast />
             <div className={cx('wrapper')}>
                 <form className={cx('form')} onSubmit={handleSubmit(onSubmit)}>
                     <h2 className={cx('title')}>Cập nhật mật khẩu</h2>
@@ -104,6 +110,7 @@ export const ResetPasswordForm = () => {
                         )}
                     </div>
                     {error && <p className={cx('error')}>{error}</p>}
+                    <FormSuccess message={success} />
 
                     <Button primary fullWidth type="submit">
                         Cập nhật

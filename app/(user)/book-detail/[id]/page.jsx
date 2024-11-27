@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { addItem } from '@/redux/slices/cartslice'
 
 import Link from 'next/link'
-import productApiRequest from '@/apiRequests/product'
+import { productApiRequest } from '@/apiRequests/product'
 import { handleHttpError } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Beardcrumb } from '@/components/ui/breadcrumb'

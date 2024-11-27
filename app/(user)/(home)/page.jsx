@@ -4,7 +4,7 @@ import { Banner } from '@/components/banner'
 import MainLayout from '@/layouts/main-layout'
 import { ProductList } from '@/components/product-list'
 import { useEffect, useState } from 'react'
-import productApiRequest from '@/apiRequests/product'
+import { productApiRequest } from '@/apiRequests/product'
 
 export default function Home() {
     const [loading, setLoading] = useState(false)
@@ -23,10 +23,10 @@ export default function Home() {
     //sách lịch sử chính trị
     const [politicalBooks, setPoliticalBooks] = useState([])
 
+    console.log(thinkingSkillsBook)
     useEffect(() => {
         const fetchBooks = async () => {
             if (loading) return
-
             try {
                 const [thinkingSkills, financialEconomics, educationalScience, political] =
                     await Promise.all([
@@ -35,7 +35,6 @@ export default function Home() {
                         productApiRequest.getBookByCatalog(3),
                         productApiRequest.getBookByCatalog(2)
                     ])
-
                 if (thinkingSkills.status === 200)
                     setThinkingSkillsBook(thinkingSkills.payload.data)
                 if (financialEconomics.status === 200)
