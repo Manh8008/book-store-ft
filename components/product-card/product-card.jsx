@@ -18,23 +18,29 @@ const ProductCard = (props) => {
                 props.data &&
                 props.data.map((product) => {
                     return (
-                        <div className={cx('item')} key={product.id}>
-                            <Link href={`/book-detail/${product.id}`}>
+                        <div className={cx('item')} key={product?.id}>
+                            <Link href={`/book-detail/${product?.id}`}>
                                 <img
-                                    src={product.images[0]?.url}
-                                    alt={product.name}
+                                    src={
+                                        product?.images?.length > 0 && product.images[0]?.url
+                                            ? product.images[0].url
+                                            : undefined
+                                    }
+                                    alt={product?.name}
                                     className={cx('thumb')}
                                 />
                             </Link>
                             <div className={cx('body')}>
                                 <div className={cx('price')}>
-                                    {parseFloat(product.price).toLocaleString('vi-VN')}đ
+                                    {parseFloat(product?.price).toLocaleString('vi-VN')}đ
                                 </div>
                                 <div className={cx('price-sale')}>
-                                    {(parseFloat(product.price) * 1.2).toLocaleString('vi-VN')}đ
+                                    {(parseFloat(product?.price) * 1.2).toLocaleString('vi-VN')}đ
                                 </div>
                                 <h3 className={cx('title')}>
-                                    <Link href={`/book-detail/${product.id}`}>{product.name}</Link>
+                                    <Link href={`/book-detail/${product?.id}`}>
+                                        {product?.name}
+                                    </Link>
                                 </h3>
                                 <div className={cx('rating-container')}>
                                     <div className={cx('stars')}>

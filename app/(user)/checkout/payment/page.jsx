@@ -56,6 +56,12 @@ const Payment = () => {
         try {
             let result
 
+            if (!addressInfoDefault) {
+                alert('Vui lòng thêm địa chỉ giao hàng trước khi đặt hàng.')
+                router.push('/customer/address/create')
+                return
+            }
+
             if (selectedPaymentMethod == null) {
                 alert('Vui lòng chọn phương thức thanh toán.')
                 return

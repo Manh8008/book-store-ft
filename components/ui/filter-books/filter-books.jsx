@@ -8,14 +8,20 @@ const cx = classNames.bind(styles)
 
 const brands = ['Kim Đồng', 'NXB Trẻ', 'Alpha Books', 'Nhà xuất bản Văn học']
 
-const FilterBooks = () => {
+const FilterBooks = ({ onPriceChange }) => {
+    const handlePriceChange = ({ min, max }) => {
+        if (onPriceChange) {
+            onPriceChange(min, max)
+        }
+    }
+
     return (
         <div className={cx('filter-list-container')}>
             <div className={cx('filter-content')}>
                 <div className={cx('filter-section')}>
                     <h3>Khoảng giá</h3>
                     <div className={cx('filter-price')}>
-                        <PriceRangeSlider />
+                        <PriceRangeSlider onChange={handlePriceChange} />
                     </div>
                 </div>
 

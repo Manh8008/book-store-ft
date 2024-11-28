@@ -1,39 +1,37 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addItem } from '@/redux/slices/cartslice'
+import moment from 'moment'
 
-import Link from 'next/link'
 import { productApiRequest } from '@/apiRequests/product'
+import { addItem } from '@/redux/slices/cartslice'
 import { handleHttpError } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import MainLayout from '@/layouts/main-layout'
 import '@/public/styles/product-detail.scss'
+import { commentApiRequest } from '@/apiRequests/comment'
+import CommentForm from './comment-form'
+import { useUser } from '@/context/user-context'
+import RightContent from './right-content'
 
 export default function ProductDetail({ params }) {
-    // Chi tiết sản phẩm
     const [product, setProduct] = useState(null)
     const [error, setError] = useState(null)
-
-    // Set số lượng khi thêm vào giỏ hàng
+    const [comments, setComments] = useState([])
+    const { userData } = useUser()
     const [quantity, setQuantity] = useState(1)
     const dispatch = useDispatch()
 
-    // Hàm giảm số lượng
     const decrement = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1)
-        }
+        if (quantity > 1) setQuantity(quantity - 1)
     }
 
-    // Hàm tăng số lượng
-    const increment = () => {
-        setQuantity(quantity + 1)
-    }
+    const increment = () => setQuantity(quantity + 1)
 
     useEffect(() => {
-        const fetchRequest = async () => {
+        const fetchProduct = async () => {
             try {
                 const result = await productApiRequest.bookDetail(params.id)
                 setProduct(result.payload.data)
@@ -42,8 +40,39 @@ export default function ProductDetail({ params }) {
             }
         }
 
-        fetchRequest()
+        fetchProduct()
     }, [params.id])
+
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                const result = await commentApiRequest.getCommentByIdBook(params.id)
+                setComments(result.payload.data)
+            } catch (error) {
+                handleHttpError(error, setError)
+            }
+        }
+
+        fetchComments()
+    }, [params.id])
+
+    const handleAddComment = async (newComment) => {
+        try {
+            const result = await commentApiRequest.create(params.id, newComment)
+            setComments((prev) => [result.payload.data, ...prev])
+        } catch (error) {
+            handleHttpError(error, setError)
+        }
+    }
+
+    const handleDeleteComment = async (id) => {
+        try {
+            await commentApiRequest.delete(id)
+            setComments((prev) => prev.filter((comment) => comment.id !== id))
+        } catch (error) {
+            handleHttpError(error, setError)
+        }
+    }
 
     return (
         <MainLayout>
@@ -72,9 +101,6 @@ export default function ProductDetail({ params }) {
                                                 đ
                                             </span>{' '}
                                             <span className="price-retail">169.000đ</span>
-                                        </p>
-                                        <p className="product-description">
-                                            {/* {product?.short_summary} */}
                                         </p>
 
                                         <div className="quantity-control">
@@ -147,376 +173,53 @@ export default function ProductDetail({ params }) {
                                         </table>
                                     </div>
 
-                                    <div className="tab-comment">
-                                        <div className="text">Bình luận sản phẩm</div>
-
-                                        <div className="comment-form">
-                                            <form>
-                                                <div className="form-group">
-                                                    <label htmlFor="name">Tên của bạn</label>
-                                                    <input
-                                                        type="text"
-                                                        id="name"
-                                                        placeholder="Nhập tên của bạn"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="email">Email</label>
-                                                    <input
-                                                        type="email"
-                                                        id="email"
-                                                        placeholder="Nhập email của bạn"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="comment">Bình luận</label>
-                                                    <textarea
-                                                        id="comment"
-                                                        placeholder="Nhập nội dung bình luận"
-                                                        required
-                                                    ></textarea>
-                                                </div>
-                                                <div className="form-group">
-                                                    <Button primary>Gửi</Button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <CommentForm onAddComment={handleAddComment} />
 
                                     <div className="user-comment">
-                                        <div className="item">
-                                            <div className="info">
-                                                <img
-                                                    className="img-user"
-                                                    src="/img/user-1.png"
-                                                    alt="User"
-                                                />
-                                                <div className="username">Nguyễn Minh Thịnh</div>
+                                        {comments.map((comment) => (
+                                            <div key={comment.id} className="item">
+                                                <div className="info">
+                                                    <img
+                                                        className="img-user"
+                                                        src="/img/user-1.png"
+                                                        alt="User"
+                                                    />
+                                                    <div className="username">
+                                                        {comment.username || 'Người dùng'}
+                                                    </div>
+                                                </div>
+                                                <div className="date">
+                                                    {moment(comment.created_at).format(
+                                                        'YYYY-MM-DD'
+                                                    )}
+                                                    <span>
+                                                        {moment(comment.created_at).format(
+                                                            'HH:mm:ss'
+                                                        )}
+                                                    </span>
+                                                </div>
+                                                <div className="content-comment">
+                                                    <p>{comment.content}</p>
+                                                </div>
+                                                <span>
+                                                    {userData?.id === comment.user_id && (
+                                                        <Button
+                                                            text
+                                                            onClick={() =>
+                                                                handleDeleteComment(comment.id)
+                                                            }
+                                                        >
+                                                            Xóa
+                                                        </Button>
+                                                    )}
+                                                </span>
                                             </div>
-                                            <div className="date">
-                                                2021-08-17
-                                                <span>20:40:10</span>
-                                            </div>
-                                            <div className="content-comment">
-                                                <p>
-                                                    Sách được bọc nilong kỹ càng, sạch, mới. Giao
-                                                    hàng nhanh. Nội dung chưa đọc nhưng nhìn sơ có
-                                                    vẻ hấp dẫn và rất nhiều kiến thức bổ ích. Mình ở
-                                                    nước ngoài nhờ người mua rồi gửi qua nên khâu
-                                                    đóng gói của người bán quan trọng lắm, giúp cho
-                                                    sách vận chuyển đi xa cũng không bị hư tổn gì.
-                                                    Sẽ tiếp tục ủng hộ. Love book shop .From Hust
-                                                    with LOve
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="info">
-                                                <img
-                                                    className="img-user"
-                                                    src="/img/user-1.png"
-                                                    alt="User"
-                                                />
-                                                <div className="username">Nguyễn Minh Thịnh</div>
-                                            </div>
-                                            <div className="date">
-                                                2021-08-17
-                                                <span>20:40:10</span>
-                                            </div>
-                                            <div className="content-comment">
-                                                <p>
-                                                    Sách được bọc nilong kỹ càng, sạch, mới. Giao
-                                                    hàng nhanh. Nội dung chưa đọc nhưng nhìn sơ có
-                                                    vẻ hấp dẫn và rất nhiều kiến thức bổ ích. Mình ở
-                                                    nước ngoài nhờ người mua rồi gửi qua nên khâu
-                                                    đóng gói của người bán quan trọng lắm, giúp cho
-                                                    sách vận chuyển đi xa cũng không bị hư tổn gì.
-                                                    Sẽ tiếp tục ủng hộ. Love book shop .From Hust
-                                                    with LOve
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="info">
-                                                <img
-                                                    className="img-user"
-                                                    src="/img/user-1.png"
-                                                    alt="User"
-                                                />
-                                                <div className="username">Nguyễn Minh Thịnh</div>
-                                            </div>
-                                            <div className="date">
-                                                2021-08-17
-                                                <span>20:40:10</span>
-                                            </div>
-                                            <div className="content-comment">
-                                                <p>
-                                                    Sách được bọc nilong kỹ càng, sạch, mới. Giao
-                                                    hàng nhanh. Nội dung chưa đọc nhưng nhìn sơ có
-                                                    vẻ hấp dẫn và rất nhiều kiến thức bổ ích. Mình ở
-                                                    nước ngoài nhờ người mua rồi gửi qua nên khâu
-                                                    đóng gói của người bán quan trọng lắm, giúp cho
-                                                    sách vận chuyển đi xa cũng không bị hư tổn gì.
-                                                    Sẽ tiếp tục ủng hộ. Love book shop .From Hust
-                                                    with LOve
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="info">
-                                                <img
-                                                    className="img-user"
-                                                    src="/img/user-1.png"
-                                                    alt="User"
-                                                />
-                                                <div className="username">Nguyễn Minh Thịnh</div>
-                                            </div>
-                                            <div className="date">
-                                                2021-08-17
-                                                <span>20:40:10</span>
-                                            </div>
-                                            <div className="content-comment">
-                                                <p>
-                                                    Sách được bọc nilong kỹ càng, sạch, mới. Giao
-                                                    hàng nhanh. Nội dung chưa đọc nhưng nhìn sơ có
-                                                    vẻ hấp dẫn và rất nhiều kiến thức bổ ích. Mình ở
-                                                    nước ngoài nhờ người mua rồi gửi qua nên khâu
-                                                    đóng gói của người bán quan trọng lắm, giúp cho
-                                                    sách vận chuyển đi xa cũng không bị hư tổn gì.
-                                                    Sẽ tiếp tục ủng hộ. Love book shop .From Hust
-                                                    with LOve
-                                                </p>
-                                            </div>
-                                        </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
 
-                            {/* <!-- Cột bên phải: Danh sách sản phẩm liên quan --> */}
-                            <div className="main-right">
-                                <div className="product-policy">
-                                    <div className="item">
-                                        <img src="/img/shipper.png.svg" alt="" />
-                                        <div className="policy-info">
-                                            <p className="title">Giao hàng nhanh chóng</p>
-                                            <p className="sub-title">Chỉ trong vòng 24h</p>
-                                        </div>
-                                    </div>
-                                    <div className="item">
-                                        <img src="/img/brand.png.svg" alt="" />
-                                        <div className="policy-info">
-                                            <p className="title">Sản phẩm chính hãng</p>
-                                            <p className="sub-title">Sản phẩm nhập khẩu 100%</p>
-                                        </div>
-                                    </div>
-                                    <div className="item">
-                                        <img src="/img/less.png.svg" alt="" />
-                                        <div className="policy-info">
-                                            <p className="title">Mua hàng tiết kiệm</p>
-                                            <p className="sub-title">Rẻ hơn từ 10% đến 30%</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <h2>Có thể bạn thích</h2>
-
-                                <div className="product-list-item">
-                                    <img src="/img/product-2.png" alt="Sản phẩm 1" />
-                                    <div className="product-list-info">
-                                        <p className="product-list-name">
-                                            24 Bài Học Thần Kì Nhất Thế Giới - Bizbooks
-                                        </p>
-                                        <p className="price-sale">143.200₫</p>
-                                        <p className="price">160.000đ</p>
-                                    </div>
-                                </div>
-
-                                <div className="product-list-item">
-                                    <img src="/img/product-3.png" alt="Sản phẩm 2" />
-                                    <div className="product-list-info">
-                                        <p className="product-list-name">
-                                            30 tuổi - mọi thứ chỉ mới bắt đầu - Lý Thượng Long
-                                            (Saigon Books)
-                                        </p>
-                                        <p className="price-sale">108.000₫</p>
-                                        <p className="price">130.000đ</p>
-                                    </div>
-                                </div>
-
-                                <div className="product-list-item">
-                                    <img src="/img/product-4.png" alt="Sản phẩm 3" />
-                                    <div className="product-list-info">
-                                        <p className="product-list-name">
-                                            45 Giây Tạo Nên Thay Đổi - Thấu Hiểu Tiếp Thị Mạng Lưới
-                                            - NXB trẻ
-                                        </p>
-                                        <p className="price-sale">150.000₫</p>
-                                        <p className="price">186.000đ</p>
-                                    </div>
-                                </div>
-
-                                <div className="product-list-item">
-                                    <img src="/img/product-5.png" alt="Sản phẩm 3" />
-                                    <div className="product-list-info">
-                                        <p className="product-list-name">
-                                            365 Ngày Đầu Tiên Ở Xứ Sở Hoa Anh Đào - Hành Trình Du
-                                            Học Ở Tuổi 15
-                                        </p>
-                                        <p className="price-sale">201.000₫</p>
-                                        <p className="price">250.000đ</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="product-similar">
-                        <div className="content">
-                            <div className="title-product">Sản phẩm tương tự</div>
-                            <div className="list-product">
-                                <div className="item">
-                                    <Link href="#!">
-                                        <img
-                                            src="/img/product-1.png"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </Link>
-                                    <div className="body">
-                                        <h3 className="title">
-                                            <Link href="#!">
-                                                My Hero Academia - Tập 27: One’s Justice
-                                            </Link>
-                                        </h3>
-                                        <div className="stars">
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                        </div>
-                                        <div className="price">20.000đ</div>
-                                        <div className="price-sale">15.000đ</div>
-                                        <Button primary large className="buy-now">
-                                            Mua ngay
-                                        </Button>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <Link href="#!">
-                                        <img
-                                            src="/img/product-1.png"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </Link>
-                                    <div className="body">
-                                        <h3 className="title">
-                                            <Link href="#!">
-                                                My Hero Academia - Tập 27: One’s Justice
-                                            </Link>
-                                        </h3>
-                                        <div className="stars">
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                        </div>
-                                        <div className="price">20.000đ</div>
-                                        <div className="price-sale">15.000đ</div>
-                                        <Button primary large className="buy-now">
-                                            Mua ngay
-                                        </Button>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <Link href="#!">
-                                        <img
-                                            src="/img/product-1.png"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </Link>
-                                    <div className="body">
-                                        <h3 className="title">
-                                            <Link href="#!">
-                                                My Hero Academia - Tập 27: One’s Justice
-                                            </Link>
-                                        </h3>
-                                        <div className="stars">
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                        </div>
-                                        <div className="price">20.000đ</div>
-                                        <div className="price-sale">15.000đ</div>
-                                        <Button primary large className="buy-now">
-                                            Mua ngay
-                                        </Button>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <Link href="#!">
-                                        <img
-                                            src="/img/product-1.png"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </Link>
-                                    <div className="body">
-                                        <h3 className="title">
-                                            <Link href="#!">
-                                                My Hero Academia - Tập 27: One’s Justice
-                                            </Link>
-                                        </h3>
-                                        <div className="stars">
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                        </div>
-                                        <div className="price">20.000đ</div>
-                                        <div className="price-sale">15.000đ</div>
-                                        <Button primary large className="buy-now">
-                                            Mua ngay
-                                        </Button>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <Link href="#!">
-                                        <img
-                                            src="/img/product-1.png"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </Link>
-                                    <div className="body">
-                                        <h3 className="title">
-                                            <Link href="#!">
-                                                My Hero Academia - Tập 27: One’s Justice
-                                            </Link>
-                                        </h3>
-                                        <div className="stars">
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                            <img src="/img/star.svg" alt="Star" />
-                                        </div>
-                                        <div className="price">20.000đ</div>
-                                        <div className="price-sale">15.000đ</div>
-                                        <Button primary large className="buy-now">
-                                            Mua ngay
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
+                            <RightContent />
                         </div>
                     </div>
                 </div>

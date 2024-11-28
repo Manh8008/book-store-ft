@@ -98,3 +98,7 @@ export const createCatalogSchema = z.object({
             message: 'Image is required'
         })
 })
+
+export const commentSchema = z.object({
+    content: z.string().min(1, 'Bạn chưa nhập nội dung!')
+})

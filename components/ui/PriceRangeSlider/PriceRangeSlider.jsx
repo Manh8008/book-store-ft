@@ -3,8 +3,15 @@ import React, { useState } from 'react'
 import { Range } from 'react-range'
 import './price-range-slider.scss'
 
-const PriceRangeSlider = () => {
+const PriceRangeSlider = ({ onChange }) => {
     const [values, setValues] = useState([0, 1000000])
+
+    const handleChange = (newValues) => {
+        setValues(newValues)
+        if (onChange) {
+            onChange(newValues)
+        }
+    }
 
     return (
         <div className="slider-container">
@@ -13,7 +20,7 @@ const PriceRangeSlider = () => {
                 step={20000}
                 min={0}
                 max={1000000}
-                onChange={(values) => setValues(values)}
+                onChange={handleChange}
                 renderTrack={({ props, children }) => {
                     const [min, max] = [0, 1000000]
                     const left = ((values[0] - min) / (max - min)) * 100

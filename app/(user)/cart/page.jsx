@@ -1,32 +1,29 @@
-"use client"
+'use client'
 
 import { CiTrash } from 'react-icons/ci'
 import classNames from 'classnames/bind'
+import React, { useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { BannerSlider, CartItem } from '@/components/cart'
+import { removeCart } from '@/redux/slices/cartslice'
 import { Button } from '@/components/ui/button'
 import MainLayout from '@/layouts/main-layout'
-
 import styles from './cart.module.scss'
-import ProductList from '@/components/product-list/product-list'
-
-import React, { useMemo } from "react"
-import { useDispatch, useSelector } from 'react-redux'
-import { removeCart } from "@/redux/slices/cartslice";
 
 const cx = classNames.bind(styles)
 
 const Cart = () => {
-
     // Tổng tiền , xóa giỏ hàng
     const cart = useSelector((state) => state.cart)
-    const dispatch = useDispatch();
-    const total = useMemo(() => cart.reduce((total, item) => total + item.price * item.quantity, 0), [cart]);
+    const dispatch = useDispatch()
+    const total = useMemo(
+        () => cart.reduce((total, item) => total + item.price * item.quantity, 0),
+        [cart]
+    )
     const totalItem = useMemo(() => {
-        return cart.reduce((total, item) => total + item.quantity, 0);
+        return cart.reduce((total, item) => total + item.quantity, 0)
     }, [cart])
-
-
 
     return (
         <MainLayout>
@@ -69,7 +66,9 @@ const Cart = () => {
                             </div>
                             <div className={cx('summary-total')}>
                                 <span>Tổng tiền</span>
-                                <span className={cx('total-amount')}>{parseFloat(total).toLocaleString('vi-VN')}đ</span>
+                                <span className={cx('total-amount')}>
+                                    {parseFloat(total).toLocaleString('vi-VN')}đ
+                                </span>
                             </div>
                             <Button
                                 primary

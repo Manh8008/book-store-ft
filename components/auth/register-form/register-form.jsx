@@ -114,8 +114,7 @@ export const RegisterForm = () => {
                 </div>
 
                 <FormSuccess message={success} />
-                {/* <FormError message={error} /> */}
-
+                {error && <FormError message={error} />}
                 <Button primary fullWidth type="submit" disabled={loading}>
                     {loading ? 'Đang xử lý...' : 'Đăng ký'}
                 </Button>

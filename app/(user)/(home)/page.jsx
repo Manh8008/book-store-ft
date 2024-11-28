@@ -5,9 +5,13 @@ import MainLayout from '@/layouts/main-layout'
 import { ProductList } from '@/components/product-list'
 import { useEffect, useState } from 'react'
 import { productApiRequest } from '@/apiRequests/product'
+import { handleHttpError } from '@/lib/utils'
 
 export default function Home() {
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+
+    const [booksBestSeller, setBooksBestSeller] = useState([])
 
     const [bestsellingBooks, setBestsellingBooks] = useState([])
 
@@ -23,7 +27,22 @@ export default function Home() {
     //sách lịch sử chính trị
     const [politicalBooks, setPoliticalBooks] = useState([])
 
-    console.log(thinkingSkillsBook)
+    const fetchBooksBestSeller = async () => {
+        try {
+            const result = await productApiRequest.getBooksBestSeller()
+
+            console.log(result.payload.data)
+
+            setBooksBestSeller(result.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        }
+    }
+
+    useEffect(() => {
+        fetchBooksBestSeller()
+    }, [])
+
     useEffect(() => {
         const fetchBooks = async () => {
             if (loading) return
@@ -64,7 +83,9 @@ export default function Home() {
                             <h2 className="sub-title">TOP SÁCH BÁN CHẠY</h2>
                         </div>
 
-                        <div className="list-product">{/* <ProductList /> */}</div>
+                        <div className="list-product">
+                            <ProductList title="" seeMore={false} data={booksBestSeller} />
+                        </div>
                     </div>
                 </div>
 

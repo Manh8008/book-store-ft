@@ -1,18 +1,16 @@
-"use client"
+'use client'
 
-import { productApiRequestAdmin } from "@/apiRequests/product";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { productApiRequestAdmin } from '@/apiRequests/product'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
-
 
 export default function Product() {
     const [product, setData] = useState([])
 
     const fetchProduct = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllBooks`, { cache: 'no-store' })
-        const newData = await res.json()
-        setData(newData.data)
+        const result = await productApiRequestAdmin.getAllBooks()
+        setData(result.payload.data)
     }
 
     useEffect(() => {
@@ -29,7 +27,7 @@ export default function Product() {
             confirmButtonText: 'Có, tôi muốn xóa'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const result = await productApiRequestAdmin.destroyProduct(id)
+                const result = await productApiRequestAdmin.destroyBook(id)
 
                 if (result.status === 200) {
                     Swal.fire({
@@ -55,7 +53,6 @@ export default function Product() {
         messageDelete(id)
     }
 
-
     return (
         <>
             <div id="content-page" className="content-page">
@@ -68,12 +65,17 @@ export default function Product() {
                                         <h4 className="card-title">Danh sách sách</h4>
                                     </div>
                                     <div className="iq-card-header-toolbar d-flex align-items-center">
-                                        <a href="/admin/product/create" className="btn btn-primary">Thêm sách</a>
+                                        <a href="/admin/product/create" className="btn btn-primary">
+                                            Thêm sách
+                                        </a>
                                     </div>
                                 </div>
                                 <div className="iq-card-body">
                                     <div className="table-responsive">
-                                        <table className="data-tables table table-striped table-bordered" style={{ width: 100 + "%" }}>
+                                        <table
+                                            className="data-tables table table-striped table-bordered"
+                                            style={{ width: 100 + '%' }}
+                                        >
                                             <thead>
                                                 <tr>
                                                     <th width="3%">STT</th>
@@ -91,23 +93,53 @@ export default function Product() {
                                                 {product.map((product, index) => (
                                                     <tr key={product.id}>
                                                         <td>{index + 1}</td>
-                                                        <td><img className="img-fluid rounded" src={product.images[0]?.url} alt={product.name} /></td>
+                                                        <td>
+                                                            <img
+                                                                className="img-fluid rounded"
+                                                                src={product.images[0]?.url}
+                                                                alt={product.name}
+                                                            />
+                                                        </td>
                                                         <td>{product.name}</td>
                                                         <td>{product.category?.name}</td>
                                                         <td>{product.author.name}</td>
                                                         <td>
-                                                            <p className="mb-0">{product.short_summary}</p>
+                                                            <p className="mb-0">
+                                                                {product.short_summary}
+                                                            </p>
                                                         </td>
+                                                        <td>{product.stock}</td>
                                                         <td>
-                                                            {product.stock}
+                                                            {parseFloat(
+                                                                product.price
+                                                            ).toLocaleString('vi-VN')}
+                                                            đ
                                                         </td>
-                                                        <td>{parseFloat(product.price).toLocaleString('vi-VN')}đ</td>
                                                         <td>
                                                             <div className="flex align-items-center list-user-action">
-                                                                <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href={`/admin/product/update/${product.id}`}><i className="ri-pencil-line"></i></Link>
-                                                                <Link className="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#" onClick={() =>
-                                                                    deleteProduct(product.id)
-                                                                }><i className="ri-delete-bin-line"></i></Link>
+                                                                <Link
+                                                                    className="bg-primary"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title=""
+                                                                    data-original-title="Edit"
+                                                                    href={`/admin/product/update/${product.id}`}
+                                                                >
+                                                                    <i className="ri-pencil-line"></i>
+                                                                </Link>
+                                                                <Link
+                                                                    className="bg-primary"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title=""
+                                                                    data-original-title="Xoá"
+                                                                    href="#"
+                                                                    onClick={() =>
+                                                                        deleteProduct(product.id)
+                                                                    }
+                                                                >
+                                                                    <i className="ri-delete-bin-line"></i>
+                                                                </Link>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -122,5 +154,5 @@ export default function Product() {
                 </div>
             </div>
         </>
-    );
+    )
 }

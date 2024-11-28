@@ -4,52 +4,71 @@ import classNames from 'classnames/bind'
 import { FilterBooks } from '@/components/ui/filter-books'
 import { Subcategory } from '@/components/ui/subcategory'
 import Image from 'next/image'
-import styles from '../../book-collection.scss'
-import { Pagination } from '@/components/ui/pagination'
 import { useEffect, useState } from 'react'
+
+import { Pagination } from '@/components/ui/pagination'
 import { ProductCard } from '@/components/product-card'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
+import { productApiRequest } from '@/apiRequests/product'
+import { handleHttpError } from '@/lib/utils'
+import { ToastError } from '@/components/ui/ToastError'
+import { catalogApiRequest } from '@/apiRequests/category'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
+import styles from '../../shop.module.scss'
 const cx = classNames.bind(styles)
 
 export default function ProductByCategories({ params }) {
     const totalPages = 10
+    const idCate = params.id
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
+    const [categories, setCategories] = useState([])
+    const [productByCate, setProductByCate] = useState([])
+
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber)
         console.log(`Chuyển sang trang: ${pageNumber}`)
     }
 
-    const idCate = params.id
-    const [categories, setCategories] = useState([])
-    const [productByCate, setProductByCate] = useState([])
+    const fetchProductByCate = async () => {
+        setLoading(true)
+        setError(null)
+        try {
+            const result = await productApiRequest.getBookByCatalog(idCate)
+            setProductByCate(result.payload.data)
+        } catch (err) {
+            handleHttpError(err, setError)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const fetchCategories = async () => {
+        setLoading(true)
+        setError(null)
+        try {
+            const result = await catalogApiRequest.getAllCatalog()
+            setCategories(result.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        }
+    }
 
     useEffect(() => {
-        const fetchCategories = async () => {
-            const listCategories = await fetch(
-                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllCategories`,
-                { cache: 'no-store' }
-            ).then((res) => res.json())
-            setCategories(listCategories.data)
-        }
-
         fetchCategories()
     }, [])
 
     useEffect(() => {
-        const fetchProductByCate = async () => {
-            const listProductByCate = await fetch(
-                `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getBookByCategory/${idCate}`,
-                { cache: 'no-store' }
-            ).then((res) => res.json())
-            setProductByCate(listProductByCate.data)
-        }
-
         fetchProductByCate()
     }, [])
+
+    if (loading) return <LoadingSkeleton />
 
     return (
         <>
             <div className={cx('wrapper')}>
+                <ToastError errorMessage={error} />
                 <div className={cx('wrapper-content')}>
                     <Beardcrumb />
                     <div className={cx('banner')}>
@@ -65,7 +84,7 @@ export default function ProductByCategories({ params }) {
 
                     <FilterBooks />
 
-                    <div className="productByCate">
+                    <div className={cx('productByCate')}>
                         <ProductCard data={productByCate} />
                     </div>
                 </div>
