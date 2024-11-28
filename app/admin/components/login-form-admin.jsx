@@ -65,23 +65,22 @@ const LoginFormAdmin = () => {
                         <div className="row m-0">
                             <div className="col-sm-12 sign-in-page-data">
                                 <div className="sign-in-from bg-primary rounded">
-                                    <h3 className="mb-0 text-center text-white">Sign in</h3>
+                                    <h3 className="mb-0 text-center text-white">Đăng Nhập</h3>
                                     <p className="text-center text-white">
-                                        Enter your email address and password to access admin panel.
+                                        Vui lòng nhập email và mật khẩu để vào trang quản trị.
                                     </p>
                                     <form
                                         onSubmit={handleSubmit(onSubmit)}
                                         className="mt-4 form-text"
                                     >
                                         <div className="form-group">
-                                            <label htmlFor="email">Email address</label>
+                                            <label htmlFor="email">Email</label>
                                             <input
                                                 type="email"
-                                                className={`form-control mb-0 ${
-                                                    errors.email ? 'is-invalid' : ''
-                                                }`}
+                                                className={`form-control mb-0 ${errors.email ? 'is-invalid' : ''
+                                                    }`}
                                                 id="email"
-                                                placeholder="Enter email"
+                                                placeholder="Nhập email"
                                                 {...register('email')}
                                             />
                                             {errors.email && (
@@ -96,15 +95,14 @@ const LoginFormAdmin = () => {
                                                 href="/admin/auth/forgot-password"
                                                 className="float-right text-dark"
                                             >
-                                                Forgot password?
+                                                Quên mật khẩu?
                                             </Link>
                                             <input
                                                 type="password"
-                                                className={`form-control mb-0 ${
-                                                    errors.password ? 'is-invalid' : ''
-                                                }`}
+                                                className={`form-control mb-0 ${errors.password ? 'is-invalid' : ''
+                                                    }`}
                                                 id="password"
-                                                placeholder="Password"
+                                                placeholder="Nhập mật khẩu"
                                                 {...register('password')}
                                             />
                                             {errors.password && (
@@ -112,21 +110,6 @@ const LoginFormAdmin = () => {
                                                     {errors.password.message}
                                                 </div>
                                             )}
-                                        </div>
-                                        <div className="d-inline-block w-100">
-                                            <div className="custom-control custom-checkbox d-inline-block mt-2 pt-1">
-                                                <input
-                                                    type="checkbox"
-                                                    className="custom-control-input"
-                                                    id="customCheck1"
-                                                />
-                                                <label
-                                                    className="custom-control-label"
-                                                    htmlFor="customCheck1"
-                                                >
-                                                    Remember Me
-                                                </label>
-                                            </div>
                                         </div>
                                         {error && <FormError message={error} />}
                                         <FormSuccess message={success} />
@@ -137,15 +120,6 @@ const LoginFormAdmin = () => {
                                             >
                                                 Sign in
                                             </button>
-                                            <span className="text-dark dark-color d-inline-block line-height-2">
-                                                Don't have an account?
-                                                <Link
-                                                    href="/admin/auth/register"
-                                                    className="text-white"
-                                                >
-                                                    Sign up
-                                                </Link>
-                                            </span>
                                         </div>
                                     </form>
                                 </div>

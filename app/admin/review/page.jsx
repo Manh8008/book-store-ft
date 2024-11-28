@@ -1,6 +1,60 @@
+"use client"
+
+import { reviewApiRequestAdmin } from "@/apiRequests/review";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import Swal from 'sweetalert2'
+
 
 export default function Review() {
+    const [review, setReview] = useState([])
+
+    const fetchReview = async () => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllPost`)
+        const newData = await res.json();
+        setReview(newData.data)
+    }
+
+    useEffect(() => {
+        fetchReview();
+    }, [])
+
+    const messageDelete = (id) => {
+        Swal.fire({
+            title: 'Bạn chắc muốn xóa bài viết này?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có, tôi muốn xóa'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const result = await reviewApiRequestAdmin.destroyReview(id)
+
+                if (result.status === 200) {
+                    Swal.fire({
+                        title: 'Xóa thành công',
+                        text: 'Bài viết của bạn đã được xóa.',
+                        confirmButtonColor: '#3085d6',
+                        icon: 'success'
+                    })
+                    fetchReview()
+                } else {
+                    Swal.fire({
+                        title: 'Lỗi',
+                        text: 'Có lỗi xảy ra khi xóa bài viết.',
+                        confirmButtonColor: '#3085d6',
+                        icon: 'error'
+                    })
+                }
+            }
+        })
+    }
+
+    const deleteReview = (id) => {
+        messageDelete(id)
+    }
+
     return (
         <>
             <div id="content-page" class="content-page">
@@ -29,62 +83,22 @@ export default function Review() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td><img className="img-fluid rounded" src="http://localhost:3000/img/review.jpg" alt="" /></td>
-                                                    <td>
-                                                        <p class="mb-0">Thiết Kế Game Nâng Cao – Nâng Nghệ Thuật Thiết Kế Game Lên Tầm Cao Mới.</p>
-                                                    </td>
-                                                    <td><p class="mb-0">Ấn bản tiếng Việt của cuốn sách “NEXUS: A Brief History of Information Networks from the Stone Age to AI” của tác giả Yuval Noah Harari sẽ chính thức ra mắt vào cuối tháng 9/2024 tới đây, được ấn hành bởi Omega Plus Books.</p></td>
-                                                    <td>
-                                                        <div class="flex align-items-center list-user-action">
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/admin/review/update/1"><i class="ri-pencil-line"></i></Link>
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#"><i class="ri-delete-bin-line"></i></Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td><img className="img-fluid rounded" src="http://localhost:3000/img/review.jpg" alt="" /></td>
-                                                    <td>
-                                                        <p class="mb-0">Thiết Kế Game Nâng Cao – Nâng Nghệ Thuật Thiết Kế Game Lên Tầm Cao Mới.</p>
-                                                    </td>
-                                                    <td><p class="mb-0">Ấn bản tiếng Việt của cuốn sách “NEXUS: A Brief History of Information Networks from the Stone Age to AI” của tác giả Yuval Noah Harari sẽ chính thức ra mắt vào cuối tháng 9/2024 tới đây, được ấn hành bởi Omega Plus Books.</p></td>
-                                                    <td>
-                                                        <div class="flex align-items-center list-user-action">
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/admin/review/update/1"><i class="ri-pencil-line"></i></Link>
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#"><i class="ri-delete-bin-line"></i></Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td><img className="img-fluid rounded" src="http://localhost:3000/img/review.jpg" alt="" /></td>
-                                                    <td>
-                                                        <p class="mb-0">Thiết Kế Game Nâng Cao – Nâng Nghệ Thuật Thiết Kế Game Lên Tầm Cao Mới.</p>
-                                                    </td>
-                                                    <td><p class="mb-0">Ấn bản tiếng Việt của cuốn sách “NEXUS: A Brief History of Information Networks from the Stone Age to AI” của tác giả Yuval Noah Harari sẽ chính thức ra mắt vào cuối tháng 9/2024 tới đây, được ấn hành bởi Omega Plus Books.</p></td>
-                                                    <td>
-                                                        <div class="flex align-items-center list-user-action">
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/admin/authors/update/1"><i class="ri-pencil-line"></i></Link>
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#"><i class="ri-delete-bin-line"></i></Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td><img className="img-fluid rounded" src="http://localhost:3000/img/review.jpg" alt="" /></td>
-                                                    <td>
-                                                        <p class="mb-0">Thiết Kế Game Nâng Cao – Nâng Nghệ Thuật Thiết Kế Game Lên Tầm Cao Mới.</p>
-                                                    </td>
-                                                    <td><p class="mb-0">Ấn bản tiếng Việt của cuốn sách “NEXUS: A Brief History of Information Networks from the Stone Age to AI” của tác giả Yuval Noah Harari sẽ chính thức ra mắt vào cuối tháng 9/2024 tới đây, được ấn hành bởi Omega Plus Books.</p></td>
-                                                    <td>
-                                                        <div class="flex align-items-center list-user-action">
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="/admin/authors/update/1"><i class="ri-pencil-line"></i></Link>
-                                                            <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#"><i class="ri-delete-bin-line"></i></Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                {review.map((review, index) => (
+                                                    <tr key={review.id}>
+                                                        <td>{index + 1}</td>
+                                                        <td><img className="img-fluid rounded" src={`${review.image_url}`} alt={review.title} /></td>
+                                                        <td>
+                                                            <p class="mb-0">{review.title}</p>
+                                                        </td>
+                                                        <td><p class="mb-0">{review.description}</p></td>
+                                                        <td>
+                                                            <div class="flex align-items-center list-user-action">
+                                                                <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href={`/admin/review/update/${review.id}`}><i class="ri-pencil-line"></i></Link>
+                                                                <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#" onClick={() => deleteReview(review.id)}><i class="ri-delete-bin-line"></i></Link>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </div>

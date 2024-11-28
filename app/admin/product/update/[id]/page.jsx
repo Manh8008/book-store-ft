@@ -38,6 +38,7 @@ export default function UpdateProduct({ params }) {
             // Đặt giá trị ban đầu cho form
             // console.log(data.data)
             setValue('name', data.data.name)
+            setValue('title', data.data.title)
             setValue('category_id', data.data.category_id)
             setValue('authorName', data.data.author.name)
             setValue('authorBio', data.data.author.bio)
@@ -128,6 +129,22 @@ export default function UpdateProduct({ params }) {
                                             )}
                                         </div>
                                         <div className="form-group">
+                                            <label>tiêu đề:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                name="authorName"
+                                                {...register('title', {
+                                                    required: 'Tên tác giả là bắt buộc'
+                                                })}
+                                            />
+                                            {errors.title && (
+                                                <div className="text-danger mt-2">
+                                                    {errors.title.message}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="form-group">
                                             <label>Tác giả sách:</label>
                                             <input
                                                 type="text"
@@ -178,8 +195,8 @@ export default function UpdateProduct({ params }) {
                                                 )}
                                                 <div className="bg-secondary-subtle mb-3 p-2 text-center">
                                                     {product &&
-                                                    product.images &&
-                                                    product.images.length > 0 ? (
+                                                        product.images &&
+                                                        product.images.length > 0 ? (
                                                         <img
                                                             src={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/storage/${product.images[0]?.url}`}
                                                             className="w-50"
