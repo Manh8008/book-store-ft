@@ -13,7 +13,7 @@ export default function ProductList({ title, data, seeMore }) {
     return (
         <>
             <div className={cx('wrapper')}>
-                <h4>{title}</h4>
+                <h4 className={cx('title')}>{title}</h4>
                 <div className={cx('list')}>
                     <ProductCard data={data} />
                 </div>

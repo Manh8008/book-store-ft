@@ -177,7 +177,7 @@ export default function DashBoard() {
                                 </div>
                             </div>
                         </div> */}
-                        <RecentOrder></RecentOrder>
+                        <RecentOrder />
                     </div>
                 </div>
             </div>

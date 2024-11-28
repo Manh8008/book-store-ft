@@ -25,6 +25,7 @@ export default function ProductByCategories({ params }) {
     const [currentPage, setCurrentPage] = useState(1)
     const [categories, setCategories] = useState([])
     const [productByCate, setProductByCate] = useState([])
+    const [filteredProducts, setFilteredProducts] = useState([])
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber)
@@ -37,6 +38,7 @@ export default function ProductByCategories({ params }) {
         try {
             const result = await productApiRequest.getBookByCatalog(idCate)
             setProductByCate(result.payload.data)
+            setFilteredProducts(result.payload.data)
         } catch (err) {
             handleHttpError(err, setError)
         } finally {
@@ -52,14 +54,23 @@ export default function ProductByCategories({ params }) {
             setCategories(result.payload.data)
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
+    }
+
+    const filterByPrice = (minPrice, maxPrice) => {
+        if (!minPrice || !maxPrice) return setFilteredProducts(productByCate)
+        const filtered = productByCate.filter((product) => {
+            console.log(product)
+            return product.price >= minPrice && product.price <= maxPrice
+        })
+
+        setFilteredProducts(filtered)
     }
 
     useEffect(() => {
         fetchCategories()
-    }, [])
-
-    useEffect(() => {
         fetchProductByCate()
     }, [])
 
@@ -79,13 +90,10 @@ export default function ProductByCategories({ params }) {
                             alt="sách kinh tế"
                         />
                     </div>
-
                     <Subcategory data={categories} />
-
-                    <FilterBooks />
-
+                    <FilterBooks onPriceChange={filterByPrice} />
                     <div className={cx('productByCate')}>
-                        <ProductCard data={productByCate} />
+                        <ProductCard data={filteredProducts} />
                     </div>
                 </div>
 

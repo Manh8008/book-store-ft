@@ -9,7 +9,7 @@ const cx = classNames.bind(styles)
 const brands = ['Kim Đồng', 'NXB Trẻ', 'Alpha Books', 'Nhà xuất bản Văn học']
 
 const FilterBooks = ({ onPriceChange }) => {
-    const handlePriceChange = ({ min, max }) => {
+    const handleApplyFilter = ({ min, max }) => {
         if (onPriceChange) {
             onPriceChange(min, max)
         }
@@ -21,7 +21,38 @@ const FilterBooks = ({ onPriceChange }) => {
                 <div className={cx('filter-section')}>
                     <h3>Khoảng giá</h3>
                     <div className={cx('filter-price')}>
-                        <PriceRangeSlider onChange={handlePriceChange} />
+                        <PriceRangeSlider onApplyFilter={handleApplyFilter} />
+                    </div>
+
+                    <div className={cx('select-input')}>
+                        <span className={cx('select-input__label')}>Giá</span>
+                        <i className={cx('select-input__icon', 'fa-solid', 'fa-angle-down')}></i>
+                        <ul className={cx('select-input__list')}>
+                            <li className={cx('select-input__item')}>
+                                <button
+                                    className={cx('select-input__link')}
+                                    onClick={() => handleSort('default')}
+                                >
+                                    Mặc định
+                                </button>
+                            </li>
+                            <li className={cx('select-input__item')}>
+                                <button
+                                    className={cx('select-input__link')}
+                                    onClick={() => handleSort('asc')}
+                                >
+                                    Giá: Thấp đến cao
+                                </button>
+                            </li>
+                            <li className={cx('select-input__item')}>
+                                <button
+                                    className={cx('select-input__link')}
+                                    onClick={() => handleSort('desc')}
+                                >
+                                    Giá: Cao đến thấp
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 

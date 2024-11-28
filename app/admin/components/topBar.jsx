@@ -14,7 +14,7 @@ export default function TopBar() {
                                 </div>
                             </div>
                             <div className="iq-navbar-logo d-flex justify-content-between">
-                                <Link href="index.html" className="header-logo">
+                                <Link href="/admin" className="header-logo">
                                     {/* <img
                                         src="/images/logo.png"
                                         className="img-fluid rounded-normal"
@@ -30,18 +30,6 @@ export default function TopBar() {
                         </div>
                         <div className="navbar-breadcrumb">
                             <h5 className="mb-0">Trang Chủ</h5>
-                        </div>
-                        <div className="iq-search-bar">
-                            <form action="#" className="searchbox">
-                                <input
-                                    type="text"
-                                    className="text search-input"
-                                    placeholder="Tìm kiếm sản phẩm..."
-                                />
-                                <Link className="search-link" href="#">
-                                    <i className="ri-search-line"></i>
-                                </Link>
-                            </form>
                         </div>
                         <button
                             className="navbar-toggler"

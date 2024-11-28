@@ -76,16 +76,10 @@ export const Header = () => {
                                     <Link href="/shop">Danh mục sản phẩm</Link>
                                 </li>
                                 <li>
-                                    <Link href="/shop">Sản phẩm</Link>
-                                </li>
-                                <li>
                                     <Link href="/review-book">Bài viết</Link>
                                 </li>
                                 <li>
                                     <Link href="/contact">Liên hệ</Link>
-                                </li>
-                                <li>
-                                    <Link href="/review-book">Review Sách</Link>
                                 </li>
                             </ul>
                         </nav>

@@ -1,6 +1,8 @@
 'use client'
+
 import Lottie from 'lottie-react'
 import classNames from 'classnames/bind'
+
 import loadingAnimation from './LoadingIcon.json'
 import styles from './LoadingSkeleton.module.scss'
 

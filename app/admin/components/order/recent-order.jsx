@@ -1,38 +1,56 @@
-"use client"
+'use client'
 
-import orderApiRequest from "@/apiRequests/order"
-import Link from "next/link"
-import { useEffect, useState } from "react"
+import orderApiRequest from '@/apiRequests/order'
+import { Button } from '@/components/ui/button'
+import { handleHttpError } from '@/lib/utils'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function RecentOrder() {
     const [order, setOrder] = useState([])
+    const [error, setError] = useState('')
+
     const fetchOrder = async () => {
-        const res = await orderApiRequest.getAll()
-        setOrder(res.payload.data)
+        try {
+            const res = await orderApiRequest.getAll()
+            setOrder(res.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        }
     }
 
-    useEffect(() => {
-        fetchOrder();
-    }, [])
-    // console.log(order)
-
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        const date = new Date(dateString)
+        const day = String(date.getDate()).padStart(2, '0')
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const year = date.getFullYear()
+        return `${day}/${month}/${year}`
     }
 
     const filterPendingOrders = (orders) => {
-        return orders.filter((order) => order.order_status === "Chờ xác nhận")
+        return orders.filter((order) => order.order_status === 'Chờ xác nhận')
     }
 
+    const handleChangeStatus = async (id) => {
+        try {
+            const res = await orderApiRequest.updateStatus(id, { order_status: 'Đã xác nhận' })
+            if (res) {
+                setOrder((prevData) =>
+                    prevData.map((order) =>
+                        order.id === id ? { ...order, order_status: 'Đã xác nhận' } : order
+                    )
+                )
+            } else {
+                setError('Không thể cập nhật trạng thái đơn hàng!')
+            }
+        } catch (err) {
+            setError('Lỗi kết nối tới server!')
+        }
+    }
 
-
-
-
-
+    useEffect(() => {
+        fetchOrder()
+    }, [])
     return (
         <>
             <div className="col-sm-12">
@@ -84,7 +102,9 @@ export default function RecentOrder() {
                                         <th scope="col">Hóa đơn</th>
                                         <th scope="col">Số tiền</th>
                                         <th scope="col">Trạng thái</th>
-                                        <th className="text-center" scope="col">Hoạt động</th>
+                                        <th className="text-center" scope="col">
+                                            Hoạt động
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,23 +113,55 @@ export default function RecentOrder() {
                                             <td>{order.name}</td>
                                             <td>{formatDate(order.order_date)}</td>
                                             <td>{order.order_code}</td>
-                                            <td>{parseFloat(order.total_amount).toLocaleString('vi-VN')}đ</td>
+                                            <td>
+                                                {parseFloat(order.total_amount).toLocaleString(
+                                                    'vi-VN'
+                                                )}
+                                                đ
+                                            </td>
                                             <td>
                                                 <div
-                                                    className={`badge badge-pill text-white ${order.order_status === 'Đã hủy' ? 'bg-danger' :
-                                                        order.order_status === 'Chờ xác nhận' ? 'bg-warning' :
-                                                            order.order_status === 'Đã xác nhận' || order.order_status === 'Đang vận chuyển' ? 'bg-success' :
-                                                                'bg-secondary'
-                                                        }`}
+                                                    className={`badge badge-pill text-white ${
+                                                        order.order_status === 'Đã hủy'
+                                                            ? 'bg-danger'
+                                                            : order.order_status === 'Chờ xác nhận'
+                                                            ? 'bg-warning'
+                                                            : order.order_status ===
+                                                                  'Đã xác nhận' ||
+                                                              order.order_status ===
+                                                                  'Đang vận chuyển'
+                                                            ? 'bg-success'
+                                                            : 'bg-secondary'
+                                                    }`}
                                                 >
                                                     {order.order_status}
                                                 </div>
                                             </td>
 
-                                            <td className="text-center"><Link className="primary" href=""><i className="ri-eye-line"></i></Link></td>
+                                            <td className="text-center">
+                                                <div className="flex align-items-center list-user-action">
+                                                    {order.order_status === 'Chờ xác nhận' ? (
+                                                        <Button
+                                                            outline
+                                                            small
+                                                            onClick={() =>
+                                                                handleChangeStatus(order.id)
+                                                            }
+                                                        >
+                                                            Xác nhận
+                                                        </Button>
+                                                    ) : (
+                                                        <Link
+                                                            className="bg-primary"
+                                                            href={`/order/${order.id}`}
+                                                        >
+                                                            <i className="ri-eye-line"></i>
+                                                        </Link>
+                                                    )}
+                                                </div>
+                                            </td>
                                         </tr>
                                     ))}
-
                                 </tbody>
                             </table>
                         </div>

@@ -6,36 +6,59 @@ import { ProductList } from '@/components/product-list'
 import { useEffect, useState } from 'react'
 import { productApiRequest } from '@/apiRequests/product'
 import { handleHttpError } from '@/lib/utils'
+import { ToastError } from '@/components/ui/ToastError'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 
 export default function Home() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     const [booksBestSeller, setBooksBestSeller] = useState([])
-
-    const [bestsellingBooks, setBestsellingBooks] = useState([])
-
     //Sách tư duy kỹ năng
     const [thinkingSkillsBook, setThinkingSkillsBook] = useState([])
-
     //sách kinh tế tài chính
     const [financialEconomicsBooks, setFinancialEconomicsBooks] = useState([])
-
     //sách gia đình
     const [educationalScienceBooks, setEducationalScienceBooks] = useState([])
-
     //sách lịch sử chính trị
     const [politicalBooks, setPoliticalBooks] = useState([])
 
     const fetchBooksBestSeller = async () => {
+        if (loading) return
+        setError(null)
+        setLoading(true)
         try {
             const result = await productApiRequest.getBooksBestSeller()
-
-            console.log(result.payload.data)
-
             setBooksBestSeller(result.payload.data)
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const fetchBooks = async () => {
+        if (loading) return
+        setError(null)
+        setLoading(true)
+        try {
+            const [thinkingSkills, financialEconomics, educationalScience, political] =
+                await Promise.all([
+                    productApiRequest.getBookByCatalog(1),
+                    productApiRequest.getBookByCatalog(5),
+                    productApiRequest.getBookByCatalog(3),
+                    productApiRequest.getBookByCatalog(2)
+                ])
+            if (thinkingSkills.status === 200) setThinkingSkillsBook(thinkingSkills.payload.data)
+            if (financialEconomics.status === 200)
+                setFinancialEconomicsBooks(financialEconomics.payload.data)
+            if (educationalScience.status === 200)
+                setEducationalScienceBooks(educationalScience.payload.data)
+            if (political.status === 200) setPoliticalBooks(political.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -44,38 +67,16 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
-        const fetchBooks = async () => {
-            if (loading) return
-            try {
-                const [thinkingSkills, financialEconomics, educationalScience, political] =
-                    await Promise.all([
-                        productApiRequest.getBookByCatalog(1),
-                        productApiRequest.getBookByCatalog(5),
-                        productApiRequest.getBookByCatalog(3),
-                        productApiRequest.getBookByCatalog(2)
-                    ])
-                if (thinkingSkills.status === 200)
-                    setThinkingSkillsBook(thinkingSkills.payload.data)
-                if (financialEconomics.status === 200)
-                    setFinancialEconomicsBooks(financialEconomics.payload.data)
-                if (educationalScience.status === 200)
-                    setEducationalScienceBooks(educationalScience.payload.data)
-                if (political.status === 200) setPoliticalBooks(political.payload.data)
-            } catch (error) {
-                console.log(error)
-            } finally {
-                setLoading(false)
-            }
-        }
-
         fetchBooks()
     }, [])
 
+    if (loading) return <LoadingSkeleton />
+
     return (
         <MainLayout>
+            <ToastError errorMessage={error} />
             <main style={{ background: '#F5F5FA' }}>
                 <Banner />
-                {/* <!-- Products Hot --> */}
                 <div className="product-hot">
                     <div className="content">
                         <div className="title-hot">
@@ -89,17 +90,15 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* <!-- Banner-sale --> */}
-                <div className="banner-sale">
+                {/* <div className="banner-sale">
                     <div className="content">
                         <div className="row">
                             <img src="/img/banner-sale-1.svg" alt="" className="img" />
                             <img src="/img/banner-sale-2.svg" alt="" className="img" />
                         </div>
                     </div>
-                </div>
+                </div> */}
 
-                {/* Home Products */}
                 <div className="home-product">
                     <div className="content">
                         <div className="title-cate">

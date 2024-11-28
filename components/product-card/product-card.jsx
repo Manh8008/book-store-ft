@@ -54,7 +54,7 @@ const ProductCard = (props) => {
                                     className={cx('buy-now')}
                                     onClick={() => dispatch(addItem({ product, quantity }))}
                                 >
-                                    Mua ngay
+                                    Thêm vào giỏ hàng
                                 </button>
                             </div>
                         </div>

@@ -1,9 +1,8 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import classNames from 'classnames/bind'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
-
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import { Subcategory } from '@/components/ui/subcategory'
 import { FilterBooks } from '@/components/ui/filter-books'
@@ -23,7 +22,6 @@ const BookCollection = () => {
     const [books, setBooks] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [categories, setCategories] = useState([])
-
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
@@ -63,16 +61,14 @@ const BookCollection = () => {
         setLoading(true)
         setError(null)
         try {
-            // const validMinPrice = Number(minPrice)
-            // const validMaxPrice = Number(maxPrice)
+            const validMinPrice = Number(minPrice)
+            const validMaxPrice = Number(maxPrice)
 
-            // if (isNaN(validMinPrice) || isNaN(validMaxPrice)) {
-            //     throw new Error('Giá phải là số hợp lệ')
-            // }
+            if (isNaN(validMinPrice) || isNaN(validMaxPrice)) {
+                throw new Error('Giá phải là số hợp lệ')
+            }
 
-            const result = await productApiRequest.filterByPrice(400000, 10000000)
-
-            console.log(result)
+            const result = await productApiRequest.filterByPrice(validMinPrice, validMaxPrice)
             setBooks(result.payload.data)
         } catch (error) {
             handleHttpError(error, setError)
@@ -87,10 +83,6 @@ const BookCollection = () => {
 
     useEffect(() => {
         fetchBooks()
-    }, [])
-
-    useEffect(() => {
-        filterByPrice(400000, 10000000)
     }, [])
 
     if (loading) return <LoadingSkeleton />
@@ -110,7 +102,7 @@ const BookCollection = () => {
 
                 <Subcategory data={categories} />
 
-                {/* <FilterBooks onPriceChange={filterByPrice} /> */}
+                <FilterBooks onPriceChange={filterByPrice} />
 
                 <ProductList title="Tất cả sản phẩm" data={books} />
             </div>

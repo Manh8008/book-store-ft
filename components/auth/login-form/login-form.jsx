@@ -47,19 +47,13 @@ export const LoginForm = () => {
         try {
             const result = await authApiRequest.login(values)
 
-            if (result.status === 200) {
-                await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
-                clientSessionToken.value = result.payload.data.access_token
+            await authApiRequest.auth({ sessionToken: result.payload.data.access_token })
+            clientSessionToken.value = result.payload.data.access_token
 
-                const profileResult = await accountApiRequest.getProfile()
-                if (profileResult.status === 200) {
-                    setUserData(profileResult.payload.data.user)
-                    setSuccess('Đăng nhập thành công!')
-                    router.push('/')
-                } else {
-                    setError('Không thể lấy thông tin người dùng')
-                }
-            }
+            const profileResult = await accountApiRequest.getProfile()
+            setUserData(profileResult.payload.data.user)
+            setSuccess('Đăng nhập thành công!')
+            router.push('/')
         } catch (error) {
             handleHttpError(error, setError)
         } finally {

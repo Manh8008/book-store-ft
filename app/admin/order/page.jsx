@@ -1,27 +1,37 @@
 'use client'
-import orderApiRequest from '@/apiRequests/order'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import orderApiRequest from '@/apiRequests/order'
+import SearchOrder from '../components/search-order'
 
 export default function Order() {
     const [orderData, setOrderData] = useState([])
     const [error, setError] = useState('')
+    const [query, setQuery] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    const fetchOrders = async () => {
+        if (loading) return
+        setLoading(true)
+        try {
+            const data = await orderApiRequest.getAll()
+            setOrderData(data.payload.data)
+        } catch (err) {
+            setError('Không thể lấy dữ liệu đơn hàng!')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const data = await orderApiRequest.getAll()
-                setOrderData(data.payload.data)
-            } catch (err) {
-                setError('Không thể lấy dữ liệu đơn hàng!')
-            }
-        }
-
         fetchOrders()
     }, [])
 
     const handleChangeStatus = async (id) => {
+        if (loading) return
+        setLoading(true)
+        setError('')
         try {
             const res = await orderApiRequest.updateStatus(id, { order_status: 'Đã xác nhận' })
             if (res) {
@@ -35,6 +45,23 @@ export default function Order() {
             }
         } catch (err) {
             setError('Lỗi kết nối tới server!')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleSearch = async (e) => {
+        if (loading) return
+        setLoading(true)
+        setError('')
+        e.preventDefault()
+        try {
+            const result = await orderApiRequest.searchOrder(query)
+            setOrderData(result.payload.data)
+        } catch (error) {
+            setError('Không tìm thấy đơn hàng!')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -49,6 +76,11 @@ export default function Order() {
                                     <div className="iq-header-title">
                                         <h4 className="card-title">Danh sách đơn hàng</h4>
                                     </div>
+                                    <SearchOrder
+                                        query={query}
+                                        setQuery={setQuery}
+                                        onSearch={handleSearch}
+                                    />
                                 </div>
                                 <div className="iq-card-body">
                                     {error && <p className="text-danger">{error}</p>}
@@ -79,17 +111,15 @@ export default function Order() {
                                                 {orderData &&
                                                     orderData.map((item) => (
                                                         <tr key={item.id}>
-                                                            <td>
-                                                                {item.orderId || 'ORDER-123456'}
-                                                            </td>
+                                                            <td>{item.order_code || ''}</td>
                                                             <td className="text-start">
                                                                 <small>
-                                                                    Họ và tên:{' '}
+                                                                    Họ và tên:
                                                                     <strong>{item.name}</strong>
                                                                 </small>
                                                                 <br />
                                                                 <small>
-                                                                    Số điện thoại:{' '}
+                                                                    Số điện thoại:
                                                                     <strong>
                                                                         {item.phone || '---'}
                                                                     </strong>
@@ -97,28 +127,28 @@ export default function Order() {
                                                             </td>
                                                             <td>
                                                                 <small>
-                                                                    Quận/Huyện:{' '}
+                                                                    Quận/Huyện:
                                                                     <strong>
                                                                         {item.district || '---'}
                                                                     </strong>
                                                                 </small>
                                                                 <br />
                                                                 <small>
-                                                                    Phường/Xã:{' '}
+                                                                    Phường/Xã:
                                                                     <strong>
                                                                         {item.town || '---'}
                                                                     </strong>
                                                                 </small>
                                                                 <br />
                                                                 <small>
-                                                                    Tỉnh/Thành phố:{' '}
+                                                                    Tỉnh/Thành phố:
                                                                     <strong>
                                                                         {item.province || '---'}
                                                                     </strong>
                                                                 </small>
                                                                 <br />
                                                                 <small>
-                                                                    Địa chỉ chi tiết:{' '}
+                                                                    Địa chỉ chi tiết:
                                                                     <strong>
                                                                         {item.address_line || '---'}
                                                                     </strong>
@@ -129,7 +159,7 @@ export default function Order() {
                                                             <td>
                                                                 <div className="flex align-items-center list-user-action">
                                                                     {item.order_status ===
-                                                                        'Chờ xác nhận' ? (
+                                                                    'Chờ xác nhận' ? (
                                                                         <Button
                                                                             outline
                                                                             onClick={() =>
