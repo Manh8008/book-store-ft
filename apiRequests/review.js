@@ -1,9 +1,8 @@
 import http from '@/lib/http'
 
 const reviewApiRequest = {
-    bookDetail: (id) => http.get(`/api/getBookDetail/${id}`),
-    getAllBooks: () => http.get(`/api/getAllBooks`),
-    getBookByCatalog: (id) => http.get(`/api/getBookByCategory/${id}`)
+    getAllPost: () => http.get(`/api/getAllPost`),
+    reviewDetail: (id) => http.get(`/api/getPostById/${id}`),
 }
 
 const reviewApiRequestAdmin = {

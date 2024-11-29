@@ -1,34 +1,46 @@
-export default function ReviewBookList() {
+import Link from "next/link"
+
+export default function ReviewBookList(props) {
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString)
+        const day = String(date.getDate()).padStart(2, '0')
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const year = date.getFullYear()
+        return `${day}/${month}/${year}`
+    }
+
     return (
         <>
-            <div className="item-post">
-                <div className="img-post">
-                    <a href="#!">
-                        <img src="/img/review.jpg" alt="" />
-                    </a>
-                </div>
-                <div className="info">
-                    <div className="title">
-                        <a href="#!">
-                            <h3>
-                                Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp ra mắt độc
-                                giả Việt Nam “NEXUS: A Brief History of Information Networks from
-                                the Stone Age to AI”
-                            </h3>
-                        </a>
-                    </div>
-                    <div className="date">07/02/2023</div>
-                    <div className="sub-title">
-                        Ấn bản tiếng Việt của cuốn sách “NEXUS: A Brief History of Information
-                        Networks from the Stone Age to AI” của tác giả Yuval Noah Harari sẽ chính
-                        thức ra mắt vào cuối tháng 9/2024 tới đây, được ấn hành bởi Omega Plus
-                        Books.
-                    </div>
-                    <a href="#!" className="link">
-                        Xem thêm
-                    </a>
-                </div>
-            </div>
+            {props &&
+                props.data &&
+                props.data.map((review) => {
+                    return (
+                        <div className="item-post" key={review.id}>
+                            <div className="img-post">
+                                <Link href={`/reviewBook-detail/${review.id}`}>
+                                    <img src={review.image_url} alt="" />
+                                </Link>
+                            </div>
+                            <div className="info">
+                                <div className="title">
+                                    <Link href={`/reviewBook-detail/${review.id}`}>
+                                        <h3>
+                                            {review.title}
+                                        </h3>
+                                    </Link>
+                                </div>
+                                <div className="date">{formatDate(review.created_at)}</div>
+                                <div className="sub-title">
+                                    {review.description}
+                                </div>
+                                <Link href="#!" className="link">
+                                    Xem thêm
+                                </Link>
+                            </div>
+                        </div>
+                    )
+                })}
         </>
     )
 }

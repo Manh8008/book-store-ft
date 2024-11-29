@@ -159,7 +159,7 @@ export default function Order() {
                                                             <td>
                                                                 <div className="flex align-items-center list-user-action">
                                                                     {item.order_status ===
-                                                                    'Chờ xác nhận' ? (
+                                                                        'Chờ xác nhận' ? (
                                                                         <Button
                                                                             outline
                                                                             onClick={() =>
@@ -173,7 +173,7 @@ export default function Order() {
                                                                     ) : (
                                                                         <Link
                                                                             className="bg-primary"
-                                                                            href={`/order/${item.id}`}
+                                                                            href={`/admin/order/orderDetail/${item.id}`}
                                                                         >
                                                                             <i className="ri-eye-line"></i>
                                                                         </Link>

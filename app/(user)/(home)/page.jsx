@@ -8,6 +8,8 @@ import { productApiRequest } from '@/apiRequests/product'
 import { handleHttpError } from '@/lib/utils'
 import { ToastError } from '@/components/ui/ToastError'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
+import { reviewApiRequest } from '@/apiRequests/review'
+import ReviewHome from '@/components/review-home/page'
 
 export default function Home() {
     const [loading, setLoading] = useState(false)
@@ -22,6 +24,19 @@ export default function Home() {
     const [educationalScienceBooks, setEducationalScienceBooks] = useState([])
     //sách lịch sử chính trị
     const [politicalBooks, setPoliticalBooks] = useState([])
+    // Bài viết trang chủ
+    const [review, setReview] = useState([]);
+
+    const fetchReview = async () => {
+        const result = await reviewApiRequest.getAllPost();
+        setReview(result.payload.data);
+    }
+
+    useEffect(() => {
+        fetchReview();
+    }, [])
+
+    console.log(review);
 
     const fetchBooksBestSeller = async () => {
         if (loading) return
@@ -160,174 +175,7 @@ export default function Home() {
                     <div className="content">
                         <h2 className="title">Review sách hay</h2>
                         <div className="list-review">
-                            <div className="item">
-                                <div className="image">
-                                    <a href="#!">
-                                        <img
-                                            src="/img/review.jpg"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </a>
-                                    <span className="date">12/08/2004</span>
-                                </div>
-                                <div className="body">
-                                    <h3>
-                                        <a href="#!" className="sub-title-review">
-                                            Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp
-                                            ra mắt độc giả Việt Nam “NEXUS: A Brief History of
-                                            Information Networks from the Stone Age to AI”
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="image">
-                                    <a href="#!">
-                                        <img
-                                            src="/img/review.jpg"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </a>
-                                    <span className="date">12/08/2004</span>
-                                </div>
-                                <div className="body">
-                                    <h3>
-                                        <a href="#!" className="sub-title-review">
-                                            Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp
-                                            ra mắt độc giả Việt Nam “NEXUS: A Brief History of
-                                            Information Networks from the Stone Age to AI”
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="image">
-                                    <a href="#!">
-                                        <img
-                                            src="/img/review.jpg"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </a>
-                                    <span className="date">12/08/2004</span>
-                                </div>
-                                <div className="body">
-                                    <h3>
-                                        <a href="#!" className="sub-title-review">
-                                            Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp
-                                            ra mắt độc giả Việt Nam “NEXUS: A Brief History of
-                                            Information Networks from the Stone Age to AI”
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="image">
-                                    <a href="#!">
-                                        <img
-                                            src="/img/review.jpg"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </a>
-                                    <span className="date">12/08/2004</span>
-                                </div>
-                                <div className="body">
-                                    <h3>
-                                        <a href="#!" className="sub-title-review">
-                                            Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp
-                                            ra mắt độc giả Việt Nam “NEXUS: A Brief History of
-                                            Information Networks from the Stone Age to AI”
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="image">
-                                    <a href="#!">
-                                        <img
-                                            src="/img/review.jpg"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </a>
-                                    <span className="date">12/08/2004</span>
-                                </div>
-                                <div className="body">
-                                    <h3>
-                                        <a href="#!" className="sub-title-review">
-                                            Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp
-                                            ra mắt độc giả Việt Nam “NEXUS: A Brief History of
-                                            Information Networks from the Stone Age to AI”
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="image">
-                                    <a href="#!">
-                                        <img
-                                            src="/img/review.jpg"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </a>
-                                    <span className="date">12/08/2004</span>
-                                </div>
-                                <div className="body">
-                                    <h3>
-                                        <a href="#!" className="sub-title-review">
-                                            Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp
-                                            ra mắt độc giả Việt Nam “NEXUS: A Brief History of
-                                            Information Networks from the Stone Age to AI”
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="image">
-                                    <a href="#!">
-                                        <img
-                                            src="/img/review.jpg"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </a>
-                                    <span className="date">12/08/2004</span>
-                                </div>
-                                <div className="body">
-                                    <h3>
-                                        <a href="#!" className="sub-title-review">
-                                            Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp
-                                            ra mắt độc giả Việt Nam “NEXUS: A Brief History of
-                                            Information Networks from the Stone Age to AI”
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="item">
-                                <div className="image">
-                                    <a href="#!">
-                                        <img
-                                            src="/img/review.jpg"
-                                            alt="Nikko Apartments"
-                                            className="thumb"
-                                        />
-                                    </a>
-                                    <span className="date">12/08/2004</span>
-                                </div>
-                                <div className="body">
-                                    <h3>
-                                        <a href="#!" className="sub-title-review">
-                                            Bản tiếng Việt cuốn sách mới của Yuval Noah Harari sắp
-                                            ra mắt độc giả Việt Nam “NEXUS: A Brief History of
-                                            Information Networks from the Stone Age to AI”
-                                        </a>
-                                    </h3>
-                                </div>
-                            </div>
+                            <ReviewHome data={review}></ReviewHome>
                         </div>
                     </div>
                 </div>
