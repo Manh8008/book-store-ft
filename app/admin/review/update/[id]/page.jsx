@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { reviewApiRequestAdmin } from '@/apiRequests/post'
 import { handleHttpError } from '@/lib/utils'
+import { set } from 'zod'
 
 export default function UpdateReview({ params }) {
     const router = useRouter()
@@ -33,7 +34,10 @@ export default function UpdateReview({ params }) {
                 setValue('title', result.payload.data.title)
                 setValue('description', result.payload.data.description)
 
-                setSelectedImage(result.payload.data.image_url)
+                // Lưu URL ảnh cũ vào state
+                const imageUrl = result.payload.data.image_url;
+                setSelectedImage(imageUrl)
+                setValue('image_url', imageUrl)
             } else {
                 console.error('Không thể lấy bài viết')
             }
@@ -41,44 +45,41 @@ export default function UpdateReview({ params }) {
         getPost()
     }, [id, setValue])
 
-    useEffect(() => {
-        if (review) {
-            console.log('Ảnh bài viết:', review.image_url)
-        }
-    }, [review])
-
     const handleImageChange = (event) => {
-        const file = event.target.files[0]
+        const file = event.target.files[0];
         if (file) {
-            setSelectedImage(URL.createObjectURL(file))
+            setSelectedImage(file);
         }
-    }
+    };
 
-    // Cái phần này nó đang bị không thay được ảnh mới lên, nó cú để ảnh cũ như vậy
     const onSubmit = async (data) => {
-        console.log(data)
         try {
-            const formData = new FormData()
-            formData.append('_method', 'PUT')
+            const formData = new FormData();
+            formData.append('_method', 'PUT');
 
+            // Thêm các giá trị khác ngoài ảnh
             for (const key in data) {
-                formData.append(key, data[key])
+                if (key !== 'image') {
+                    formData.append(key, data[key]);
+                }
             }
 
-            if (selectedImage && selectedImage instanceof File) {
-                formData.append('image_url', selectedImage)
-            } else if (selectedImage && typeof selectedImage === 'string') {
-                formData.append('image_url', selectedImage)
+            // Nếu có ảnh mới (chọn từ input), thêm vào FormData
+            if (selectedImage instanceof File) {
+                formData.append('image', selectedImage); // Gửi file ảnh thực tế lên server
+            } else if (review?.image_url) {
+                // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
+                formData.append('image', review.image_url);
             }
 
-            const result = await reviewApiRequestAdmin.updatePost(id, formData)
+            const result = await reviewApiRequestAdmin.updatePost(id, formData);
             if (result.status === 200) {
-                // router.push('/admin/review')
+                router.push('/admin/review');
             }
         } catch (error) {
-            handleHttpError(error, setError)
+            handleHttpError(error, setError);
         }
-    }
+    };
 
     return (
         <div id="content-page" className="content-page">
@@ -99,30 +100,29 @@ export default function UpdateReview({ params }) {
                                             <input
                                                 type="file"
                                                 className="custom-file-input"
-                                                {...register('image_url', {
+                                                {...register('image', {
                                                     required: 'Ảnh bài viết là bắt buộc'
                                                 })}
                                                 onChange={handleImageChange}
                                             />
                                             <label className="custom-file-label">Choose file</label>
                                         </div>
-                                        {errors.image_url && (
+                                        {errors.image && (
                                             <div className="text-danger mt-2">
-                                                {errors.image_url.message}
+                                                {errors.image.message}
                                             </div>
                                         )}
-                                        <div className="bg-secondary-subtle mb-3 p-2 text-center">
-                                            {/* Hiển thị ảnh đã chọn hoặc ảnh cũ */}
+                                        <div className="bg-secondary-subtle mb-3 mt-4 p-2">
                                             {selectedImage ? (
                                                 <img
-                                                    src={selectedImage}
-                                                    className="w-20"
+                                                    src={selectedImage instanceof File ? URL.createObjectURL(selectedImage) : selectedImage}
+                                                    className="w-50 img-fluid"
                                                     alt="Product Image"
                                                 />
                                             ) : review?.image_url ? (
                                                 <img
                                                     src={review.image_url}
-                                                    className="w-20"
+                                                    className="w-50 img-fluid"
                                                     alt="Product Image"
                                                 />
                                             ) : (

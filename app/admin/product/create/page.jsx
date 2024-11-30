@@ -181,34 +181,30 @@ export default function CreateProduct() {
                                         </div>
                                         <div className="form-group">
                                             <label>Hình ảnh:</label>
-                                            <div className="form-group">
-                                                <label>Hình ảnh:</label>
-                                                <div className="custom-file">
-                                                    <input
-                                                        type="file"
-                                                        className="custom-file-input"
-                                                        name="images"
-                                                        {...register('images')}
-                                                        onChange={handleImageChange}
-                                                    />
-                                                    <label className="custom-file-label">
-                                                        Choose file
-                                                    </label>
-                                                    {errors.images && (
-                                                        <div className="text-danger mt-2">
-                                                            {errors.images.message}
-                                                        </div>
-                                                    )}
-                                                </div>
-
-                                                {imagePreview && (
-                                                    <div className="mt-3">
-                                                        <img
-                                                            src={imagePreview}
-                                                            alt="Preview"
-                                                            style={{ maxWidth: '200px' }}
-                                                        />
+                                            <div className="custom-file">
+                                                <input
+                                                    type="file"
+                                                    className="custom-file-input"
+                                                    name="images"
+                                                    {...register('images')}
+                                                    onChange={handleImageChange}
+                                                />
+                                                <label className="custom-file-label">
+                                                    Choose file
+                                                </label>
+                                                {errors.images && (
+                                                    <div className="text-danger mt-2">
+                                                        {errors.images.message}
                                                     </div>
+                                                )}
+                                            </div>
+                                            <div className="bg-secondary-subtle mb-3 mt-4 p-2">
+                                                {imagePreview && (
+                                                    <img
+                                                        src={imagePreview}
+                                                        className="w-50 img-fluid"
+                                                        alt="Product Image"
+                                                    />
                                                 )}
                                             </div>
                                         </div>

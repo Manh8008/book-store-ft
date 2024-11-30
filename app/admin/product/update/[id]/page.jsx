@@ -20,6 +20,8 @@ export default function UpdateProduct({ params }) {
     } = useForm()
     const [categories, setCategories] = useState([])
     const [product, setProduct] = useState(null)
+    const [selectedImage, setSelectedImage] = useState(null)
+
 
     useEffect(() => {
         const getCategories = async () => {
@@ -48,22 +50,42 @@ export default function UpdateProduct({ params }) {
             setValue('format', data.data.format)
             setValue('short_summary', data.data.short_summary)
             setValue('description', data.data.description)
+
+            // Lưu URL ảnh cũ vào state
+            setSelectedImage(data.data.images[0].url)
         }
         if (id) {
             getProduct()
         }
     }, [id, setValue])
+    console.log(product)
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setSelectedImage(file);
+        }
+    };
+
 
     const onSubmit = async (data) => {
         try {
             const formData = new FormData()
             formData.append('_method', 'PUT')
 
+            // Thêm các giá trị khác ngoài ảnh
             for (const key in data) {
-                formData.append(key, data[key])
+                if (key !== 'images') {
+                    formData.append(key, data[key]);
+                }
             }
-            if (data.images[0]) {
-                formData.append('images', data.images[0])
+
+            // Nếu có ảnh mới (chọn từ input), thêm vào FormData
+            if (selectedImage instanceof File) {
+                formData.append('images', selectedImage); // Gửi file ảnh thực tế lên server
+            } else if (product?.images) {
+                // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
+                formData.append('images', product.images);
             }
 
             const result = await productApiRequestAdmin.updateBook(id, formData)
@@ -187,26 +209,31 @@ export default function UpdateProduct({ params }) {
                                                     {...register('images', {
                                                         required: 'Ảnh sản phẩm là bắt buộc'
                                                     })}
+                                                    onChange={handleImageChange}
                                                 />
                                                 <label class="custom-file-label">Choose file</label>
-                                                {errors.images && (
-                                                    <div className="text-danger mt-2">
-                                                        {errors.images.message}
-                                                    </div>
-                                                )}
-                                                <div className="bg-secondary-subtle mb-3 p-2 text-center">
-                                                    {product &&
-                                                    product.images &&
-                                                    product.images.length > 0 ? (
-                                                        <img
-                                                            src={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/storage/${product.images[0]?.url}`}
-                                                            className="w-50"
-                                                            alt="Product Image"
-                                                        />
-                                                    ) : (
-                                                        <p>Không có ảnh để hiển thị</p>
-                                                    )}
+                                            </div>
+                                            {errors.images && (
+                                                <div className="text-danger mt-2">
+                                                    {errors.images.message}
                                                 </div>
+                                            )}
+                                            <div className="bg-secondary-subtle mb-3 mt-4 p-2">
+                                                {selectedImage ? (
+                                                    <img
+                                                        src={selectedImage instanceof File ? URL.createObjectURL(selectedImage) : selectedImage}
+                                                        className="w-50 img-fluid"
+                                                        alt="Product Image"
+                                                    />
+                                                ) : product?.images[0].url ? (
+                                                    <img
+                                                        src={product.images[0].url}
+                                                        className="w-50 img-fluid"
+                                                        alt="Product Image"
+                                                    />
+                                                ) : (
+                                                    <p>Không có ảnh để hiển thị</p>
+                                                )}
                                             </div>
                                         </div>
                                         <div class="form-group">

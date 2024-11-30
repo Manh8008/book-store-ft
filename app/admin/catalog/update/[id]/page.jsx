@@ -42,13 +42,13 @@ const UpdateCatalog = ({ categories, params }) => {
         resolver: zodResolver(categoryForm1Schema),
         defaultValues: categories
             ? {
-                  name: categories.name,
-                  image: undefined
-              }
+                name: categories.name,
+                image: undefined
+            }
             : {
-                  name: '',
-                  image: undefined
-              }
+                name: '',
+                image: undefined
+            }
     })
 
     useEffect(() => {
