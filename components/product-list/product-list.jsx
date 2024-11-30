@@ -1,10 +1,8 @@
 'use client'
 
 import classNames from 'classnames/bind'
-import { useEffect, useState } from 'react'
 import { ProductCard } from '@/components/product-card'
 import styles from './product-list.module.scss'
-import productApiRequest from '@/apiRequests/product'
 import { Button } from '../ui/button'
 
 const cx = classNames.bind(styles)

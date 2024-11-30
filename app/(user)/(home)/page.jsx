@@ -8,7 +8,7 @@ import { productApiRequest } from '@/apiRequests/product'
 import { handleHttpError } from '@/lib/utils'
 import { ToastError } from '@/components/ui/ToastError'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
-import { reviewApiRequest } from '@/apiRequests/review'
+import { reviewApiRequest } from '@/apiRequests/post'
 import ReviewHome from '@/components/review-home/page'
 
 export default function Home() {
@@ -25,18 +25,16 @@ export default function Home() {
     //sách lịch sử chính trị
     const [politicalBooks, setPoliticalBooks] = useState([])
     // Bài viết trang chủ
-    const [review, setReview] = useState([]);
+    const [review, setReview] = useState([])
 
     const fetchReview = async () => {
-        const result = await reviewApiRequest.getAllPost();
-        setReview(result.payload.data);
+        const result = await reviewApiRequest.getAllPost()
+        setReview(result.payload.data)
     }
 
     useEffect(() => {
-        fetchReview();
+        fetchReview()
     }, [])
-
-    console.log(review);
 
     const fetchBooksBestSeller = async () => {
         if (loading) return

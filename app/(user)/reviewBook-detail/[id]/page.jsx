@@ -1,22 +1,21 @@
-"use client"
-import { reviewApiRequest } from '@/apiRequests/review';
+'use client'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { reviewApiRequest } from '@/apiRequests/post'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import '@/public/styles/reviewBook-detail.scss'
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 export default function ReviewBookDetail({ params }) {
-    const id = params.id;
-    const [review, setReview] = useState([]);
-    const [listReview, setListReview] = useState([]);
-
+    const id = params.id
+    const [review, setReview] = useState([])
+    const [listReview, setListReview] = useState([])
 
     useEffect(() => {
         const fetchListReview = async () => {
             const result = await reviewApiRequest.getAllPost()
             setListReview(result.payload.data)
         }
-        fetchListReview();
+        fetchListReview()
     }, [])
 
     useEffect(() => {
@@ -24,7 +23,7 @@ export default function ReviewBookDetail({ params }) {
             const result = await reviewApiRequest.reviewDetail(id)
             setReview(result.payload.data)
         }
-        fetchReview();
+        fetchReview()
     }, [id])
     // console.log(review)
 
@@ -36,8 +35,6 @@ export default function ReviewBookDetail({ params }) {
         return `${day}/${month}/${year}`
     }
 
-
-
     return (
         <>
             <main style={{ background: '#F5F5FA' }}>
@@ -47,31 +44,21 @@ export default function ReviewBookDetail({ params }) {
                         <div className="main-left">
                             <div className="news-title">
                                 <div className="title">
-                                    <h1>
-                                        {review.title}
-                                    </h1>
+                                    <h1>{review.title}</h1>
                                 </div>
                                 <div className="date">{formatDate(review.created_at)}</div>
                                 <div className="body-content">
                                     <div className="text">
-                                        <span>
-                                            {review.description?.split('\n')[0]}
-                                        </span>
+                                        <span>{review.description?.split('\n')[0]}</span>
                                     </div>
                                     <figure className="image">
                                         <img src={review.image_url} alt={review.title} />
                                         <figcaption>
-                                            <span>
-                                                {review.title}
-                                            </span>
+                                            <span>{review.title}</span>
                                         </figcaption>
                                     </figure>
-                                    <div className="sub-title">
-
-                                    </div>
-                                    <div className="text">
-                                        {review.description}
-                                    </div>
+                                    <div className="sub-title"></div>
+                                    <div className="text">{review.description}</div>
                                 </div>
                             </div>
                         </div>
@@ -85,16 +72,19 @@ export default function ReviewBookDetail({ params }) {
                                         <div className="item" key={review.id}>
                                             <div className="img-post">
                                                 <Link href={`/reviewBook-detail/${review.id}`}>
-                                                    <img src={review.image_url} alt={review.title} />
+                                                    <img
+                                                        src={review.image_url}
+                                                        alt={review.title}
+                                                    />
                                                 </Link>
                                             </div>
                                             <div className="body">
                                                 <Link href={`/reviewBook-detail/${review.id}`}>
-                                                    <div className="title-post">
-                                                        {review.title}
-                                                    </div>
+                                                    <div className="title-post">{review.title}</div>
                                                 </Link>
-                                                <div className="date">{formatDate(review.created_at)}</div>
+                                                <div className="date">
+                                                    {formatDate(review.created_at)}
+                                                </div>
                                             </div>
                                         </div>
                                     ))}

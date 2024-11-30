@@ -4,7 +4,7 @@ export default function OrderDetail() {
             <div id="content-page" className="content-page">
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-sm-12">
+                        <div className="col-sm-9">
                             <div className="iq-card">
                                 <div className="iq-card-header d-flex justify-content-between">
                                     <div className="iq-header-title">
@@ -20,14 +20,8 @@ export default function OrderDetail() {
                                             <thead>
                                                 <tr>
                                                     <th style={{ width: '10%' }}>Ảnh sản phẩm</th>
-                                                    <th
-                                                        style={{ width: '15%' }}
-                                                    >
-                                                        Tên sản phẩm
-                                                    </th>
-                                                    <th style={{ width: '10%' }}>
-                                                        Giá sản phẩm
-                                                    </th>
+                                                    <th style={{ width: '15%' }}>Tên sản phẩm</th>
+                                                    <th style={{ width: '10%' }}>Giá sản phẩm</th>
                                                     <th style={{ width: '10%' }}>Số lượng</th>
                                                     <th style={{ width: '10%' }}>Tổng tiền</th>
                                                     {/* <th style={{ width: '8%' }}>Hoạt động</th> */}
@@ -36,7 +30,12 @@ export default function OrderDetail() {
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        <img className="img-fluid rounded" src="https://pos.nvncdn.com/fd5775-40602/ps/20240619_mszEtzJg79.jpeg" alt="" width="150"></img>
+                                                        <img
+                                                            className="img-fluid rounded"
+                                                            src="https://pos.nvncdn.com/fd5775-40602/ps/20240619_mszEtzJg79.jpeg"
+                                                            alt=""
+                                                            width="150"
+                                                        ></img>
                                                     </td>
                                                     <td>Những Kẻ Xuất Chúng - The Outliers</td>
                                                     <td>250.000đ</td>
@@ -45,7 +44,12 @@ export default function OrderDetail() {
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <img className="img-fluid rounded" src="https://pos.nvncdn.com/fd5775-40602/ps/20240619_mszEtzJg79.jpeg" alt="" width="150"></img>
+                                                        <img
+                                                            className="img-fluid rounded"
+                                                            src="https://pos.nvncdn.com/fd5775-40602/ps/20240619_mszEtzJg79.jpeg"
+                                                            alt=""
+                                                            width="150"
+                                                        ></img>
                                                     </td>
                                                     <td>Những Kẻ Xuất Chúng - The Outliers</td>
                                                     <td>250.000đ</td>
@@ -57,14 +61,23 @@ export default function OrderDetail() {
                                     </div>
                                     <div className="mt-4">
                                         <h6 className="text-end">
-                                            <strong>Tổng tiền của đơn hàng: <span>5.000.000đ</span></strong>
+                                            <strong>
+                                                Tổng tiền của đơn hàng: <span>5.000.000đ</span>
+                                            </strong>
                                         </h6>
                                         <div className="d-flex align-items-center justify-content-between mt-4">
                                             <div className="d-flex flex-column">
-                                                <label htmlFor="orderStatus" className="mb-2 fw-bold">
+                                                <label
+                                                    htmlFor="orderStatus"
+                                                    className="mb-2 fw-bold"
+                                                >
                                                     Trạng thái đơn hàng:
                                                 </label>
-                                                <select className="form-control" id="orderStatus" style={{ width: '350px' }}>
+                                                <select
+                                                    className="form-control"
+                                                    id="orderStatus"
+                                                    style={{ width: '350px' }}
+                                                >
                                                     <option value="" disabled selected>
                                                         Chọn trạng thái
                                                     </option>
@@ -74,10 +87,11 @@ export default function OrderDetail() {
                                                     <option>Đã hủy</option>
                                                 </select>
                                             </div>
-                                            <button className="btn btn-primary ms-3">Cập nhật trạng thái</button>
+                                            <button className="btn btn-primary ms-3">
+                                                Cập nhật trạng thái
+                                            </button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -85,5 +99,5 @@ export default function OrderDetail() {
                 </div>
             </div>
         </>
-    );
+    )
 }

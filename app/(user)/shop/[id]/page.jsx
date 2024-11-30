@@ -1,11 +1,10 @@
 'use client'
 
 import classNames from 'classnames/bind'
-import { FilterBooks } from '@/components/ui/filter-books'
-import { Subcategory } from '@/components/ui/subcategory'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
+import { Subcategory } from '@/components/ui/subcategory'
 import { Pagination } from '@/components/ui/pagination'
 import { ProductCard } from '@/components/product-card'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
@@ -14,7 +13,8 @@ import { handleHttpError } from '@/lib/utils'
 import { ToastError } from '@/components/ui/ToastError'
 import { catalogApiRequest } from '@/apiRequests/category'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
-import styles from '../../shop.module.scss'
+import styles from '../shop.module.scss'
+import { FilterTop } from '@/components/ui/filter-top'
 const cx = classNames.bind(styles)
 
 export default function ProductByCategories({ params }) {
@@ -69,6 +69,22 @@ export default function ProductByCategories({ params }) {
         setFilteredProducts(filtered)
     }
 
+    const sortBooksByPrice = (order) => {
+        let sortedProducts = [...filteredProducts]
+
+        if (order === 'asc') {
+            sortedProducts.sort((a, b) => a.price - b.price)
+        } else if (order === 'desc') {
+            sortedProducts.sort((a, b) => b.price - a.price)
+        } else if (order === 'newest') {
+            sortedProducts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        } else if (order === 'bestSeller') {
+            sortedProducts.sort((a, b) => b.sales_count - a.sales_count)
+        }
+
+        setFilteredProducts(sortedProducts)
+    }
+
     useEffect(() => {
         fetchCategories()
         fetchProductByCate()
@@ -91,19 +107,21 @@ export default function ProductByCategories({ params }) {
                         />
                     </div>
                     <Subcategory data={categories} />
-                    <FilterBooks onPriceChange={filterByPrice} />
+                    <FilterTop onPriceChange={filterByPrice} onPriceSort={sortBooksByPrice} />
                     <div className={cx('productByCate')}>
                         <ProductCard data={filteredProducts} />
                     </div>
                 </div>
 
-                <div className={cx('pagination')}>
-                    <Pagination
-                        totalPages={totalPages}
-                        currentPage={currentPage}
-                        onPageChange={handlePageChange}
-                    />
-                </div>
+                {filteredProducts && filteredProducts.length > 20 && (
+                    <div className={cx('pagination')}>
+                        <Pagination
+                            totalPages={totalPages}
+                            currentPage={currentPage}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
+                )}
             </div>
         </>
     )

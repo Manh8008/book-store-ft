@@ -1,12 +1,15 @@
 'use client'
 
-import { catalogApiRequestAdmin } from '@/apiRequests/category'
-import { productApiRequest, productApiRequestAdmin } from '@/apiRequests/product'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { catalogApiRequestAdmin } from '@/apiRequests/category'
+import { handleHttpError } from '@/lib/utils'
+import { productApiRequestAdmin } from '@/apiRequests/product'
+import { ToastError } from '@/components/ui/ToastError'
 
 export default function UpdateProduct({ params }) {
+    const [error, setError] = useState('')
     const router = useRouter()
     const id = params.id
     const {
@@ -19,24 +22,18 @@ export default function UpdateProduct({ params }) {
     const [product, setProduct] = useState(null)
 
     useEffect(() => {
-        // Khai báo hàm lấy danh mục
         const getCategories = async () => {
             const result = await catalogApiRequestAdmin.getAllCatalog()
-            // console.log(result)
             setCategories(result.payload.data)
         }
         getCategories()
 
-        // Lấy dữ liệu chi tiết sản phẩm cần sửa
         const getProduct = async () => {
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getBookDetail/${id}`
             )
             const data = await res.json()
             setProduct(data.data)
-            // Dữ liệu chi tiết sản phẩm show ra form
-            // Đặt giá trị ban đầu cho form
-            // console.log(data.data)
             setValue('name', data.data.name)
             setValue('title', data.data.title)
             setValue('category_id', data.data.category_id)
@@ -58,26 +55,30 @@ export default function UpdateProduct({ params }) {
     }, [id, setValue])
 
     const onSubmit = async (data) => {
-        const formData = new FormData()
-        for (const key in data) {
-            formData.append(key, data[key])
-        }
-        if (data.images[0]) {
-            formData.append('images', data.images[0])
-        }
+        try {
+            const formData = new FormData()
+            formData.append('_method', 'PUT')
 
-        const res = await productApiRequestAdmin.updateProduct(id, formData)
-        const result = await res.json()
-        if (result.error) {
-            console.error(result.error)
-        } else {
-            router.push('/admin/product')
+            for (const key in data) {
+                formData.append(key, data[key])
+            }
+            if (data.images[0]) {
+                formData.append('images', data.images[0])
+            }
+
+            const result = await productApiRequestAdmin.updateBook(id, formData)
+            if (result.status === 200) {
+                router.push('/admin/product')
+            }
+        } catch (error) {
+            handleHttpError(error, setError)
         }
     }
 
     return (
         <>
             <div id="content-page" class="content-page">
+                <ToastError errorMessage={error} />
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
@@ -195,8 +196,8 @@ export default function UpdateProduct({ params }) {
                                                 )}
                                                 <div className="bg-secondary-subtle mb-3 p-2 text-center">
                                                     {product &&
-                                                        product.images &&
-                                                        product.images.length > 0 ? (
+                                                    product.images &&
+                                                    product.images.length > 0 ? (
                                                         <img
                                                             src={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/storage/${product.images[0]?.url}`}
                                                             className="w-50"

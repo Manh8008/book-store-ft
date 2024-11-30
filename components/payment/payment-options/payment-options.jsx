@@ -32,28 +32,6 @@ const PaymentOptions = ({ onPaymentMethodChange }) => {
                     <input
                         type="radio"
                         name="payment-method"
-                        value="MoMo"
-                        onChange={() => onPaymentMethodChange('MoMo')}
-                    />
-                    <span className={cx('radio-fake')}></span>
-                    <span className={cx('label')}>
-                        <div className={cx('method-info')}>
-                            <img
-                                className={cx('method-icon')}
-                                alt="delivery-method-icon"
-                                src="/img/momo.jpg"
-                            />
-                            <span className={cx('method-text')}>Ví Momo</span>
-                        </div>
-                    </span>
-                </label>
-            </div>
-
-            <div>
-                <label className={cx('radio')}>
-                    <input
-                        type="radio"
-                        name="payment-method"
                         value="VNPAY"
                         onChange={() => onPaymentMethodChange('VNPAY')}
                     />

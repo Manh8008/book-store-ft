@@ -13,7 +13,7 @@ const catalogApiRequestAdmin = {
         }),
 
     updateCatalog: (id, body) =>
-        http.put(`/api/admin/updateCatalog/${id}`, body, {
+        http.post(`/api/admin/updateCatalog/${id}`, body, {
             type: 'admin'
         })
 }

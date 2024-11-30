@@ -20,7 +20,6 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
             }
         }
 
-        // Add "Prev" button and page numbers
         if (startPage > 1) {
             pages.push(
                 <button
@@ -45,7 +44,6 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
             )
         }
 
-        // Add "Next" button and page numbers
         if (endPage < totalPages) {
             pages.push(
                 <button

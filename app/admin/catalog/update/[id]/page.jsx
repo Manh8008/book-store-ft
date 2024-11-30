@@ -1,12 +1,14 @@
 'use client'
 
+import { z } from 'zod'
 import React, { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { useRouter } from 'next/navigation'
 import { handleHttpError } from '@/lib/utils'
+
 import { catalogApiRequestAdmin } from '@/apiRequests/category'
+import { ToastError } from '@/components/ui/ToastError'
 
 const getFileFromUrl = async (url) => {
     const res = await fetch(url)
@@ -59,18 +61,18 @@ const UpdateCatalog = ({ categories, params }) => {
     }, [categories, reset])
 
     const onSubmit = async (data) => {
-        console.log(data)
         try {
             const formData = new FormData()
+            formData.append('_method', 'PUT')
             formData.append('name', data.name)
             formData.append('image', data.image)
 
             const result = await catalogApiRequestAdmin.updateCatalog(idCatalog, formData)
-            console.log(result)
 
-            // if (result.status === 200) {
-            //     router.push('/admin/catalog')
-            // }
+            console.log(result)
+            if (result.status === 200) {
+                router.push('/admin/catalog')
+            }
         } catch (error) {
             handleHttpError(error, setError)
         }
@@ -78,6 +80,7 @@ const UpdateCatalog = ({ categories, params }) => {
 
     return (
         <div id="content-page" className="content-page">
+            <ToastError errorMessage={error} />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-sm-12">
@@ -161,7 +164,7 @@ const UpdateCatalog = ({ categories, params }) => {
                                             style={{ marginRight: '10px' }}
                                             disabled={isSubmitting}
                                         >
-                                            {isSubmitting ? 'Đang xử lý...' : 'Thêm'}
+                                            {isSubmitting ? 'Đang xử lý...' : 'Sửa'}
                                         </button>
                                         <button
                                             type="reset"

@@ -4,21 +4,24 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
 
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { productApiRequest } from '@/apiRequests/product'
 import { addItem } from '@/redux/slices/cartslice'
 import { handleHttpError } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Beardcrumb } from '@/components/ui/breadcrumb'
-import MainLayout from '@/layouts/main-layout'
-import '@/public/styles/product-detail.scss'
 import { commentApiRequest } from '@/apiRequests/comment'
-import CommentForm from './comment-form'
+import { Beardcrumb } from '@/components/ui/breadcrumb'
 import { useUser } from '@/context/user-context'
+import { ToastError } from '@/components/ui/ToastError'
+import MainLayout from '@/layouts/main-layout'
+import CommentForm from './comment-form'
 import RightContent from './right-content'
+import '@/public/styles/product-detail.scss'
 
 export default function ProductDetail({ params }) {
     const [product, setProduct] = useState(null)
     const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(false)
     const [comments, setComments] = useState([])
     const { userData } = useUser()
     const [quantity, setQuantity] = useState(1)
@@ -30,52 +33,69 @@ export default function ProductDetail({ params }) {
 
     const increment = () => setQuantity(quantity + 1)
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const result = await productApiRequest.bookDetail(params.id)
-                setProduct(result.payload.data)
-            } catch (error) {
-                handleHttpError(error, setError)
-            }
+    const fetchProduct = async () => {
+        if (loading) return
+        setError('')
+        try {
+            const result = await productApiRequest.bookDetail(params.id)
+            setProduct(result.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
+    }
 
+    const fetchComments = async () => {
+        if (loading) return
+        setError('')
+        if (loading) return
+        try {
+            const result = await commentApiRequest.getCommentByIdBook(params.id)
+            setComments(result.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
         fetchProduct()
-    }, [params.id])
-
-    useEffect(() => {
-        const fetchComments = async () => {
-            try {
-                const result = await commentApiRequest.getCommentByIdBook(params.id)
-                setComments(result.payload.data)
-            } catch (error) {
-                handleHttpError(error, setError)
-            }
-        }
-
         fetchComments()
     }, [params.id])
 
     const handleAddComment = async (newComment) => {
+        if (loading) return
+        setError('')
         try {
             const result = await commentApiRequest.create(params.id, newComment)
             setComments((prev) => [result.payload.data, ...prev])
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 
     const handleDeleteComment = async (id) => {
+        if (loading) return
+        setError('')
         try {
             await commentApiRequest.delete(id)
             setComments((prev) => prev.filter((comment) => comment.id !== id))
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 
+    if (loading) return <LoadingSkeleton />
+
     return (
         <MainLayout>
+            <ToastError errorMessage={error} />
             <main style={{ background: '#F5F5FA' }}>
                 <div className="product-detail">
                     <div className="content">
@@ -131,7 +151,6 @@ export default function ProductDetail({ params }) {
                                 <div className="tab-container">
                                     <div className="tabs">
                                         <div className="desc">Mô tả</div>
-                                        <div className="comment">Đánh giá</div>
                                     </div>
 
                                     <div className="tab-content">
@@ -165,10 +184,6 @@ export default function ProductDetail({ params }) {
                                                     <td>Số trang</td>
                                                     <td>{product?.pages}</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>SKU</td>
-                                                    <td>4119626029817</td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -185,7 +200,7 @@ export default function ProductDetail({ params }) {
                                                         alt="User"
                                                     />
                                                     <div className="username">
-                                                        {comment.username || 'Người dùng'}
+                                                        {comment.user_id || 'Người dùng'}
                                                     </div>
                                                 </div>
                                                 <div className="date">
@@ -198,21 +213,25 @@ export default function ProductDetail({ params }) {
                                                         )}
                                                     </span>
                                                 </div>
-                                                <div className="content-comment">
+                                                <div
+                                                    className="content-comment"
+                                                    style={{ display: 'flex' }}
+                                                >
                                                     <p>{comment.content}</p>
+                                                    <span>
+                                                        {userData?.id === comment.user_id && (
+                                                            <Button
+                                                                className="btn-del-comment"
+                                                                text
+                                                                onClick={() =>
+                                                                    handleDeleteComment(comment.id)
+                                                                }
+                                                            >
+                                                                Xóa
+                                                            </Button>
+                                                        )}
+                                                    </span>
                                                 </div>
-                                                <span>
-                                                    {userData?.id === comment.user_id && (
-                                                        <Button
-                                                            text
-                                                            onClick={() =>
-                                                                handleDeleteComment(comment.id)
-                                                            }
-                                                        >
-                                                            Xóa
-                                                        </Button>
-                                                    )}
-                                                </span>
                                             </div>
                                         ))}
                                     </div>

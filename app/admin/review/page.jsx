@@ -1,22 +1,21 @@
-"use client"
+'use client'
 
-import { reviewApiRequestAdmin } from "@/apiRequests/review";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { reviewApiRequestAdmin } from '@/apiRequests/post'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
-
 
 export default function Review() {
     const [review, setReview] = useState([])
 
     const fetchReview = async () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllPost`)
-        const newData = await res.json();
+        const newData = await res.json()
         setReview(newData.data)
     }
 
     useEffect(() => {
-        fetchReview();
+        fetchReview()
     }, [])
 
     const messageDelete = (id) => {
@@ -67,34 +66,70 @@ export default function Review() {
                                         <h4 class="card-title">Danh sách bài viết</h4>
                                     </div>
                                     <div class="iq-card-header-toolbar d-flex align-items-center">
-                                        <Link href="/admin/review/create" class="btn btn-primary">Thêm bài viết</Link>
+                                        <Link href="/admin/review/create" class="btn btn-primary">
+                                            Thêm bài viết
+                                        </Link>
                                     </div>
                                 </div>
                                 <div class="iq-card-body">
                                     <div class="table-responsive">
-                                        <table class="data-tables table table-striped table-bordered" style={{ width: 100 + "%" }}>
+                                        <table
+                                            class="data-tables table table-striped table-bordered"
+                                            style={{ width: 100 + '%' }}
+                                        >
                                             <thead>
                                                 <tr>
-                                                    <th style={{ width: 5 + "%" }}>STT</th>
-                                                    <th style={{ width: 15 + "%" }}>Ảnh bài viết</th>
-                                                    <th style={{ width: 30 + "%" }}>Tiêu đề</th>
-                                                    <th style={{ width: 40 + "%" }}>Nội dung</th>
-                                                    <th style={{ width: 15 + "%" }}>Hoạt động</th>
+                                                    <th style={{ width: 5 + '%' }}>STT</th>
+                                                    <th style={{ width: 15 + '%' }}>
+                                                        Ảnh bài viết
+                                                    </th>
+                                                    <th style={{ width: 30 + '%' }}>Tiêu đề</th>
+                                                    <th style={{ width: 40 + '%' }}>Nội dung</th>
+                                                    <th style={{ width: 15 + '%' }}>Hoạt động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {review.map((review, index) => (
                                                     <tr key={review.id}>
                                                         <td>{index + 1}</td>
-                                                        <td><img className="img-fluid rounded" src={`${review.image_url}`} alt={review.title} /></td>
+                                                        <td>
+                                                            <img
+                                                                className="img-fluid rounded"
+                                                                src={`${review.image_url}`}
+                                                                alt={review.title}
+                                                            />
+                                                        </td>
                                                         <td>
                                                             <p class="mb-0">{review.title}</p>
                                                         </td>
-                                                        <td><p class="mb-0">{review.description}</p></td>
+                                                        <td>
+                                                            <p class="mb-0">{review.description}</p>
+                                                        </td>
                                                         <td>
                                                             <div class="flex align-items-center list-user-action">
-                                                                <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href={`/admin/review/update/${review.id}`}><i class="ri-pencil-line"></i></Link>
-                                                                <Link class="bg-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Xoá" href="#" onClick={() => deleteReview(review.id)}><i class="ri-delete-bin-line"></i></Link>
+                                                                <Link
+                                                                    class="bg-primary"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title=""
+                                                                    data-original-title="Edit"
+                                                                    href={`/admin/review/update/${review.id}`}
+                                                                >
+                                                                    <i class="ri-pencil-line"></i>
+                                                                </Link>
+                                                                <Link
+                                                                    class="bg-primary"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title=""
+                                                                    data-original-title="Xoá"
+                                                                    href="#"
+                                                                    onClick={() =>
+                                                                        deleteReview(review.id)
+                                                                    }
+                                                                >
+                                                                    <i class="ri-delete-bin-line"></i>
+                                                                </Link>
                                                             </div>
                                                         </td>
                                                     </tr>

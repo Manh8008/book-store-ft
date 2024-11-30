@@ -74,11 +74,6 @@ const Payment = () => {
                         `/checkout/payment/payment-success?order_code=${result.payload.data.order_code}`
                     )
                 }
-            } else if (selectedPaymentMethod === 'MoMo') {
-                result = await checkoutRequest.checkoutVnPay(checkoutData)
-                if (result?.payload?.success == true) {
-                    dispatch(clearCart())
-                }
             } else if (selectedPaymentMethod === 'VNPAY') {
                 result = await checkoutRequest.checkoutVnPay(checkoutData)
                 if (result?.payload?.success == true) {

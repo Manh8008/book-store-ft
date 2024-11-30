@@ -13,7 +13,7 @@ export const Subcategory = (props) => {
                         <Link
                             className={cx('category-link')}
                             key={category.id}
-                            href={`/shop/productByCate/${category.id}`}
+                            href={`/shop/${category.id}`}
                         >
                             <img
                                 width={96}

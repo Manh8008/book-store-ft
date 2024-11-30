@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
 import classNames from 'classnames/bind'
+import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './payment-result.module.scss'
 import { Button } from '@/components/ui/button'
 
@@ -16,11 +16,9 @@ const PaymentResult = ({ offlinePaymentData }) => {
 
     useEffect(() => {
         const order_code = searchParams.get('order_code')
-        const vnp_TransactionNo = searchParams.get('vnp_TransactionNo')
-        const payment_status = searchParams.get('payment_status')
+        const payment_status = searchParams.get('status')
 
         setPaymentStatus(payment_status)
-        setTransactionId(vnp_TransactionNo)
         setOrderRef(order_code)
     }, [searchParams, offlinePaymentData])
 
