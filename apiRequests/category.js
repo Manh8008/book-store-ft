@@ -1,7 +1,8 @@
 import http from '@/lib/http'
 
 const catalogApiRequest = {
-    getAllCatalog: () => http.get(`/api/getAllCategories`)
+    getAllCatalog: () => http.get(`/api/getAllCategories`),
+    searchCatalog: (q) => http.get(`/api/categories/search?query=${q}`)
 }
 
 const catalogApiRequestAdmin = {

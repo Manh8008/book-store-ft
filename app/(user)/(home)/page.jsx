@@ -1,6 +1,6 @@
 'use client'
 import '@/public/styles/main.scss'
-import { Banner } from '@/components/banner'
+import { MainBanner } from '@/components/banner/main-banner'
 import MainLayout from '@/layouts/main-layout'
 import { ProductList } from '@/components/product-list'
 import { useEffect, useState } from 'react'
@@ -10,31 +10,21 @@ import { ToastError } from '@/components/ui/ToastError'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { reviewApiRequest } from '@/apiRequests/post'
 import ReviewHome from '@/components/review-home/page'
+import Introduce from '@/components/introduce/introduce'
+import { BannerSale } from '@/components/banner/banner-sale'
 
 export default function Home() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     const [booksBestSeller, setBooksBestSeller] = useState([])
-    //Sách tư duy kỹ năng
-    const [thinkingSkillsBook, setThinkingSkillsBook] = useState([])
-    //sách kinh tế tài chính
-    const [financialEconomicsBooks, setFinancialEconomicsBooks] = useState([])
-    //sách gia đình
-    const [educationalScienceBooks, setEducationalScienceBooks] = useState([])
-    //sách lịch sử chính trị
-    const [politicalBooks, setPoliticalBooks] = useState([])
-    // Bài viết trang chủ
+    const [newEstBooks, setNewEstBooks] = useState([])
     const [review, setReview] = useState([])
 
     const fetchReview = async () => {
         const result = await reviewApiRequest.getAllPost()
         setReview(result.payload.data)
     }
-
-    useEffect(() => {
-        fetchReview()
-    }, [])
 
     const fetchBooksBestSeller = async () => {
         if (loading) return
@@ -50,24 +40,13 @@ export default function Home() {
         }
     }
 
-    const fetchBooks = async () => {
+    const fetchNewEstBooks = async () => {
         if (loading) return
         setError(null)
         setLoading(true)
         try {
-            const [thinkingSkills, financialEconomics, educationalScience, political] =
-                await Promise.all([
-                    productApiRequest.getBookByCatalog(1),
-                    productApiRequest.getBookByCatalog(5),
-                    productApiRequest.getBookByCatalog(3),
-                    productApiRequest.getBookByCatalog(2)
-                ])
-            if (thinkingSkills.status === 200) setThinkingSkillsBook(thinkingSkills.payload.data)
-            if (financialEconomics.status === 200)
-                setFinancialEconomicsBooks(financialEconomics.payload.data)
-            if (educationalScience.status === 200)
-                setEducationalScienceBooks(educationalScience.payload.data)
-            if (political.status === 200) setPoliticalBooks(political.payload.data)
+            const result = await productApiRequest.getNewBook()
+            setNewEstBooks(result.payload.data.slice(0, 10))
         } catch (error) {
             handleHttpError(error, setError)
         } finally {
@@ -77,10 +56,8 @@ export default function Home() {
 
     useEffect(() => {
         fetchBooksBestSeller()
-    }, [])
-
-    useEffect(() => {
-        fetchBooks()
+        fetchNewEstBooks()
+        fetchReview()
     }, [])
 
     if (loading) return <LoadingSkeleton />
@@ -89,7 +66,10 @@ export default function Home() {
         <MainLayout>
             <ToastError errorMessage={error} />
             <main style={{ background: '#F5F5FA' }}>
-                <Banner />
+                <MainBanner />
+
+                <Introduce />
+
                 <div className="product-hot">
                     <div className="content">
                         <div className="title-hot">
@@ -103,70 +83,32 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* <div className="banner-sale">
-                    <div className="content">
-                        <div className="row">
-                            <img src="/img/banner-sale-1.svg" alt="" className="img" />
-                            <img src="/img/banner-sale-2.svg" alt="" className="img" />
-                        </div>
-                    </div>
-                </div> */}
+                <BannerSale />
 
-                <div className="home-product">
+                <div className="product-hot">
                     <div className="content">
-                        <div className="title-cate">
-                            <a href="#!">SÁCH TƯ DUY - KỸ NĂNG</a>
+                        <div className="title-hot">
+                            <img src="/img/icon-hot.svg" alt="" />
+                            <h2 className="sub-title">TOP SÁCH MỚI NHẤT</h2>
                         </div>
-                        <img
-                            className="img-cate"
-                            src="/img/sachtuduy-kynang.png"
-                            alt="Sách tư duy - kỹ năng"
-                        />
+
                         <div className="list-product">
-                            <ProductList title="" seeMore={true} data={thinkingSkillsBook} />
-                        </div>
-                    </div>
-                    <div className="content">
-                        <div className="title-cate">
-                            <a href="#!">SÁCH KINH TẾ - TÀI CHÍNH</a>
-                        </div>
-                        <img
-                            className="img-cate"
-                            src="/img/sachkinhte-taichinh.png"
-                            alt="Sách tư duy - kỹ năng"
-                        />
-                        <div className="list-product">
-                            <ProductList title="" seeMore={true} data={financialEconomicsBooks} />
-                        </div>
-                    </div>
-                    <div className="content">
-                        <div className="title-cate">
-                            <a href="#!">TỦ SÁCH GIA ĐÌNH</a>
-                        </div>
-                        <img
-                            className="img-cate"
-                            src="/img/tusachgiadinh.png"
-                            alt="Sách tư duy - kỹ năng"
-                        />
-                        <div className="list-product">
-                            {' '}
-                            <ProductList title="" seeMore={true} data={educationalScienceBooks} />
-                        </div>
-                    </div>
-                    <div className="content">
-                        <div className="title-cate">
-                            <a href="#!">SÁCH LỊCH SỬ - CHÍNH TRỊ</a>
-                        </div>
-                        <img
-                            className="img-cate"
-                            src="/img/sachlichsu-chinhtri.png"
-                            alt="Sách tư duy - kỹ năng"
-                        />
-                        <div className="list-product">
-                            <ProductList title="" seeMore={true} data={politicalBooks} />
+                            <ProductList title="" seeMore={true} data={newEstBooks} />
                         </div>
                     </div>
                 </div>
+
+                {/* <div className="home-product">
+                    <div className="content">
+                        <div className="title-cate">
+                            <a href="#!">TOP SÁCH MỚI NHẤT</a>
+                        </div>
+
+                        <div className="list-product">
+                            <ProductList title="" seeMore={true} data={newEstBooks} />
+                        </div>
+                    </div>
+                </div> */}
 
                 {/* Review Products */}
                 <div className="review-product">

@@ -2,14 +2,15 @@
 
 import { Button } from '@/components/ui/button'
 
-const SearchOrder = ({ query, setQuery, onSearch }) => {
+const SearchAdmin = ({ query, setQuery, onSearch }) => {
     return (
         <div className="iq-search-bar">
+            <div className="title-search"></div>
             <form onSubmit={onSearch} className="searchbox">
                 <input
                     type="text"
                     className="text search-input"
-                    placeholder="Nhập mã đơn hàng..."
+                    placeholder="Tìm kiếm..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />
@@ -21,4 +22,4 @@ const SearchOrder = ({ query, setQuery, onSearch }) => {
     )
 }
 
-export default SearchOrder
+export default SearchAdmin

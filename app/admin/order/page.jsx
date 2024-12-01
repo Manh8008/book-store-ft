@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import orderApiRequest from '@/apiRequests/order'
-import SearchOrder from '../components/search-order'
+import SearchAdmin from '../components/search-admin'
+import { ToastError } from '@/components/ui/ToastError'
 
 export default function Order() {
     const [orderData, setOrderData] = useState([])
     const [error, setError] = useState('')
     const [query, setQuery] = useState('')
     const [loading, setLoading] = useState(false)
+    const [searchedQuery, setSearchedQuery] = useState('')
 
     const fetchOrders = async () => {
         if (loading) return
@@ -58,8 +60,10 @@ export default function Order() {
         try {
             const result = await orderApiRequest.searchOrder(query)
             setOrderData(result.payload.data)
+            setSearchedQuery(query)
         } catch (error) {
-            setError('Không tìm thấy đơn hàng!')
+            setError(`Không tìm thấy đơn hàng cho từ khóa ${query}`)
+            return
         } finally {
             setLoading(false)
         }
@@ -68,6 +72,7 @@ export default function Order() {
     return (
         <>
             <div id="content-page" className="content-page">
+                <ToastError errorMessage={error} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
@@ -76,15 +81,19 @@ export default function Order() {
                                     <div className="iq-header-title">
                                         <h4 className="card-title">Danh sách đơn hàng</h4>
                                     </div>
-                                    <SearchOrder
+                                    <SearchAdmin
                                         query={query}
                                         setQuery={setQuery}
                                         onSearch={handleSearch}
                                     />
                                 </div>
                                 <div className="iq-card-body">
-                                    {error && <p className="text-danger">{error}</p>}
-                                    {orderData.length === 0 && <p>Không có đơn hàng nào!</p>}
+                                    {searchedQuery && (
+                                        <p>
+                                            Kết quả tìm kiếm cho từ khóa "
+                                            <strong>{searchedQuery}</strong>"
+                                        </p>
+                                    )}
                                     <div className="table-responsive">
                                         <table
                                             className="data-tables table table-striped table-bordered"

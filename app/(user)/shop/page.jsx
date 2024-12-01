@@ -71,7 +71,7 @@ const BookCollection = () => {
             } else if (sortType === 'bestSeller') {
                 result = await productApiRequest.getBooksBestSeller()
             } else if (sortType === 'newest') {
-                result = await productApiRequest.getBooksBestSeller()
+                result = await productApiRequest.getNewBook()
             } else {
                 result = await productApiRequest.getAllBooks()
             }

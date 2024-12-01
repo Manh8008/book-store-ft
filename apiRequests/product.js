@@ -3,8 +3,10 @@ import http from '@/lib/http'
 const productApiRequest = {
     bookDetail: (id) => http.get(`/api/getBookDetail/${id}`),
     getAllBooks: () => http.get(`/api/getAllBooks`),
+    getNewBook: () => http.get(`/api/getNewBook`),
     getBookByCatalog: (id) => http.get(`/api/getBookByCategory/${id}`),
     getBooksBestSeller: () => http.get(`/api/best-sellers`),
+    searchBook: (q) => http.get(`/api/books/search?query=${q}`),
     getBooksOrderPriceDesc: () => http.get(`/api/getBooksOrderPriceDesc`),
     getBooksOrderPriceAsc: () => http.get(`/api/getBooksOrderPriceAsc`),
     filterByPrice: (minPrice, maxPrice) =>

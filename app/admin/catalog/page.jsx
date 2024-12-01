@@ -1,13 +1,19 @@
 'use client'
 
-import { catalogApiRequestAdmin } from '@/apiRequests/category'
-import Cookies from 'js-cookie'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 
+import { catalogApiRequest, catalogApiRequestAdmin } from '@/apiRequests/category'
+import { ToastError } from '@/components/ui/ToastError'
+import SearchAdmin from '../components/search-admin'
+
 export default function Categories() {
     const [data, setData] = useState([])
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [query, setQuery] = useState('')
+    const [searchedQuery, setSearchedQuery] = useState('')
 
     const fetchCategories = async () => {
         const result = await catalogApiRequestAdmin.getAllCatalog()
@@ -17,6 +23,35 @@ export default function Categories() {
     useEffect(() => {
         fetchCategories()
     }, [])
+
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        setError('')
+
+        if (!query.trim()) {
+            Swal.fire({
+                title: 'Lỗi',
+                text: 'Vui lòng nhập từ khóa tìm kiếm!',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6'
+            })
+            return
+        }
+
+        if (loading) return
+        setLoading(true)
+
+        try {
+            const result = await catalogApiRequest.searchCatalog(query)
+            setData(result.payload.data)
+            setSearchedQuery(query)
+        } catch (error) {
+            setError(`Không có danh mục nào cho từ khóa ${query}`)
+            setSearchedQuery('')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const messageDelete = (id) => {
         Swal.fire({
@@ -57,14 +92,21 @@ export default function Categories() {
     return (
         <>
             {/* <!-- Page Content  --> */}
+            <ToastError errorMessage={error} />
+
             <div id="content-page" className="content-page">
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="iq-card">
                                 <div className="iq-card-header d-flex justify-content-between">
-                                    <div className="iq-header-title">
+                                    <div className="iq-header-title" style={{ display: 'flex' }}>
                                         <h4 className="card-title">Danh sách danh mục</h4>
+                                        <SearchAdmin
+                                            query={query}
+                                            setQuery={setQuery}
+                                            onSearch={handleSearch}
+                                        />
                                     </div>
                                     <div className="iq-card-header-toolbar d-flex align-items-center">
                                         <Link
@@ -76,6 +118,12 @@ export default function Categories() {
                                     </div>
                                 </div>
                                 <div className="iq-card-body">
+                                    {searchedQuery && (
+                                        <p>
+                                            Kết quả tìm kiếm cho từ khóa "
+                                            <strong>{searchedQuery}</strong>"
+                                        </p>
+                                    )}
                                     <div className="table-responsive">
                                         <table
                                             className="data-tables table table-striped table-bordered"

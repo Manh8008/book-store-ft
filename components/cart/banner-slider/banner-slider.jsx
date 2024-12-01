@@ -7,9 +7,9 @@ import './banner-slider.scss'
 
 const BannerSlider = () => {
     const banners = [
-        { id: 1, src: '/img/banner-1.svg', alt: 'Banner 1' },
-        { id: 2, src: '/img/banner-2.svg', alt: 'Banner 2' },
-        { id: 3, src: '/img/banner-3.svg', alt: 'Banner 3' }
+        { id: 1, src: '/img/slider_2.webp', alt: 'Banner 1' },
+        { id: 2, src: '/img/slider_3.webp', alt: 'Banner 2' },
+        { id: 3, src: '/img/slider_4.webp', alt: 'Banner 3' }
     ]
     const settings = {
         dots: true,

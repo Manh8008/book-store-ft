@@ -1,21 +1,56 @@
 'use client'
 
-import { productApiRequestAdmin } from '@/apiRequests/product'
+import { productApiRequest, productApiRequestAdmin } from '@/apiRequests/product'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
+import SearchAdmin from '../components/search-admin'
+import { ToastError } from '@/components/ui/ToastError'
 
 export default function Product() {
-    const [product, setData] = useState([])
+    const [product, setProduct] = useState([])
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [query, setQuery] = useState('')
+    const [searchedQuery, setSearchedQuery] = useState('')
 
     const fetchProduct = async () => {
         const result = await productApiRequestAdmin.getAllBooks()
-        setData(result.payload.data)
+        setProduct(result.payload.data)
     }
 
     useEffect(() => {
         fetchProduct()
     }, [])
+
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        setError('')
+
+        if (!query.trim()) {
+            Swal.fire({
+                title: 'Lỗi',
+                text: 'Vui lòng nhập từ khóa tìm kiếm!',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6'
+            })
+            return
+        }
+
+        if (loading) return
+        setLoading(true)
+
+        try {
+            const result = await productApiRequest.searchBook(query)
+            setProduct(result.payload.data)
+            setSearchedQuery(query)
+        } catch (error) {
+            setError(`Không có sản phẩm nào cho từ khóa ${query}`)
+            setSearchedQuery('')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const messageDelete = (id) => {
         Swal.fire({
@@ -27,9 +62,9 @@ export default function Product() {
             confirmButtonText: 'Có, tôi muốn xóa'
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const result = await productApiRequestAdmin.destroyBook(id)
+                const response = await productApiRequestAdmin.destroyBook(id)
 
-                if (result.status === 200) {
+                if (response.status === 200) {
                     Swal.fire({
                         title: 'Xóa thành công',
                         text: 'Sản phẩm của bạn đã được xóa.',
@@ -49,20 +84,27 @@ export default function Product() {
         })
     }
 
+    // Hàm xóa sản phẩm
     const deleteProduct = (id) => {
         messageDelete(id)
     }
 
     return (
         <>
+            <ToastError errorMessage={error} />
             <div id="content-page" className="content-page">
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="iq-card">
                                 <div className="iq-card-header d-flex justify-content-between">
-                                    <div className="iq-header-title">
+                                    <div className="iq-header-title" style={{ display: 'flex' }}>
                                         <h4 className="card-title">Danh sách sách</h4>
+                                        <SearchAdmin
+                                            query={query}
+                                            setQuery={setQuery}
+                                            onSearch={handleSearch}
+                                        />
                                     </div>
                                     <div className="iq-card-header-toolbar d-flex align-items-center">
                                         <a href="/admin/product/create" className="btn btn-primary">
@@ -71,10 +113,16 @@ export default function Product() {
                                     </div>
                                 </div>
                                 <div className="iq-card-body">
+                                    {searchedQuery && (
+                                        <p>
+                                            Kết quả tìm kiếm cho từ khóa "
+                                            <strong>{searchedQuery}</strong>"
+                                        </p>
+                                    )}
                                     <div className="table-responsive">
                                         <table
                                             className="data-tables table table-striped table-bordered"
-                                            style={{ width: 100 + '%' }}
+                                            style={{ width: '100%' }}
                                         >
                                             <thead>
                                                 <tr>

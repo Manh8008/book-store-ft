@@ -1,13 +1,12 @@
 .banner-slider {
     width: 100%;
     height: auto;
-    border-radius: 18px;
     overflow: hidden;
     margin: 0 auto;
 
     .banner-image {
         width: 100%;
-        height: auto;
+        height: 100%;
         object-fit: cover;
     }
 
