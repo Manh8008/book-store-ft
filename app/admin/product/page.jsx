@@ -4,9 +4,13 @@ import { productApiRequestAdmin } from '@/apiRequests/product'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
+import SearchProduct from '../components/search-product'
 
 export default function Product() {
     const [product, setData] = useState([])
+    const [error, setError] = useState('')
+    const [query, setQuery] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const fetchProduct = async () => {
         const result = await productApiRequestAdmin.getAllBooks()
@@ -53,6 +57,29 @@ export default function Product() {
         messageDelete(id)
     }
 
+    const handleSearch = async (e) => {
+        if (loading) return
+        setLoading(true)
+        setError('')
+        e.preventDefault()
+
+        if (!query.trim()) {
+            // Nếu query trống, lấy toàn bộ sản phẩm
+            await fetchProduct();
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const result = await productApiRequestAdmin.searchProduct(query)
+            setData(result.payload.data)
+        } catch (error) {
+            setError('Không tìm thấy sản phẩm!')
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
             <div id="content-page" className="content-page">
@@ -64,6 +91,11 @@ export default function Product() {
                                     <div className="iq-header-title">
                                         <h4 className="card-title">Danh sách sách</h4>
                                     </div>
+                                    <SearchProduct
+                                        query={query}
+                                        setQuery={setQuery}
+                                        onSearch={handleSearch}
+                                    />
                                     <div className="iq-card-header-toolbar d-flex align-items-center">
                                         <a href="/admin/product/create" className="btn btn-primary">
                                             Thêm sách
@@ -71,6 +103,8 @@ export default function Product() {
                                     </div>
                                 </div>
                                 <div className="iq-card-body">
+                                    {error && <p className="text-danger">{error}</p>}
+                                    {product.length === 0 && <p>Không tìm thấy sản phẩm nào!</p>}
                                     <div className="table-responsive">
                                         <table
                                             className="data-tables table table-striped table-bordered"
