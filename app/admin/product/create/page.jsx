@@ -202,7 +202,8 @@ export default function CreateProduct() {
                                                 {imagePreview && (
                                                     <img
                                                         src={imagePreview}
-                                                        className="w-50 img-fluid"
+                                                        className="img-fluid"
+                                                        style={{ maxWidth: '300px', height: 'auto' }}
                                                         alt="Product Image"
                                                     />
                                                 )}

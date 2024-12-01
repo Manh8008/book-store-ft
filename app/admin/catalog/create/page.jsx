@@ -38,13 +38,13 @@ const CreateCatalog = ({ categories }) => {
         resolver: zodResolver(categoryForm1Schema),
         defaultValues: categories
             ? {
-                  name: categories.name,
-                  image: undefined
-              }
+                name: categories.name,
+                image: undefined
+            }
             : {
-                  name: '',
-                  image: undefined
-              }
+                name: '',
+                image: undefined
+            }
     })
 
     useEffect(() => {
@@ -114,28 +114,24 @@ const CreateCatalog = ({ categories }) => {
                                                     />
                                                 )}
                                             />
-                                            {imagePreview && (
-                                                <div className="mt-3">
-                                                    <img
-                                                        src={imagePreview}
-                                                        alt="Preview"
-                                                        style={{
-                                                            maxWidth: '100%',
-                                                            maxHeight: '200px',
-                                                            objectFit: 'cover',
-                                                            border: '1px solid #ddd',
-                                                            borderRadius: '8px'
-                                                        }}
-                                                    />
-                                                </div>
-                                            )}
+                                            <label className="custom-file-label">Choose file</label>
                                             {errors.image && (
                                                 <span className="error" style={{ marginTop: 16 }}>
                                                     {errors.image.message}
                                                 </span>
                                             )}
-                                            <label className="custom-file-label">Choose file</label>
                                         </div>
+                                        <div className="bg-secondary-subtle mb-3 mt-4 p-2">
+                                            {imagePreview && (
+                                                <img
+                                                    src={imagePreview}
+                                                    className="img-fluid"
+                                                    style={{ maxWidth: '300px', height: 'auto' }}
+                                                    alt="Product Image"
+                                                />
+                                            )}
+                                        </div>
+
                                     </div>
                                     <div className="form-group">
                                         <label>Tên danh mục:</label>

@@ -222,13 +222,15 @@ export default function UpdateProduct({ params }) {
                                                 {selectedImage ? (
                                                     <img
                                                         src={selectedImage instanceof File ? URL.createObjectURL(selectedImage) : selectedImage}
-                                                        className="w-50 img-fluid"
+                                                        className="img-fluid"
+                                                        style={{ maxWidth: '300px', height: 'auto' }}
                                                         alt="Product Image"
                                                     />
                                                 ) : product?.images[0].url ? (
                                                     <img
                                                         src={product.images[0].url}
-                                                        className="w-50 img-fluid"
+                                                        className="img-fluid"
+                                                        style={{ maxWidth: '300px', height: 'auto' }}
                                                         alt="Product Image"
                                                     />
                                                 ) : (

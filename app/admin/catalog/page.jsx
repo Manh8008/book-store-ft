@@ -9,11 +9,13 @@ import { ToastError } from '@/components/ui/ToastError'
 import SearchAdmin from '../components/search-admin'
 
 export default function Categories() {
-    const [data, setData] = useState([])
+    const [catalog, setData] = useState([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [query, setQuery] = useState('')
     const [searchedQuery, setSearchedQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 4 // Số sản phẩm mỗi trang
 
     const fetchCategories = async () => {
         const result = await catalogApiRequestAdmin.getAllCatalog()
@@ -89,6 +91,19 @@ export default function Categories() {
         messageDelete(id)
     }
 
+    // Tính toán các sản phẩm hiển thị trên trang hiện tại
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = catalog.slice(indexOfFirstItem, indexOfLastItem)
+
+    // Tạo danh sách các trang
+    const totalPages = Math.ceil(catalog.length / itemsPerPage)
+    const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1)
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
+
     return (
         <>
             {/* <!-- Page Content  --> */}
@@ -139,9 +154,9 @@ export default function Categories() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {data.map((cate, index) => (
+                                                {currentItems.map((cate, index) => (
                                                     <tr key={cate.id}>
-                                                        <td>{index + 1}</td>
+                                                        <td>{indexOfFirstItem + index + 1}</td>
                                                         <td>
                                                             <img
                                                                 className="img-fluid rounded"
@@ -186,6 +201,44 @@ export default function Categories() {
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    {/* Phân trang */}
+                                    <nav className="mt-4">
+                                        <ul className="pagination pagination-lg justify-content-center">
+                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    aria-label="Previous"
+                                                >
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </button>
+                                            </li>
+                                            {pageNumbers.map((number) => (
+                                                <li
+                                                    key={number}
+                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                >
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => handlePageChange(number)}
+                                                    >
+                                                        {number}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    aria-label="Next"
+                                                >
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+
                                 </div>
                             </div>
                         </div>

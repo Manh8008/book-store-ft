@@ -56,7 +56,7 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#">
+                                <Link href="/admin/banner">
                                     <i className="ri-record-circle-line"></i>Banner
                                 </Link>
                             </li>

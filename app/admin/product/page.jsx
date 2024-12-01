@@ -13,6 +13,8 @@ export default function Product() {
     const [loading, setLoading] = useState(false)
     const [query, setQuery] = useState('')
     const [searchedQuery, setSearchedQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 8 // Số sản phẩm mỗi trang
 
     const fetchProduct = async () => {
         const result = await productApiRequestAdmin.getAllBooks()
@@ -44,6 +46,7 @@ export default function Product() {
             const result = await productApiRequest.searchBook(query)
             setProduct(result.payload.data)
             setSearchedQuery(query)
+            setCurrentPage(1) // Reset về trang 1 sau khi tìm kiếm
         } catch (error) {
             setError(`Không có sản phẩm nào cho từ khóa ${query}`)
             setSearchedQuery('')
@@ -84,9 +87,21 @@ export default function Product() {
         })
     }
 
-    // Hàm xóa sản phẩm
     const deleteProduct = (id) => {
         messageDelete(id)
+    }
+
+    // Tính toán các sản phẩm hiển thị trên trang hiện tại
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = product.slice(indexOfFirstItem, indexOfLastItem)
+
+    // Tạo danh sách các trang
+    const totalPages = Math.ceil(product.length / itemsPerPage)
+    const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1)
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber)
     }
 
     return (
@@ -138,9 +153,9 @@ export default function Product() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {product.map((product, index) => (
+                                                {currentItems.map((product, index) => (
                                                     <tr key={product.id}>
-                                                        <td>{index + 1}</td>
+                                                        <td>{indexOfFirstItem + index + 1}</td>
                                                         <td>
                                                             <img
                                                                 className="img-fluid rounded"
@@ -160,7 +175,7 @@ export default function Product() {
                                                         <td>
                                                             {parseFloat(
                                                                 product.price
-                                                            ).toLocaleString('vi-VN')}
+                                                            ).toLocaleString('vi-VN')}{' '}
                                                             đ
                                                         </td>
                                                         <td>
@@ -169,8 +184,7 @@ export default function Product() {
                                                                     className="bg-primary"
                                                                     data-toggle="tooltip"
                                                                     data-placement="top"
-                                                                    title=""
-                                                                    data-original-title="Edit"
+                                                                    title="Edit"
                                                                     href={`/admin/product/update/${product.id}`}
                                                                 >
                                                                     <i className="ri-pencil-line"></i>
@@ -179,8 +193,7 @@ export default function Product() {
                                                                     className="bg-primary"
                                                                     data-toggle="tooltip"
                                                                     data-placement="top"
-                                                                    title=""
-                                                                    data-original-title="Xoá"
+                                                                    title="Xoá"
                                                                     href="#"
                                                                     onClick={() =>
                                                                         deleteProduct(product.id)
@@ -195,6 +208,42 @@ export default function Product() {
                                             </tbody>
                                         </table>
                                     </div>
+                                    {/* Phân trang */}
+                                    <nav className="mt-4">
+                                        <ul className="pagination pagination-lg justify-content-center">
+                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    aria-label="Previous"
+                                                >
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </button>
+                                            </li>
+                                            {pageNumbers.map((number) => (
+                                                <li
+                                                    key={number}
+                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                >
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => handlePageChange(number)}
+                                                    >
+                                                        {number}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    aria-label="Next"
+                                                >
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>

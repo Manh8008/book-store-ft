@@ -7,6 +7,8 @@ import Swal from 'sweetalert2'
 
 export default function Review() {
     const [review, setReview] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 4 // Số sản phẩm mỗi trang
 
     const fetchReview = async () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllPost`)
@@ -54,6 +56,19 @@ export default function Review() {
         messageDelete(id)
     }
 
+    // Tính toán các sản phẩm hiển thị trên trang hiện tại
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = review.slice(indexOfFirstItem, indexOfLastItem)
+
+    // Tạo danh sách các trang
+    const totalPages = Math.ceil(review.length / itemsPerPage)
+    const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1)
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
+
     return (
         <>
             <div id="content-page" class="content-page">
@@ -89,9 +104,9 @@ export default function Review() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {review.map((review, index) => (
+                                                {currentItems.map((review, index) => (
                                                     <tr key={review.id}>
-                                                        <td>{index + 1}</td>
+                                                        <td>{indexOfFirstItem + index + 1}</td>
                                                         <td>
                                                             <img
                                                                 className="img-fluid rounded"
@@ -137,6 +152,44 @@ export default function Review() {
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    {/* Phân trang */}
+                                    <nav className="mt-4">
+                                        <ul className="pagination pagination-lg justify-content-center">
+                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    aria-label="Previous"
+                                                >
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </button>
+                                            </li>
+                                            {pageNumbers.map((number) => (
+                                                <li
+                                                    key={number}
+                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                >
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => handlePageChange(number)}
+                                                    >
+                                                        {number}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    aria-label="Next"
+                                                >
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+
                                 </div>
                             </div>
                         </div>

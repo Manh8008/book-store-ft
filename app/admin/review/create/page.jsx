@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useRouter } from 'next/navigation'
 import { reviewApiRequestAdmin } from '@/apiRequests/post'
+import { useState } from 'react'
 export default function CreateReview() {
     const reviewFormSchema = z.object({
         title: z.string().min(1, { message: 'Tiêu đề bài viết là bắt buộc' }),
@@ -16,7 +17,17 @@ export default function CreateReview() {
         description: z.string().min(1, { message: 'Nội dung là bắt buộc' })
     })
 
+
     const router = useRouter()
+    const [imagePreview, setImagePreview] = useState(null)
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            setImagePreview(URL.createObjectURL(file))
+        }
+    }
+
     const {
         register,
         handleSubmit,
@@ -65,14 +76,25 @@ export default function CreateReview() {
                                                     class="custom-file-input"
                                                     name="image"
                                                     {...register('image')}
+                                                    onChange={handleImageChange}
                                                 />
                                                 <label class="custom-file-label">Choose file</label>
+                                                {errors.image && (
+                                                    <div className="text-danger mt-2">
+                                                        {errors.image.message}
+                                                    </div>
+                                                )}
                                             </div>
-                                            {errors.image && (
-                                                <div className="text-danger mt-2">
-                                                    {errors.image.message}
-                                                </div>
-                                            )}
+                                            <div className="bg-secondary-subtle mb-3 mt-4 p-2">
+                                                {imagePreview && (
+                                                    <img
+                                                        src={imagePreview}
+                                                        className="img-fluid"
+                                                        style={{ maxWidth: '300px', height: 'auto' }}
+                                                        alt="Product Image"
+                                                    />
+                                                )}
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Tiêu đề bài viết:</label>

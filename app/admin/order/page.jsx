@@ -12,6 +12,8 @@ export default function Order() {
     const [query, setQuery] = useState('')
     const [loading, setLoading] = useState(false)
     const [searchedQuery, setSearchedQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 4 // Số sản phẩm mỗi trang
 
     const fetchOrders = async () => {
         if (loading) return
@@ -69,6 +71,19 @@ export default function Order() {
         }
     }
 
+    // Tính toán các sản phẩm hiển thị trên trang hiện tại
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = orderData.slice(indexOfFirstItem, indexOfLastItem)
+
+    // Tạo danh sách các trang
+    const totalPages = Math.ceil(orderData.length / itemsPerPage)
+    const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1)
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
+
     return (
         <>
             <div id="content-page" className="content-page">
@@ -117,8 +132,8 @@ export default function Order() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {orderData &&
-                                                    orderData.map((item) => (
+                                                {currentItems &&
+                                                    currentItems.map((item) => (
                                                         <tr key={item.id}>
                                                             <td>{item.order_code || ''}</td>
                                                             <td className="text-start">
@@ -168,7 +183,7 @@ export default function Order() {
                                                             <td>
                                                                 <div className="flex align-items-center list-user-action">
                                                                     {item.order_status ===
-                                                                    'Chờ xác nhận' ? (
+                                                                        'Chờ xác nhận' ? (
                                                                         <Button
                                                                             outline
                                                                             onClick={() =>
@@ -194,6 +209,44 @@ export default function Order() {
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    {/* Phân trang */}
+                                    <nav className="mt-4">
+                                        <ul className="pagination pagination-lg justify-content-center">
+                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    aria-label="Previous"
+                                                >
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </button>
+                                            </li>
+                                            {pageNumbers.map((number) => (
+                                                <li
+                                                    key={number}
+                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                >
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() => handlePageChange(number)}
+                                                    >
+                                                        {number}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                                <button
+                                                    className="page-link"
+                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    aria-label="Next"
+                                                >
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+
                                 </div>
                             </div>
                         </div>

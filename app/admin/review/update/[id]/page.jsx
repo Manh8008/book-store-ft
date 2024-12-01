@@ -106,23 +106,25 @@ export default function UpdateReview({ params }) {
                                                 onChange={handleImageChange}
                                             />
                                             <label className="custom-file-label">Choose file</label>
+                                            {errors.image && (
+                                                <div className="text-danger mt-2">
+                                                    {errors.image.message}
+                                                </div>
+                                            )}
                                         </div>
-                                        {errors.image && (
-                                            <div className="text-danger mt-2">
-                                                {errors.image.message}
-                                            </div>
-                                        )}
                                         <div className="bg-secondary-subtle mb-3 mt-4 p-2">
                                             {selectedImage ? (
                                                 <img
                                                     src={selectedImage instanceof File ? URL.createObjectURL(selectedImage) : selectedImage}
-                                                    className="w-50 img-fluid"
+                                                    className="img-fluid"
+                                                    style={{ maxWidth: '300px', height: 'auto' }}
                                                     alt="Product Image"
                                                 />
                                             ) : review?.image_url ? (
                                                 <img
                                                     src={review.image_url}
-                                                    className="w-50 img-fluid"
+                                                    className="img-fluid"
+                                                    style={{ maxWidth: '300px', height: 'auto' }}
                                                     alt="Product Image"
                                                 />
                                             ) : (
