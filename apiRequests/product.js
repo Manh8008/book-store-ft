@@ -15,6 +15,7 @@ const productApiRequest = {
 
 const productApiRequestAdmin = {
     getAllBooks: () => http.get(`/api/getAllBooks`),
+    searchProduct: (q) => http.get(`/api/books/search?query=${q}`),
     addBook: (body) => http.post(`/api/admin/storeBook`, body, { type: 'admin' }),
     destroyBook: (id) => http.delete(`/api/admin/deleteBook/${id}`, { type: 'admin' }),
     updateBook: (id, body) => http.post(`/api/admin/updateBook/${id}`, body, { type: 'admin' })

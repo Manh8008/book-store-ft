@@ -89,6 +89,29 @@ export default function Product() {
         messageDelete(id)
     }
 
+    const handleSearch = async (e) => {
+        if (loading) return
+        setLoading(true)
+        setError('')
+        e.preventDefault()
+
+        if (!query.trim()) {
+            // Nếu query trống, lấy toàn bộ sản phẩm
+            await fetchProduct()
+            setLoading(false)
+            return
+        }
+
+        try {
+            const result = await productApiRequestAdmin.searchProduct(query)
+            setData(result.payload.data)
+        } catch (error) {
+            setError('Không tìm thấy sản phẩm!')
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
             <ToastError errorMessage={error} />
@@ -106,6 +129,11 @@ export default function Product() {
                                             onSearch={handleSearch}
                                         />
                                     </div>
+                                    <SearchProduct
+                                        query={query}
+                                        setQuery={setQuery}
+                                        onSearch={handleSearch}
+                                    />
                                     <div className="iq-card-header-toolbar d-flex align-items-center">
                                         <a href="/admin/product/create" className="btn btn-primary">
                                             Thêm sách
