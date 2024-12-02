@@ -3,80 +3,83 @@
 import { z } from 'zod'
 import React, { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { handleHttpError } from '@/lib/utils'
 
-import { catalogApiRequestAdmin } from '@/apiRequests/category'
 import { ToastError } from '@/components/ui/ToastError'
+import { catalogApiRequestAdmin } from '@/apiRequests/category'
 
-const getFileFromUrl = async (url) => {
-    const res = await fetch(url)
-    const blob = await res.blob()
-    return new File([blob], 'image', { type: blob.type })
-}
-
-const categoryForm1Schema = z.object({
-    name: z.string().min(1, { message: 'Nhập tên danh mục là bắt buộc' }),
-    image: z
-        .custom((v) => v instanceof File, {
-            message: 'Image must be a valid file'
-        })
-        .refine((v) => v, { message: 'Nhập ảnh danh mục là bắt buộc' })
-})
-
-const UpdateCatalog = ({ categories, params }) => {
-    const idCatalog = params.id
-
-    const [error, setError] = useState('')
+const UpdateCatalog = ({ params }) => {
     const router = useRouter()
-    const [imagePreview, setImagePreview] = useState(null)
-
+    const id = params.id
+    const [error, setError] = useState('')
+    const [selectedImage, setSelectedImage] = useState(null)
     const {
         register,
         handleSubmit,
-        control,
+        setValue,
         reset,
-        formState: { errors, isSubmitting, isDirty }
-    } = useForm({
-        resolver: zodResolver(categoryForm1Schema),
-        defaultValues: categories
-            ? {
-                name: categories.name,
-                image: undefined
-            }
-            : {
-                name: '',
-                image: undefined
-            }
-    })
+        formState: { errors }
+    } = useForm()
+    const [catalog, setCatalog] = useState(null)
 
     useEffect(() => {
-        if (categories?.image) {
-            getFileFromUrl(categories.image).then((file) => {
-                reset({ name: categories.name, image: file })
-                setImagePreview(URL.createObjectURL(file))
-            })
+        if (!id) {
+            console.error('Không có id danh mục nào.')
+            return
         }
-    }, [categories, reset])
+
+        const getCatalog = async () => {
+            const result = await catalogApiRequestAdmin.getCatalogById(id)
+            if (result?.payload?.data) {
+                setCatalog(result.payload.data)
+                setValue('name', result.payload.data.name)
+                // Lưu URL ảnh cũ vào state
+                const imageUrl = result.payload.data.image;
+                setSelectedImage(imageUrl)
+                setValue('image', imageUrl)
+            } else {
+                console.error('Không thể lấy danh mục')
+            }
+        }
+        getCatalog()
+    }, [id, setValue])
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setSelectedImage(file);
+        }
+    };
 
     const onSubmit = async (data) => {
         try {
-            const formData = new FormData()
-            formData.append('_method', 'PUT')
-            formData.append('name', data.name)
-            formData.append('image', data.image)
+            const formData = new FormData();
+            formData.append('_method', 'PUT');
 
-            const result = await catalogApiRequestAdmin.updateCatalog(idCatalog, formData)
+            // Thêm các giá trị khác ngoài ảnh
+            for (const key in data) {
+                if (key !== 'image') {
+                    formData.append(key, data[key]);
+                }
+            }
 
-            console.log(result)
+            // Nếu có ảnh mới (chọn từ input), thêm vào FormData
+            if (selectedImage instanceof File) {
+                formData.append('image', selectedImage); // Gửi file ảnh thực tế lên server
+            } else if (review?.image) {
+                // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
+                formData.append('image', catalog.image);
+            }
+
+            const result = await catalogApiRequestAdmin.updateCatalog(id, formData)
             if (result.status === 200) {
-                router.push('/admin/catalog')
+                router.push('/admin/catalog');
             }
         } catch (error) {
-            handleHttpError(error, setError)
+            handleHttpError(error, setError);
         }
-    }
+    };
 
     return (
         <div id="content-page" className="content-page">
@@ -95,53 +98,40 @@ const UpdateCatalog = ({ categories, params }) => {
                                     <div className="form-group">
                                         <label>Ảnh danh mục:</label>
                                         <div className="custom-file">
-                                            <Controller
-                                                style={{ width: 70, height: 100 }}
-                                                name="image"
-                                                control={control}
-                                                render={({
-                                                    field: { ref, name, onBlur, onChange }
-                                                }) => (
-                                                    <input
-                                                        type="file"
-                                                        className="custom-file-input"
-                                                        ref={ref}
-                                                        name={name}
-                                                        onBlur={onBlur}
-                                                        onChange={(e) => {
-                                                            onChange(e.target.files?.[0])
-                                                            if (e.target.files?.[0]) {
-                                                                setImagePreview(
-                                                                    URL.createObjectURL(
-                                                                        e.target.files[0]
-                                                                    )
-                                                                )
-                                                            }
-                                                        }}
-                                                    />
-                                                )}
+                                            <input
+                                                type="file"
+                                                className="custom-file-input"
+                                                {...register('image', {
+                                                    required: 'Ảnh danh mục là bắt buộc'
+                                                })}
+                                                onChange={handleImageChange}
                                             />
-                                            {imagePreview && (
-                                                <div className="mt-3">
-                                                    <img
-                                                        src={imagePreview}
-                                                        alt="Preview"
-                                                        style={{
-                                                            maxWidth: '100%',
-                                                            maxHeight: '200px',
-                                                            objectFit: 'cover',
-                                                            border: '1px solid #ddd',
-                                                            borderRadius: '8px'
-                                                        }}
-                                                    />
-                                                </div>
-                                            )}
-                                            {errors.image && (
-                                                <span className="error" style={{ marginTop: 16 }}>
-                                                    {errors.image.message}
-                                                </span>
-                                            )}
                                             <label className="custom-file-label">Choose file</label>
+
+                                        </div>
+                                        {errors.image && (
+                                            <div className="text-danger mt-4">
+                                                {errors.image.message}
+                                            </div>
+                                        )}
+                                        <div className="bg-secondary-subtle mb-3 mt-4 p-2">
+                                            {selectedImage ? (
+                                                <img
+                                                    src={selectedImage instanceof File ? URL.createObjectURL(selectedImage) : selectedImage}
+                                                    className="img-fluid"
+                                                    style={{ maxWidth: '300px', height: 'auto' }}
+                                                    alt="Product Image"
+                                                />
+                                            ) : catalog?.image ? (
+                                                <img
+                                                    src={catalog.image}
+                                                    className="img-fluid"
+                                                    style={{ maxWidth: '300px', height: 'auto' }}
+                                                    alt="Product Image"
+                                                />
+                                            ) : (
+                                                <p>Không có ảnh để hiển thị</p>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="form-group">
@@ -154,7 +144,9 @@ const UpdateCatalog = ({ categories, params }) => {
                                             })}
                                         />
                                         {errors.name && (
-                                            <span className="error">{errors.name.message}</span>
+                                            <div className="text-danger mt-2">
+                                                {errors.name.message}
+                                            </div>
                                         )}
                                     </div>
                                     <div className="d-flex">
@@ -162,14 +154,13 @@ const UpdateCatalog = ({ categories, params }) => {
                                             type="submit"
                                             className="btn btn-primary"
                                             style={{ marginRight: '10px' }}
-                                            disabled={isSubmitting}
                                         >
-                                            {isSubmitting ? 'Đang xử lý...' : 'Sửa'}
+                                            Sửa
                                         </button>
                                         <button
                                             type="reset"
                                             className="btn btn-danger"
-                                            onClick={() => reset({ name: '', image: undefined })}
+                                            onClick={() => reset()}
                                         >
                                             Trở lại
                                         </button>
