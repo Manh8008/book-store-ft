@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 
-import Chart from './components/chart'
 import CustomerCount from './components/customerCount'
 import RecentOrder from './components/order/recent-order'
 import OrderCount from './components/orderCount'
@@ -58,7 +57,7 @@ export default function DashBoard() {
                             <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
                                 <div className="iq-card-header d-flex justify-content-between align-items-center">
                                     <div className="iq-header-title">
-                                        <h4 className="card-title mb-0">Tóm lược</h4>
+                                        <h4 className="card-title mb-0">Doanh thu theo tháng</h4>
                                     </div>
                                 </div>
                                 <RevenueChart></RevenueChart>

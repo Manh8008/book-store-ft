@@ -13,8 +13,8 @@ export default function TotalRevenue({ count }) {
 
 
     return (
-        <div className="col-md-6 col-lg-4">
-            <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
+        <div className="col-md-6 col-lg-6">
+            <div className="iq-card iq-card-block iq-card-stretch iq-card-height" style={{ height: '115px' }}>
                 <div className="iq-card-body">
                     <div className="d-flex align-items-center">
                         <div className="rounded-circle iq-card-icon bg-primary">

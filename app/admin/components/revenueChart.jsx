@@ -63,7 +63,7 @@ export default function RevenueChart() {
     return (
         <div>
             {loading ? (
-                <p>Đang tải dữ liệu...</p>
+                <p style={{ textAlign: "center" }}>Đang tải dữ liệu...</p>
             ) : (
                 chartData?.datasets?.length > 0 && (
                     <Bar
