@@ -7,23 +7,26 @@ import RecentOrder from './components/order/recent-order'
 import OrderCount from './components/orderCount'
 import ProductCount from './components/productCount'
 import StatusOrderCount from './components/statusOrderCount'
+import TotalRevenue from "./components/totalRevenue";
 export default function DashBoard() {
     const [data, setData] = useState(null);
 
     useEffect(() => {
         const fetchCounts = async () => {
             try {
-                const [customer, product, order, status] = await Promise.all([
+                const [customer, product, order, status, totalRevenue] = await Promise.all([
                     fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/countUsers`,).then(res => res.json()),
                     fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/countBooks`).then(res => res.json()),
                     fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/countOrders`).then(res => res.json()),
                     fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/pendingOrdersCount`).then(res => res.json()),
+                    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/totalRevenue`).then(res => res.json()),
                 ]);
                 setData({
                     customerCount: customer.data,
                     productCount: product.data,
                     orderCount: order.data,
                     statusOrderCount: status.data,
+                    totalRevenue: totalRevenue.data
                 });
             } catch (error) {
                 console.error("Error fetching counts:", error);
@@ -47,6 +50,8 @@ export default function DashBoard() {
                         <ProductCount count={data.productCount.total_books}></ProductCount>
                         <OrderCount count={data.orderCount.total_orders}></OrderCount>
                         <StatusOrderCount count={data.statusOrderCount.pending_orders}></StatusOrderCount>
+                        <TotalRevenue count={data.totalRevenue.total_revenue}></TotalRevenue>
+
                         {/* <Chart></Chart> */}
                         {/* <div className="col-md-4">
                             <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
