@@ -71,25 +71,28 @@ export default function Review() {
 
     return (
         <>
-            <div id="content-page" class="content-page">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="iq-card">
-                                <div class="iq-card-header d-flex justify-content-between">
-                                    <div class="iq-header-title">
-                                        <h4 class="card-title">Danh sách bài viết</h4>
+            <div id="content-page" className="content-page">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-sm-12">
+                            <div className="iq-card">
+                                <div className="iq-card-header d-flex justify-content-between">
+                                    <div className="iq-header-title">
+                                        <h4 className="card-title">Danh sách bài viết</h4>
                                     </div>
-                                    <div class="iq-card-header-toolbar d-flex align-items-center">
-                                        <Link href="/admin/review/create" class="btn btn-primary">
+                                    <div className="iq-card-header-toolbar d-flex align-items-center">
+                                        <Link
+                                            href="/admin/review/create"
+                                            className="btn btn-primary"
+                                        >
                                             Thêm bài viết
                                         </Link>
                                     </div>
                                 </div>
-                                <div class="iq-card-body">
-                                    <div class="table-responsive">
+                                <div className="iq-card-body">
+                                    <div className="table-responsive">
                                         <table
-                                            class="data-tables table table-striped table-bordered"
+                                            className="data-tables table table-striped table-bordered"
                                             style={{ width: 100 + '%' }}
                                         >
                                             <thead>
@@ -115,25 +118,27 @@ export default function Review() {
                                                             />
                                                         </td>
                                                         <td>
-                                                            <p class="mb-0">{review.title}</p>
+                                                            <p className="mb-0">{review.title}</p>
                                                         </td>
                                                         <td>
-                                                            <p class="mb-0">{review.description}</p>
+                                                            <p className="mb-0">
+                                                                {review.description}
+                                                            </p>
                                                         </td>
                                                         <td>
-                                                            <div class="flex align-items-center list-user-action">
+                                                            <div className="flex align-items-center list-user-action">
                                                                 <Link
-                                                                    class="bg-primary"
+                                                                    className="bg-primary"
                                                                     data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title=""
                                                                     data-original-title="Edit"
                                                                     href={`/admin/review/update/${review.id}`}
                                                                 >
-                                                                    <i class="ri-pencil-line"></i>
+                                                                    <i className="ri-pencil-line"></i>
                                                                 </Link>
                                                                 <Link
-                                                                    class="bg-primary"
+                                                                    className="bg-primary"
                                                                     data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title=""
@@ -143,7 +148,7 @@ export default function Review() {
                                                                         deleteReview(review.id)
                                                                     }
                                                                 >
-                                                                    <i class="ri-delete-bin-line"></i>
+                                                                    <i className="ri-delete-bin-line"></i>
                                                                 </Link>
                                                             </div>
                                                         </td>
@@ -156,10 +161,16 @@ export default function Review() {
                                     {/* Phân trang */}
                                     <nav className="mt-4">
                                         <ul className="pagination pagination-lg justify-content-center">
-                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === 1 ? 'disabled' : ''
+                                                }`}
+                                            >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage - 1)
+                                                    }
                                                     aria-label="Previous"
                                                 >
                                                     <span aria-hidden="true">&laquo;</span>
@@ -168,7 +179,9 @@ export default function Review() {
                                             {pageNumbers.map((number) => (
                                                 <li
                                                     key={number}
-                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                    className={`page-item ${
+                                                        number === currentPage ? 'active' : ''
+                                                    }`}
                                                 >
                                                     <button
                                                         className="page-link"
@@ -178,10 +191,16 @@ export default function Review() {
                                                     </button>
                                                 </li>
                                             ))}
-                                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === totalPages ? 'disabled' : ''
+                                                }`}
+                                            >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage + 1)
+                                                    }
                                                     aria-label="Next"
                                                 >
                                                     <span aria-hidden="true">&raquo;</span>
@@ -189,7 +208,6 @@ export default function Review() {
                                             </li>
                                         </ul>
                                     </nav>
-
                                 </div>
                             </div>
                         </div>

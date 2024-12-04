@@ -52,6 +52,8 @@ export default function ProductDetail({ params }) {
         if (loading) return
         try {
             const result = await commentApiRequest.getCommentByIdBook(params.id)
+
+            console.log(result)
             setComments(result.payload.data)
         } catch (error) {
             handleHttpError(error, setError)

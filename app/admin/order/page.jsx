@@ -1,10 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import classNames from 'classnames/bind'
+
 import orderApiRequest from '@/apiRequests/order'
 import SearchAdmin from '../components/search-admin'
 import { ToastError } from '@/components/ui/ToastError'
+
+import styles from './order.module.scss'
+const cx = classNames.bind(styles)
 
 export default function Order() {
     const [orderData, setOrderData] = useState([])
@@ -13,7 +17,7 @@ export default function Order() {
     const [loading, setLoading] = useState(false)
     const [searchedQuery, setSearchedQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 4 // Số sản phẩm mỗi trang
+    const itemsPerPage = 4
 
     const fetchOrders = async () => {
         if (loading) return
@@ -32,16 +36,18 @@ export default function Order() {
         fetchOrders()
     }, [])
 
-    const handleChangeStatus = async (id) => {
+    const handleChangeOrderStatus = async (e, id) => {
+        const newStatus = e.target.value
         if (loading) return
         setLoading(true)
         setError('')
+
         try {
-            const res = await orderApiRequest.updateStatus(id, { order_status: 'Đã xác nhận' })
+            const res = await orderApiRequest.updateStatus(id, { order_status: newStatus })
             if (res) {
                 setOrderData((prevData) =>
                     prevData.map((order) =>
-                        order.id === id ? { ...order, order_status: 'Đã xác nhận' } : order
+                        order.id === id ? { ...order, order_status: newStatus } : order
                     )
                 )
             } else {
@@ -179,29 +185,54 @@ export default function Order() {
                                                                 </small>
                                                             </td>
                                                             <td>{item.updated_at || '---'}</td>
-                                                            <td>{item.order_status}</td>
+                                                            <td>
+                                                                <select
+                                                                    className={cx('form-select')}
+                                                                    aria-label="Default select example"
+                                                                    value={item.order_status}
+                                                                    onChange={(e) =>
+                                                                        handleChangeOrderStatus(
+                                                                            e,
+                                                                            item.id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <option value="Chờ xác nhận">
+                                                                        Chờ xác nhận
+                                                                    </option>
+                                                                    <option value="Đã xác nhận">
+                                                                        Đã xác nhận
+                                                                    </option>
+                                                                    <option value="complete">
+                                                                        Đã hoàn thành
+                                                                    </option>
+                                                                    <option value="Đã hủy">
+                                                                        Đã hủy
+                                                                    </option>
+                                                                </select>
+                                                            </td>
                                                             <td>
                                                                 <div className="flex align-items-center list-user-action">
-                                                                    {item.order_status ===
-                                                                        'Chờ xác nhận' ? (
-                                                                        <Button
-                                                                            outline
-                                                                            onClick={() =>
-                                                                                handleChangeStatus(
-                                                                                    item.id
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            Xác nhận
-                                                                        </Button>
-                                                                    ) : (
-                                                                        <Link
-                                                                            className="bg-primary"
-                                                                            href={`/admin/order/${item.id}`}
-                                                                        >
-                                                                            <i className="ri-eye-line"></i>
-                                                                        </Link>
-                                                                    )}
+                                                                    <Link
+                                                                        className="bg-primary"
+                                                                        href={`/admin/order/${
+                                                                            item.id
+                                                                        }?order_status=${
+                                                                            item.order_status
+                                                                        }&district=${
+                                                                            item.district || ''
+                                                                        }&town=${
+                                                                            item.town || ''
+                                                                        }&province=${
+                                                                            item.province || ''
+                                                                        }&address_line=${
+                                                                            item.address_line || ''
+                                                                        }&phone=${
+                                                                            item.phone || ''
+                                                                        }&name=${item.name || ''}`}
+                                                                    >
+                                                                        <i className="ri-eye-line"></i>
+                                                                    </Link>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -213,10 +244,16 @@ export default function Order() {
                                     {/* Phân trang */}
                                     <nav className="mt-4">
                                         <ul className="pagination pagination-lg justify-content-center">
-                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === 1 ? 'disabled' : ''
+                                                }`}
+                                            >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage - 1)
+                                                    }
                                                     aria-label="Previous"
                                                 >
                                                     <span aria-hidden="true">&laquo;</span>
@@ -225,7 +262,9 @@ export default function Order() {
                                             {pageNumbers.map((number) => (
                                                 <li
                                                     key={number}
-                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                    className={`page-item ${
+                                                        number === currentPage ? 'active' : ''
+                                                    }`}
                                                 >
                                                     <button
                                                         className="page-link"
@@ -235,10 +274,16 @@ export default function Order() {
                                                     </button>
                                                 </li>
                                             ))}
-                                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === totalPages ? 'disabled' : ''
+                                                }`}
+                                            >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage + 1)
+                                                    }
                                                     aria-label="Next"
                                                 >
                                                     <span aria-hidden="true">&raquo;</span>
@@ -246,7 +291,6 @@ export default function Order() {
                                             </li>
                                         </ul>
                                     </nav>
-
                                 </div>
                             </div>
                         </div>
