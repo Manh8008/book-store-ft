@@ -17,7 +17,6 @@ export default function CreateReview() {
         description: z.string().min(1, { message: 'Nội dung là bắt buộc' })
     })
 
-
     const router = useRouter()
     const [imagePreview, setImagePreview] = useState(null)
 
@@ -56,29 +55,31 @@ export default function CreateReview() {
 
     return (
         <>
-            <div id="content-page" class="content-page">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="iq-card">
-                                <div class="iq-card-header d-flex justify-content-between">
-                                    <div class="iq-header-title">
-                                        <h4 class="card-title">Thêm bài viết</h4>
+            <div id="content-page" className="content-page">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-sm-12">
+                            <div className="iq-card">
+                                <div className="iq-card-header d-flex justify-content-between">
+                                    <div className="iq-header-title">
+                                        <h4 className="card-title">Thêm bài viết</h4>
                                     </div>
                                 </div>
-                                <div class="iq-card-body">
+                                <div className="iq-card-body">
                                     <form onSubmit={handleSubmit(onSubmit)}>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Ảnh bài viết:</label>
-                                            <div class="custom-file">
+                                            <div className="custom-file">
                                                 <input
                                                     type="file"
-                                                    class="custom-file-input"
+                                                    className="custom-file-input"
                                                     name="image"
                                                     {...register('image')}
                                                     onChange={handleImageChange}
                                                 />
-                                                <label class="custom-file-label">Choose file</label>
+                                                <label className="custom-file-label">
+                                                    Choose file
+                                                </label>
                                                 {errors.image && (
                                                     <div className="text-danger mt-2">
                                                         {errors.image.message}
@@ -90,17 +91,20 @@ export default function CreateReview() {
                                                     <img
                                                         src={imagePreview}
                                                         className="img-fluid"
-                                                        style={{ maxWidth: '300px', height: 'auto' }}
+                                                        style={{
+                                                            maxWidth: '300px',
+                                                            height: 'auto'
+                                                        }}
                                                         alt="Product Image"
                                                     />
                                                 )}
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Tiêu đề bài viết:</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                className="form-control"
                                                 name="title"
                                                 {...register('title')}
                                             />
@@ -110,10 +114,10 @@ export default function CreateReview() {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Nội dung bài viết:</label>
                                             <textarea
-                                                class="form-control"
+                                                className="form-control"
                                                 rows="4"
                                                 name="description"
                                                 {...register('description')}
@@ -126,12 +130,12 @@ export default function CreateReview() {
                                         </div>
                                         <button
                                             type="submit"
-                                            class="btn btn-primary"
+                                            className="btn btn-primary"
                                             style={{ marginRight: '10px' }}
                                         >
                                             Thêm
                                         </button>
-                                        <button type="reset" class="btn btn-danger">
+                                        <button type="reset" className="btn btn-danger">
                                             Trở lại
                                         </button>
                                     </form>

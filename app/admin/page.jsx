@@ -1,5 +1,5 @@
-"use client"
-import React, { useEffect, useState } from "react";
+'use client'
+import React, { useEffect, useState } from 'react'
 
 import Chart from './components/chart'
 import CustomerCount from './components/customerCount'
@@ -9,7 +9,7 @@ import ProductCount from './components/productCount'
 import StatusOrderCount from './components/statusOrderCount'
 import TotalRevenue from "./components/totalRevenue";
 export default function DashBoard() {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState(null)
 
     useEffect(() => {
         const fetchCounts = async () => {
@@ -29,15 +29,15 @@ export default function DashBoard() {
                     totalRevenue: totalRevenue.data
                 });
             } catch (error) {
-                console.error("Error fetching counts:", error);
+                console.error('Error fetching counts:', error)
             }
-        };
+        }
 
-        fetchCounts();
-    }, []);
+        fetchCounts()
+    }, [])
 
     if (!data) {
-        return <div>Loading...</div>;
+        return <div>Loading...</div>
     }
 
     return (

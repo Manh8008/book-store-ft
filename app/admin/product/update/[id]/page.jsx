@@ -22,7 +22,6 @@ export default function UpdateProduct({ params }) {
     const [product, setProduct] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null)
 
-
     useEffect(() => {
         const getCategories = async () => {
             const result = await catalogApiRequestAdmin.getAllCatalog()
@@ -61,12 +60,11 @@ export default function UpdateProduct({ params }) {
     console.log(product)
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files[0]
         if (file) {
-            setSelectedImage(file);
+            setSelectedImage(file)
         }
-    };
-
+    }
 
     const onSubmit = async (data) => {
         try {
@@ -76,16 +74,16 @@ export default function UpdateProduct({ params }) {
             // Thêm các giá trị khác ngoài ảnh
             for (const key in data) {
                 if (key !== 'images') {
-                    formData.append(key, data[key]);
+                    formData.append(key, data[key])
                 }
             }
 
             // Nếu có ảnh mới (chọn từ input), thêm vào FormData
             if (selectedImage instanceof File) {
-                formData.append('images', selectedImage); // Gửi file ảnh thực tế lên server
+                formData.append('images', selectedImage) // Gửi file ảnh thực tế lên server
             } else if (product?.images) {
                 // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
-                formData.append('images', product.images);
+                formData.append('images', product.images)
             }
 
             const result = await productApiRequestAdmin.updateBook(id, formData)
@@ -99,24 +97,24 @@ export default function UpdateProduct({ params }) {
 
     return (
         <>
-            <div id="content-page" class="content-page">
+            <div id="content-page" className="content-page">
                 <ToastError errorMessage={error} />
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="iq-card">
-                                <div class="iq-card-header d-flex justify-content-between">
-                                    <div class="iq-header-title">
-                                        <h4 class="card-title">Sửa sách</h4>
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-sm-12">
+                            <div className="iq-card">
+                                <div className="iq-card-header d-flex justify-content-between">
+                                    <div className="iq-header-title">
+                                        <h4 className="card-title">Sửa sách</h4>
                                     </div>
                                 </div>
-                                <div class="iq-card-body">
+                                <div className="iq-card-body">
                                     <form onSubmit={handleSubmit(onSubmit)}>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Tên sách:</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                className="form-control"
                                                 {...register('name', {
                                                     required: 'Tên sách là bắt buộc'
                                                 })}
@@ -127,10 +125,10 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Danh mục sách:</label>
                                             <select
-                                                class="form-control"
+                                                className="form-control"
                                                 id="exampleFormControlSelect1"
                                                 {...register('category_id', {
                                                     required: 'Tên danh mục là bắt buộc'
@@ -199,19 +197,21 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Hình ảnh:</label>
-                                            <div class="custom-file">
+                                            <div className="custom-file">
                                                 <input
                                                     type="file"
-                                                    class="custom-file-input"
+                                                    className="custom-file-input"
                                                     name="images"
                                                     {...register('images', {
                                                         required: 'Ảnh sản phẩm là bắt buộc'
                                                     })}
                                                     onChange={handleImageChange}
                                                 />
-                                                <label class="custom-file-label">Choose file</label>
+                                                <label className="custom-file-label">
+                                                    Choose file
+                                                </label>
                                             </div>
                                             {errors.images && (
                                                 <div className="text-danger mt-2">
@@ -221,16 +221,26 @@ export default function UpdateProduct({ params }) {
                                             <div className="bg-secondary-subtle mb-3 mt-4 p-2">
                                                 {selectedImage ? (
                                                     <img
-                                                        src={selectedImage instanceof File ? URL.createObjectURL(selectedImage) : selectedImage}
+                                                        src={
+                                                            selectedImage instanceof File
+                                                                ? URL.createObjectURL(selectedImage)
+                                                                : selectedImage
+                                                        }
                                                         className="img-fluid"
-                                                        style={{ maxWidth: '300px', height: 'auto' }}
+                                                        style={{
+                                                            maxWidth: '300px',
+                                                            height: 'auto'
+                                                        }}
                                                         alt="Product Image"
                                                     />
                                                 ) : product?.images[0].url ? (
                                                     <img
                                                         src={product.images[0].url}
                                                         className="img-fluid"
-                                                        style={{ maxWidth: '300px', height: 'auto' }}
+                                                        style={{
+                                                            maxWidth: '300px',
+                                                            height: 'auto'
+                                                        }}
                                                         alt="Product Image"
                                                     />
                                                 ) : (
@@ -238,11 +248,11 @@ export default function UpdateProduct({ params }) {
                                                 )}
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Giá sách:</label>
                                             <input
                                                 type="number"
-                                                class="form-control"
+                                                className="form-control"
                                                 name="price"
                                                 {...register('price', {
                                                     required: 'Giá sách là bắt buộc'
@@ -254,11 +264,11 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Số lượng:</label>
                                             <input
                                                 type="number"
-                                                class="form-control"
+                                                className="form-control"
                                                 name="stock"
                                                 {...register('stock', {
                                                     required: 'Số lượng là bắt buộc'
@@ -270,11 +280,11 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Kích thước sách:</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                className="form-control"
                                                 name="size"
                                                 {...register('size', {
                                                     required: 'Kích thước sách là bắt buộc'
@@ -286,11 +296,11 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Số trang:</label>
                                             <input
                                                 type="number"
-                                                class="form-control"
+                                                className="form-control"
                                                 name="pages"
                                                 {...register('pages', {
                                                     required: 'Số trang là bắt buộc'
@@ -302,11 +312,11 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Nhà xuất bản:</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                className="form-control"
                                                 name="publisher"
                                                 {...register('publisher', {
                                                     required: 'Nhà xuất bản là bắt buộc'
@@ -318,10 +328,10 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Ngôn ngữ:</label>
                                             <select
-                                                class="form-control"
+                                                className="form-control"
                                                 id="exampleFormControlSelect2"
                                                 name="language"
                                                 {...register('language', {
@@ -340,10 +350,10 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Loại bìa:</label>
                                             <select
-                                                class="form-control"
+                                                className="form-control"
                                                 id="exampleFormControlSelect2"
                                                 name="format"
                                                 {...register('format', {
@@ -362,11 +372,11 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Mô tả ngắn:</label>
                                             <input
                                                 type="text"
-                                                class="form-control"
+                                                className="form-control"
                                                 name="short_summary"
                                                 {...register('short_summary', {
                                                     required: 'Mô tả ngắn là bắt buộc'
@@ -378,10 +388,10 @@ export default function UpdateProduct({ params }) {
                                                 </div>
                                             )}
                                         </div>
-                                        <div class="form-group">
+                                        <div className="form-group">
                                             <label>Mô tả dài:</label>
                                             <textarea
-                                                class="form-control"
+                                                className="form-control"
                                                 rows="4"
                                                 name="description"
                                                 {...register('description', {
@@ -396,12 +406,12 @@ export default function UpdateProduct({ params }) {
                                         </div>
                                         <button
                                             type="submit"
-                                            class="btn btn-primary"
+                                            className="btn btn-primary"
                                             style={{ marginRight: '10px' }}
                                         >
                                             Sửa
                                         </button>
-                                        <button type="reset" class="btn btn-danger">
+                                        <button type="reset" className="btn btn-danger">
                                             Trở lại
                                         </button>
                                     </form>

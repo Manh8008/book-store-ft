@@ -48,7 +48,9 @@ const ProductCard = (props) => {
                                             <img key={index} src="/img/star.svg" alt="Star" />
                                         ))}
                                     </div>
-                                    <span className={cx('sold-count')}>Đã bán 23</span>
+                                    <span className={cx('sold-count')}>
+                                        Đã bán {product.sales_count}
+                                    </span>
                                 </div>
                                 <button
                                     className={cx('buy-now')}
