@@ -7,7 +7,6 @@ import Image from 'next/image'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import { Subcategory } from '@/components/ui/subcategory'
 import { ProductList } from '@/components/product-list'
-import { Pagination } from '@/components/ui/pagination'
 import { catalogApiRequest } from '@/apiRequests/category'
 import { productApiRequest } from '@/apiRequests/product'
 import { handleHttpError } from '@/lib/utils'
@@ -19,17 +18,27 @@ import { FilterTop } from '@/components/ui/filter-top'
 const cx = classNames.bind(styles)
 
 const BookCollection = () => {
-    const totalPages = 10
     const [books, setBooks] = useState([])
-    const [currentPage, setCurrentPage] = useState(1)
     const [categories, setCategories] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10 // Số sản phẩm mỗi trang
+
+    // Tính toán các sản phẩm hiển thị trên trang hiện tại
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = books.slice(indexOfFirstItem, indexOfLastItem)
+
+    // Tạo danh sách các trang
+    const totalPages = Math.ceil(books.length / itemsPerPage)
+    const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1)
+
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber)
-        console.log(`Chuyển sang trang: ${pageNumber}`)
     }
+
 
     const fetchCategories = async () => {
         setLoading(true)
@@ -130,18 +139,47 @@ const BookCollection = () => {
                 <Subcategory data={categories} />
                 <FilterTop onPriceChange={filterByPrice} onPriceSort={sortBooksByPrice} />
 
-                <ProductList title="Tất cả sản phẩm" data={books} />
+                <ProductList title="Tất cả sản phẩm" data={currentItems} />
             </div>
 
-            {books.length > 20 && (
-                <div className={cx('pagination')}>
-                    <Pagination
-                        totalPages={totalPages}
-                        currentPage={currentPage}
-                        onPageChange={handlePageChange}
-                    />
-                </div>
-            )}
+            {/* Phân trang */}
+            <nav className={cx('pagination-container')}>
+                <ul className={cx('pagination')}>
+                    <li className={cx('page-item', { disabled: currentPage === 1 })}>
+                        <button
+                            className={cx('page-link')}
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            &laquo;
+                        </button>
+                    </li>
+                    {pageNumbers.map((page) => (
+                        <li
+                            key={page}
+                            className={cx('page-item', { active: currentPage === page })}
+                        >
+                            <button
+                                className={cx('page-link')}
+                                onClick={() => handlePageChange(page)}
+                            >
+                                {page}
+                            </button>
+                        </li>
+                    ))}
+                    <li className={cx('page-item', { disabled: currentPage === totalPages })}>
+                        <button
+                            className={cx('page-link')}
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        >
+                            &raquo;
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+
         </div>
     )
 }

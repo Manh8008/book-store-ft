@@ -7,13 +7,14 @@ import RecentOrder from './components/order/recent-order'
 import OrderCount from './components/orderCount'
 import ProductCount from './components/productCount'
 import StatusOrderCount from './components/statusOrderCount'
+import TotalRevenue from './components/totalRevenue'
 export default function DashBoard() {
     const [data, setData] = useState(null)
 
     useEffect(() => {
         const fetchCounts = async () => {
             try {
-                const [customer, product, order, status] = await Promise.all([
+                const [customer, product, order, status, totalRevenue] = await Promise.all([
                     fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/countUsers`).then((res) =>
                         res.json()
                     ),
@@ -25,13 +26,17 @@ export default function DashBoard() {
                     ),
                     fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/pendingOrdersCount`).then(
                         (res) => res.json()
+                    ),
+                    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/totalRevenue`).then((res) =>
+                        res.json()
                     )
                 ])
                 setData({
                     customerCount: customer.data,
                     productCount: product.data,
                     orderCount: order.data,
-                    statusOrderCount: status.data
+                    statusOrderCount: status.data,
+                    totalRevenue: totalRevenue.data
                 })
             } catch (error) {
                 console.error('Error fetching counts:', error)
