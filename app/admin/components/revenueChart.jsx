@@ -25,9 +25,11 @@ export default function RevenueChart() {
 
                 // Xử lý dữ liệu: Nhóm doanh thu theo tháng
                 const monthlyRevenue = orders.reduce((acc, order) => {
-                    const month = new Date(order.created_at).getMonth() + 1; // Lấy tháng (1-12)
-                    const totalAmount = parseFloat(order.total_amount); // Chuyển đổi thành số
-                    acc[month] = (acc[month] || 0) + totalAmount; // Cộng tổng tiền
+                    if (order.order_status == "complete" && order.payment_status == "Đã thanh toán") {
+                        const month = new Date(order.created_at).getMonth() + 1; // Lấy tháng (1-12)
+                        const totalAmount = parseFloat(order.total_amount); // Chuyển đổi thành số
+                        acc[month] = (acc[month] || 0) + totalAmount; // Cộng tổng tiền
+                    }
                     return acc;
                 }, {});
 
