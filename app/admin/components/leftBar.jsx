@@ -63,7 +63,7 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#">
+                                <Link href="/admin/comment">
                                     <i className="ri-record-circle-line"></i>Bình Luận
                                 </Link>
                             </li>
