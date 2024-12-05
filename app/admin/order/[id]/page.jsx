@@ -70,7 +70,7 @@ export default function OrderDetail({ params }) {
 
     return (
         <>
-            <div className={cx('customContainer', 'container-fluid')}>
+            <div className={cx('customContainer', 'container-fluid')} style={{ marginLeft: 100 }}>
                 <div className="container">
                     <div className="d-flex justify-content-between align-items-center py-3">
                         <h2 className={cx('customOrderCode', 'h5', 'mb-0')}>
@@ -151,7 +151,6 @@ export default function OrderDetail({ params }) {
                                                                         <a
                                                                             href="#"
                                                                             className="text-reset"
-                                                                            style={{ fontSize: 14 }}
                                                                         >
                                                                             {book.name}
                                                                         </a>

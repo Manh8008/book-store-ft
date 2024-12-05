@@ -1,6 +1,18 @@
+'use client'
+import { authApiRequest } from '@/apiRequests/auth'
+import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 export default function LeftBar() {
+    const handleLogout = async () => {
+        try {
+            await authApiRequest.logoutAdmin
+            localStorage.removeItem('sessionTokenAdmin')
+            router.push('/admin/auth/login')
+        } catch (error) {
+            alert('Đăng xuất thất bại!')
+        }
+    }
     return (
         <>
             {/* <!-- Sidebar  --> */}
@@ -71,9 +83,9 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="sign-in.html">
+                                <Button outline onClick={handleLogout}>
                                     <i className="ri-record-circle-line"></i>Đăng Xuất
-                                </Link>
+                                </Button>
                             </li>
                         </ul>
                     </nav>

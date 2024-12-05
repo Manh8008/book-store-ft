@@ -14,7 +14,8 @@ const authApiRequest = {
                 Authorization: `Bearer ${sessionToken}`
             }
         }),
-    logoutFromNextClientToServer: () => http.post('/api/auth/logout', {}, { baseUrl: '' })
+    logoutFromNextClientToServer: () => http.post('/api/auth/logout', {}, { baseUrl: '' }),
+    logoutAdmin: () => http.post('/api/auth/logout-admin', {}, { baseUrl: '' })
 }
 
 const authAdminApiRequest = {

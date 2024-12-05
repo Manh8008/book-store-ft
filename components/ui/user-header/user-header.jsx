@@ -24,11 +24,11 @@ function UserHeader() {
     const handleLogout = async () => {
         try {
             setShowAccountMenu(false)
-
-            const result = await authApiRequest.logoutFromNextClientToServer()
-            if (result.status === 200) router.push('/')
+            await authApiRequest.logoutFromNextClientToServer()
+            localStorage.removeItem('sessionTokenUser')
+            router.push('/auth/login')
         } catch (error) {
-            console.error('Đăng xuất thất bại', error)
+            alert('Đăng xuất thất bại!')
         }
     }
 

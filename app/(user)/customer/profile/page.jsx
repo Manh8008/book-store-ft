@@ -5,6 +5,7 @@ import { AccountSidebar } from '@/components/account-sidebar'
 import './profile.scss'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 export default function Profile() {
     const { userData, setUserData } = useUser()
@@ -30,8 +31,6 @@ export default function Profile() {
             [e.target.name]: e.target.value
         })
     }
-
-    console.log(userData)
 
     // if (!userData || !userData.id) {
     //     return <LoadingSkeleton />
@@ -77,17 +76,7 @@ export default function Profile() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="address">Địa chỉ*</label>
-                            <Input
-                                id="address"
-                                name="address"
-                                placeholder="Địa chỉ giao hàng"
-                                type="text"
-                                value={defaultAddress || ''}
-                                onChange={handleChange}
-                            />
-                        </div>
+                        <Button primary>Cập nhật</Button>
                     </form>
                 </div>
             </div>
