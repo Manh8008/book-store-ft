@@ -17,6 +17,7 @@ import TopBar from './components/topBar'
 import Footer from './components/footer'
 import AppProvider from '../AppProvider'
 import { cookies } from 'next/headers'
+import { MainLayoutAdmin } from '@/components/main-layout-admin'
 
 export const metadata = {
     title: 'Create Next App',
@@ -42,10 +43,7 @@ export default function RootLayout({ children }) {
                     initialAdminSessionToken={sessionTokenAdmin && sessionTokenAdmin.value}
                 >
                     <div classname="wrapper">
-                        <LeftBar />
-                        <TopBar />
-
-                        {children}
+                        <MainLayoutAdmin>{children}</MainLayoutAdmin>
                     </div>
                 </AppProvider>
                 <Footer />

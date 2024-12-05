@@ -8,6 +8,7 @@ const privatePaths = [
     '/customer/address/update'
 ]
 const authPaths = ['/auth/login', '/auth/register']
+const authPathsAdmin = ['/admin/auth/login']
 
 // Middleware xử lý
 export function middleware(request) {
@@ -23,6 +24,11 @@ export function middleware(request) {
     // Chặn người dùng đã đăng nhập truy cập vào các trang đăng nhập/đăng ký
     if (authPaths.some((path) => pathname.startsWith(path)) && sessionTokenUser) {
         return NextResponse.redirect(new URL('/customer/profile', request.url))
+    }
+
+    // Chặn người dùng đã đăng nhập ở admin khi đã đăng nhập rồi.
+    if (authPathsAdmin.some((path) => pathname.startsWith(path)) && sessionTokenAdmin) {
+        return NextResponse.redirect(new URL('/admin', request.url))
     }
 
     // Bảo vệ các trang admin (trừ /admin/auth/login)
