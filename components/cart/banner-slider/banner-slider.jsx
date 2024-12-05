@@ -1,16 +1,25 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import './banner-slider.scss'
+import { bannerApiRequest } from '@/apiRequests/banner'
 
 const BannerSlider = () => {
-    const banners = [
-        { id: 1, src: '/img/slider_2.webp', alt: 'Banner 1' },
-        { id: 2, src: '/img/slider_3.webp', alt: 'Banner 2' },
-        { id: 3, src: '/img/slider_4.webp', alt: 'Banner 3' }
-    ]
+    const [banner, setBanner] = useState([])
+
+    const fetchBanner = async () => {
+        const result = await bannerApiRequest.getAllBanner()
+        setBanner(result.payload.data)
+    }
+
+    // console.log(banner)
+
+    useEffect(() => {
+        fetchBanner();
+    }, [])
+
     const settings = {
         dots: true,
         infinite: true,
@@ -25,9 +34,9 @@ const BannerSlider = () => {
     return (
         <div className="banner-slider">
             <Slider {...settings}>
-                {banners.map((banner) => (
+                {banner.map((banner) => (
                     <div key={banner.id}>
-                        <img src={banner.src} alt={banner.alt} className="banner-image" />
+                        <img src={banner.image_url} alt="" className="banner-image" />
                     </div>
                 ))}
             </Slider>
