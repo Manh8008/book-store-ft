@@ -1,6 +1,24 @@
+"use client"
+
+import { userApiRequestAdmin } from '@/apiRequests/users'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function User() {
+    const [user, setUser] = useState([])
+
+    const fetchUser = async () => {
+        const result = await userApiRequestAdmin.getAllUser()
+        setUser(result.payload.data);
+    }
+
+    // console.log(user)
+
+    useEffect(() => {
+        fetchUser();
+    }, [])
+
+
     return (
         <>
             <div id="content-page" className="content-page">
@@ -34,108 +52,42 @@ export default function User() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>tienhai1301</td>
-                                                    <td>
-                                                        <p className="mb-0">
-                                                            tienhai13012001@gmail.com
-                                                        </p>
-                                                    </td>
-                                                    <td>Khách hàng</td>
-                                                    <td>
-                                                        <div className="flex align-items-center list-user-action">
-                                                            <Link
-                                                                className="bg-primary"
-                                                                data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title=""
-                                                                data-original-title="Edit"
-                                                                href="/admin/authors/update/1"
-                                                            >
-                                                                <i className="ri-pencil-line"></i>
-                                                            </Link>
-                                                            <Link
-                                                                className="bg-primary"
-                                                                data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title=""
-                                                                data-original-title="Xoá"
-                                                                href="#"
-                                                            >
-                                                                <i className="ri-delete-bin-line"></i>
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Nguyễn Hữu Mạnh</td>
-                                                    <td>
-                                                        <p className="mb-0">
-                                                            manhblue137@gmail.com
-                                                        </p>
-                                                    </td>
-                                                    <td>Khách hàng</td>
-                                                    <td>
-                                                        <div className="flex align-items-center list-user-action">
-                                                            <Link
-                                                                className="bg-primary"
-                                                                data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title=""
-                                                                data-original-title="Edit"
-                                                                href="/admin/authors/update/1"
-                                                            >
-                                                                <i className="ri-pencil-line"></i>
-                                                            </Link>
-                                                            <Link
-                                                                className="bg-primary"
-                                                                data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title=""
-                                                                data-original-title="Xoá"
-                                                                href="#"
-                                                            >
-                                                                <i className="ri-delete-bin-line"></i>
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Nguyễn Minh Thịnh</td>
-                                                    <td>
-                                                        <p className="mb-0">
-                                                            nguyenminhthinh858@gmail.com
-                                                        </p>
-                                                    </td>
-                                                    <td>Khách hàng</td>
-                                                    <td>
-                                                        <div className="flex align-items-center list-user-action">
-                                                            <Link
-                                                                className="bg-primary"
-                                                                data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title=""
-                                                                data-original-title="Edit"
-                                                                href="/admin/authors/update/1"
-                                                            >
-                                                                <i className="ri-pencil-line"></i>
-                                                            </Link>
-                                                            <Link
-                                                                className="bg-primary"
-                                                                data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title=""
-                                                                data-original-title="Xoá"
-                                                                href="#"
-                                                            >
-                                                                <i className="ri-delete-bin-line"></i>
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                {user.map((user, index) => (
+                                                    <tr key={user.id}>
+                                                        <td>{index + 1}</td>
+                                                        <td>{user.name}</td>
+                                                        <td>
+                                                            <p className="mb-0">
+                                                                {user.email}
+                                                            </p>
+                                                        </td>
+                                                        <td>{user.role}</td>
+                                                        <td>
+                                                            <div className="flex align-items-center list-user-action">
+                                                                <Link
+                                                                    className="bg-primary"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title=""
+                                                                    data-original-title="Edit"
+                                                                    href="#"
+                                                                >
+                                                                    <i className="ri-pencil-line"></i>
+                                                                </Link>
+                                                                <Link
+                                                                    className="bg-primary"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title=""
+                                                                    data-original-title="Xoá"
+                                                                    href="#"
+                                                                >
+                                                                    <i className="ri-delete-bin-line"></i>
+                                                                </Link>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </div>

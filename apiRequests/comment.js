@@ -8,5 +8,5 @@ export const commentApiRequest = {
 
 export const commentApiRequestAdmin = {
     getAllComment: () => http.get(`/api/getAllComment`, { type: 'admin' }),
-    destroyComment: (comment_id) => http.delete(`/api/deleteComment/${comment_id}`, { type: 'admin' }),
+    destroyComment: (comment_id) => http.delete(`/api/admin/deleteCommentAdmin/${comment_id}`, { type: 'admin' }),
 }

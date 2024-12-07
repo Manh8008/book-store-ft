@@ -76,11 +76,6 @@ export default function Comment() {
                                     <div className="iq-header-title" style={{ display: 'flex' }}>
                                         <h4 className="card-title">Danh sách bình luận</h4>
                                     </div>
-                                    <div className="iq-card-header-toolbar d-flex align-items-center">
-                                        <a href="" className="btn btn-primary">
-                                            Thêm sách
-                                        </a>
-                                    </div>
                                 </div>
                                 <div className="iq-card-body">
                                     <div className="table-responsive">
