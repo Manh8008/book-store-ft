@@ -46,7 +46,7 @@ export default function Product() {
             const result = await productApiRequest.searchBook(query)
             setProduct(result.payload.data)
             setSearchedQuery(query)
-            setCurrentPage(1) // Reset về trang 1 sau khi tìm kiếm
+            setCurrentPage(1)
         } catch (error) {
             setError(`Không có sản phẩm nào cho từ khóa ${query}`)
             setSearchedQuery('')
@@ -211,10 +211,16 @@ export default function Product() {
                                     {/* Phân trang */}
                                     <nav className="mt-4">
                                         <ul className="pagination pagination-lg justify-content-center">
-                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === 1 ? 'disabled' : ''
+                                                }`}
+                                            >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage - 1)
+                                                    }
                                                     aria-label="Previous"
                                                 >
                                                     <span aria-hidden="true">&laquo;</span>
@@ -223,7 +229,9 @@ export default function Product() {
                                             {pageNumbers.map((number) => (
                                                 <li
                                                     key={number}
-                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                    className={`page-item ${
+                                                        number === currentPage ? 'active' : ''
+                                                    }`}
                                                 >
                                                     <button
                                                         className="page-link"
@@ -233,10 +241,16 @@ export default function Product() {
                                                     </button>
                                                 </li>
                                             ))}
-                                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === totalPages ? 'disabled' : ''
+                                                }`}
+                                            >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage + 1)
+                                                    }
                                                     aria-label="Next"
                                                 >
                                                     <span aria-hidden="true">&raquo;</span>

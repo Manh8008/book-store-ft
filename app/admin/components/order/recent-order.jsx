@@ -53,7 +53,7 @@ export default function RecentOrder() {
     }, [])
     return (
         <>
-            <div className="col-sm-12">
+            <div className="col-md-12 col-lg-12">
                 <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
                     <div className="iq-card-header d-flex justify-content-between">
                         <div className="iq-header-title">

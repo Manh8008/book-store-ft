@@ -3,6 +3,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import classNames from 'classnames/bind'
+import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
 
 import { Button } from '@/components/ui/button'
 import { PackageItem } from '@/components/payment/package-item'
@@ -12,8 +14,6 @@ import { ShippingInfo } from '@/components/payment/shipping-info'
 import { useUser } from '@/context/user-context'
 import { checkoutRequest } from '@/apiRequests/checkout'
 import styles from './payment.module.scss'
-import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
 import { clearCart } from '@/redux/slices/cartslice'
 
 const cx = classNames.bind(styles)

@@ -3,7 +3,11 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
+import classNames from 'classnames/bind'
+import { FaShoppingCart } from 'react-icons/fa'
+import { FaPhoneVolume } from 'react-icons/fa6'
 
+import styles from './book-detail.module.scss'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { productApiRequest } from '@/apiRequests/product'
 import { addItem } from '@/redux/slices/cartslice'
@@ -14,10 +18,11 @@ import { Beardcrumb } from '@/components/ui/breadcrumb'
 import { useUser } from '@/context/user-context'
 import { ToastError } from '@/components/ui/ToastError'
 import MainLayout from '@/layouts/main-layout'
-import CommentForm from './comment-form'
-import RightContent from './right-content'
-import '@/public/styles/product-detail.scss'
+import { CommentForm } from '@/components/book-detail/comment-form'
+import { RightContent } from '@/components/book-detail/right-content'
 import { userApiRequestAdmin } from '@/apiRequests/users'
+
+const cx = classNames.bind(styles)
 
 export default function ProductDetail({ params }) {
     const [product, setProduct] = useState(null)
@@ -40,6 +45,8 @@ export default function ProductDetail({ params }) {
         setError('')
         try {
             const result = await productApiRequest.bookDetail(params.id)
+            console.log(result)
+
             setProduct(result.payload.data)
         } catch (error) {
             handleHttpError(error, setError)
@@ -66,12 +73,12 @@ export default function ProductDetail({ params }) {
         setError('')
         try {
             const result = await userApiRequestAdmin.getAllUser()
-
             setUsers(result.payload.data)
         } catch (error) {}
     }
 
     useEffect(() => {
+        setLoading(true)
         fetchProduct()
         fetchComments()
         fetchUsers()
@@ -108,155 +115,183 @@ export default function ProductDetail({ params }) {
     return (
         <MainLayout>
             <ToastError errorMessage={error} />
-            <main style={{ background: '#F5F5FA' }}>
-                <div className="product-detail">
-                    <div className="content">
+            <main className={cx('main-container')}>
+                <div className={cx('product-detail')}>
+                    <div className={cx('content')}>
                         <Beardcrumb />
 
-                        <div className="product-detail-container">
-                            <div className="main-left">
-                                <div className="main-detail">
-                                    <div className="product-image">
+                        <div className={cx('product-detail-container')}>
+                            <div className={cx('main-detail')}>
+                                <div className={cx('main-left')}>
+                                    <div className={cx('product-image')}>
                                         <img
                                             src={product?.images[0]?.url.trim()}
                                             alt={product?.name}
                                         />
                                     </div>
-
-                                    <div className="product-info">
-                                        <h1 className="product-title">{product?.name}</h1>
-                                        <hr />
-                                        <p className="product-price">
-                                            Giá bán:{' '}
-                                            <span className="price-sale">
-                                                {parseFloat(product?.price).toLocaleString('vi-VN')}
-                                                đ
-                                            </span>{' '}
-                                            <span className="price-retail">169.000đ</span>
-                                        </p>
-
-                                        <div className="quantity-control">
-                                            <button
-                                                className="quantity-btn decrement"
-                                                onClick={decrement}
-                                            >
-                                                -
-                                            </button>
-                                            <span className="quantity-value">{quantity}</span>
-                                            <button
-                                                className="quantity-btn increment"
-                                                onClick={increment}
-                                            >
-                                                +
-                                            </button>
-                                        </div>
-
-                                        <Button
-                                            primary
-                                            onClick={() => dispatch(addItem({ product, quantity }))}
-                                        >
-                                            Thêm vào giỏ hàng
-                                        </Button>
-                                    </div>
                                 </div>
 
-                                <div className="tab-container">
-                                    <div className="tabs">
-                                        <div className="desc">Mô tả</div>
-                                    </div>
-
-                                    <div className="tab-content">
-                                        <div className="body">
-                                            <h2 className="title">{product?.name}</h2>
-                                            <p className="text-desc">{product?.short_summary}</p>
+                                <div className={cx('main-right')}>
+                                    <div className={cx('product-info')}>
+                                        <h1 className={cx('product-title')}>{product?.name}</h1>
+                                        <div className={cx('product-author')}>
+                                            <span>Tác giả:</span> {product?.author.name}
                                         </div>
-                                    </div>
+                                        <p className={cx('product-price')}>
+                                            <span className={cx('price-sale')}>
+                                                {parseFloat(product?.price).toLocaleString('vi-VN')}{' '}
+                                                đ
+                                            </span>
+                                            Giá cũ:
+                                            <span className={cx('price-retail')}>169.000đ</span>
+                                        </p>
 
-                                    <div className="table-desc">
-                                        <div className="text">Thông tin chi tiết</div>
-                                        <table className="table">
+                                        <table className={cx('product-table')}>
                                             <tbody>
                                                 <tr>
-                                                    <td>Công ty phát hành</td>
-                                                    <td>NXB Giáo Dục Việt Nam</td>
+                                                    <td className={cx('table-label')}>
+                                                        Loại sách:
+                                                    </td>
+                                                    <td className={cx('table-value')}>
+                                                        {product.category.name}
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Ngày xuất bản</td>
-                                                    <td>{product?.created_at}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Kích thước</td>
-                                                    <td>{product?.size}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Loại bìa</td>
-                                                    <td>{product?.format}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Số trang</td>
-                                                    <td>{product?.pages}</td>
+                                                    <td className={cx('table-label')}>
+                                                        Số lượng còn lại:
+                                                    </td>
+                                                    <td className={cx('table-value')}>
+                                                        {product.stock > 0
+                                                            ? 'Còn hàng'
+                                                            : 'Hết hàng'}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
 
-                                    <CommentForm onAddComment={handleAddComment} />
+                                        <div className={cx('quantity')}>
+                                            <span>Số lượng</span>
+                                            <div className={cx('quantity-control')}>
+                                                <button
+                                                    className={cx('quantity-btn', 'decrement')}
+                                                    onClick={decrement}
+                                                >
+                                                    -
+                                                </button>
+                                                <span className={cx('quantity-value')}>
+                                                    {quantity}
+                                                </span>
+                                                <button
+                                                    className={cx('quantity-btn', 'increment')}
+                                                    onClick={increment}
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
 
-                                    <div className="user-comment">
-                                        {comments.map((comment) => {
-                                            const user = users.find(
-                                                (user) => user.id === comment.user_id
-                                            ) || { name: 'Người dùng' }
-                                            return (
-                                                <div key={comment.id} className="item">
-                                                    <div className="info">
-                                                        <img
-                                                            className="img-user"
-                                                            src="/img/user-1.png"
-                                                            alt="User"
-                                                        />
-                                                        <div className="username">{user.name} </div>
-                                                    </div>
-                                                    <div className="date">
-                                                        {moment(comment.created_at).format(
-                                                            'YYYY-MM-DD'
-                                                        )}
-                                                        <span>
-                                                            {moment(comment.created_at).format(
-                                                                'HH:mm:ss'
-                                                            )}
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        className="content-comment"
-                                                        style={{ display: 'flex' }}
-                                                    >
-                                                        <p>{comment.content}</p>
-                                                        <span>
-                                                            {userData?.id === comment.user_id && (
-                                                                <Button
-                                                                    className="btn-del-comment"
-                                                                    text
-                                                                    onClick={() =>
-                                                                        handleDeleteComment(
-                                                                            comment.id
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    Xóa
-                                                                </Button>
-                                                            )}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })}
+                                        <Button
+                                            className={cx('action-btn')}
+                                            primary
+                                            onClick={() => dispatch(addItem({ product, quantity }))}
+                                        >
+                                            <FaShoppingCart />
+                                            Thêm vào giỏ hàng
+                                        </Button>
+
+                                        <Button
+                                            className={cx('action-btn', 'right')}
+                                            primary
+                                            onClick={() => dispatch(addItem({ product, quantity }))}
+                                        >
+                                            <FaPhoneVolume /> Gọi điện đặt hàng
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
-
-                            <RightContent />
                         </div>
+                        <div className={cx('tab-container')}>
+                            <div className={cx('tabs')}>
+                                <div className={cx('desc')}>Mô tả</div>
+                            </div>
+
+                            <div className={cx('tab-content')}>
+                                <div className={cx('title')}>{product?.name}</div>
+                                <p className={cx('text-desc')}>{product?.short_summary}</p>
+
+                                <div className={cx('table-desc')}>
+                                    <div className={cx('text')}>Thông tin chi tiết</div>
+                                    <table className={cx('table')}>
+                                        <tbody>
+                                            <tr>
+                                                <td>Công ty phát hành</td>
+                                                <td>NXB Giáo Dục Việt Nam</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ngày xuất bản</td>
+                                                <td>{product?.created_at}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kích thước</td>
+                                                <td>{product?.size}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Loại bìa</td>
+                                                <td>{product?.format}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Số trang</td>
+                                                <td>{product?.pages}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <CommentForm onAddComment={handleAddComment} />
+
+                                <div className={cx('user-comment')}>
+                                    {comments.map((comment) => {
+                                        const user = users.find(
+                                            (user) => user.id === comment.user_id
+                                        ) || { name: 'Người dùng' }
+                                        return (
+                                            <div key={comment.id} className={cx('item')}>
+                                                <div className={cx('info')}>
+                                                    <img
+                                                        className={cx('img-user')}
+                                                        src="/img/user-1.png"
+                                                        alt="User"
+                                                    />
+                                                    <div className={cx('username')}>
+                                                        {user.name}
+                                                    </div>
+                                                </div>
+                                                <div className={cx('date')}>
+                                                    {moment(comment.created_at).format(
+                                                        'YYYY-MM-DD HH:mm:ss'
+                                                    )}
+                                                </div>
+                                                <div className={cx('content-comment')}>
+                                                    <p>{comment.content}</p>
+                                                    {userData?.id === comment.user_id && (
+                                                        <Button
+                                                            className={cx('btn-del-comment')}
+                                                            text
+                                                            onClick={() =>
+                                                                handleDeleteComment(comment.id)
+                                                            }
+                                                        >
+                                                            Xóa
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                        {/* <RightContent /> */}
                     </div>
                 </div>
             </main>
