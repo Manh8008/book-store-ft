@@ -77,8 +77,9 @@ const LoginFormAdmin = () => {
                                             <label htmlFor="email">Email</label>
                                             <input
                                                 type="email"
-                                                className={`form-control mb-0 ${errors.email ? 'is-invalid' : ''
-                                                    }`}
+                                                className={`form-control mb-0 ${
+                                                    errors.email ? 'is-invalid' : ''
+                                                }`}
                                                 id="email"
                                                 placeholder="Nhập email"
                                                 {...register('email')}
@@ -99,8 +100,9 @@ const LoginFormAdmin = () => {
                                             </Link>
                                             <input
                                                 type="password"
-                                                className={`form-control mb-0 ${errors.password ? 'is-invalid' : ''
-                                                    }`}
+                                                className={`form-control mb-0 ${
+                                                    errors.password ? 'is-invalid' : ''
+                                                }`}
                                                 id="password"
                                                 placeholder="Nhập mật khẩu"
                                                 {...register('password')}

@@ -93,15 +93,16 @@ export default function OrderDetail({ params }) {
                                                 {orderDetail.payment_method}
                                             </span>
                                             <span
-                                                className={cx(
-                                                    'customBadge',
-                                                    'badge',
-                                                    'rounded-pill',
-                                                    'bg-info',
-                                                    'ml-3'
-                                                )}
+                                                className={cx('badge', 'rounded-pill', 'ml-3', {
+                                                    'bg-info': orderStatus === 'Chờ xác nhận',
+                                                    'bg-primary': orderStatus === 'Đã xác nhận',
+                                                    'bg-success': orderStatus === 'complete',
+                                                    'bg-danger': orderStatus === 'Đã hủy'
+                                                })}
                                             >
-                                                {orderStatus}
+                                                {orderStatus === 'complete'
+                                                    ? 'Đã hoàn thành'
+                                                    : orderStatus}
                                             </span>
                                         </div>
                                         <div className={cx('customDropdown', 'd-flex')}>

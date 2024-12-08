@@ -1,12 +1,8 @@
 .wrapper {
-    width: 1349px;
+    width: 100%;
+    max-width: 1349px;
+    margin: 0 auto;
     background-color: var(--background-color);
-}
-
-.title {
-    font-size: 16px;
-    padding: 12px 10px 0px 20px;
-    font-weight: 700;
 }
 
 .list {
@@ -14,6 +10,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    justify-content: center;
 }
 
 .see_more_button {
@@ -21,4 +18,16 @@
     display: flex;
     justify-content: center;
     width: 1349px;
+
+    @media screen and (max-width: 1200px) {
+        display: none;
+    }
+
+    @media screen and (max-width: 992px) {
+        display: none;
+    }
+
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
 }

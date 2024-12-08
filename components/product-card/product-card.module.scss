@@ -26,6 +26,14 @@
             color: var(--primary-color);
         }
     }
+
+    @media screen and (max-width: 992px) {
+        width: calc(50% - 8px);
+    }
+
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 16px);
+    }
 }
 
 .thumb {

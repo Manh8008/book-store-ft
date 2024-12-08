@@ -77,7 +77,7 @@ export default function RootLayout({ children }) {
                 <Script src="/js/morris.min.js" strategy="lazyOnload" />
                 <Script src="/js/flatpickr.js" strategy="lazyOnload" />
                 <Script src="/js/style-customizer.js" strategy="lazyOnload" />
-                <Script src="/js/chart-custom.js" strategy="lazyOnload" />
+                {/* <Script src="/js/chart-custom.js" strategy="lazyOnload" /> */}
                 {/* <Script src="/js/custom.js" strategy="lazyOnload" /> */}
             </body>
         </html>

@@ -4,13 +4,13 @@ import { BannerSlider } from '../../cart'
 
 const cx = classNames.bind(styles)
 
-const MainBanner = () => {
+const MainBanner = ({ data }) => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('banner-wrap')}>
                 <div className={cx('banner')}>
                     <div className={cx('banner-left')}>
-                        <BannerSlider />
+                        <BannerSlider data={data} />
                     </div>
                 </div>
             </div>

@@ -39,7 +39,6 @@ const BookCollection = () => {
         setCurrentPage(pageNumber)
     }
 
-
     const fetchCategories = async () => {
         setLoading(true)
         setError(null)
@@ -178,8 +177,6 @@ const BookCollection = () => {
                     </li>
                 </ul>
             </nav>
-
-
         </div>
     )
 }

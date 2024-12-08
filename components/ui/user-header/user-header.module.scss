@@ -1,4 +1,3 @@
-//  user
 .header__user {
     position: relative;
     display: inline-block;
@@ -6,7 +5,27 @@
     margin-right: 25px;
 
     .user-icon {
+        display: flex;
+        align-items: center;
         cursor: pointer;
+        margin-top: 10px;
+
+        .link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .text-user {
+            font-size: 14px;
+            line-height: 1;
+        }
     }
 }
 
@@ -21,6 +40,9 @@
     border-radius: 4px;
     width: max-content;
     min-width: 206px;
+
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .top-action {
@@ -62,4 +84,90 @@
     display: inline-block;
     margin-right: 12px;
     vertical-align: middle;
+}
+
+@media (max-width: 1024px) {
+    .header__user {
+        margin-right: 15px;
+
+        .user-icon {
+            margin-top: 8px;
+
+            .text-user {
+                font-size: 13px;
+            }
+
+            i {
+                font-size: 14px;
+            }
+        }
+
+        .sub-action {
+            min-width: 180px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .header__user {
+        margin-right: 10px;
+
+        .user-icon {
+            .text-user {
+                font-size: 12px;
+            }
+
+            i {
+                font-size: 12px;
+            }
+        }
+
+        .sub-action {
+            top: 30px;
+            right: 10px;
+            min-width: 160px;
+
+            h3 {
+                font-size: 12px;
+            }
+
+            ul li a {
+                font-size: 11px;
+            }
+
+            ul li a i {
+                font-size: 10px;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .header__user {
+        margin-right: 5px;
+
+        .user-icon {
+            .text-user {
+                span {
+                    display: none;
+                }
+            }
+
+            i {
+                font-size: 16px;
+            }
+        }
+
+        .sub-action {
+            top: auto;
+            bottom: -10px;
+            right: 0;
+            transform: translateY(-100%);
+            min-width: 140px;
+
+            ul li a {
+                font-size: 10px;
+            }
+        }
+    }
 }

@@ -17,6 +17,7 @@ import MainLayout from '@/layouts/main-layout'
 import CommentForm from './comment-form'
 import RightContent from './right-content'
 import '@/public/styles/product-detail.scss'
+import { userApiRequestAdmin } from '@/apiRequests/users'
 
 export default function ProductDetail({ params }) {
     const [product, setProduct] = useState(null)
@@ -24,6 +25,7 @@ export default function ProductDetail({ params }) {
     const [loading, setLoading] = useState(false)
     const [comments, setComments] = useState([])
     const { userData } = useUser()
+    const [users, setUsers] = useState([])
     const [quantity, setQuantity] = useState(1)
     const dispatch = useDispatch()
 
@@ -49,11 +51,8 @@ export default function ProductDetail({ params }) {
     const fetchComments = async () => {
         if (loading) return
         setError('')
-        if (loading) return
         try {
             const result = await commentApiRequest.getCommentByIdBook(params.id)
-
-            console.log(result)
             setComments(result.payload.data)
         } catch (error) {
             handleHttpError(error, setError)
@@ -62,9 +61,20 @@ export default function ProductDetail({ params }) {
         }
     }
 
+    const fetchUsers = async () => {
+        if (loading) return
+        setError('')
+        try {
+            const result = await userApiRequestAdmin.getAllUser()
+
+            setUsers(result.payload.data)
+        } catch (error) {}
+    }
+
     useEffect(() => {
         fetchProduct()
         fetchComments()
+        fetchUsers()
     }, [params.id])
 
     const handleAddComment = async (newComment) => {
@@ -193,49 +203,54 @@ export default function ProductDetail({ params }) {
                                     <CommentForm onAddComment={handleAddComment} />
 
                                     <div className="user-comment">
-                                        {comments.map((comment) => (
-                                            <div key={comment.id} className="item">
-                                                <div className="info">
-                                                    <img
-                                                        className="img-user"
-                                                        src="/img/user-1.png"
-                                                        alt="User"
-                                                    />
-                                                    <div className="username">
-                                                        {comment.user_id || 'Người dùng'}
+                                        {comments.map((comment) => {
+                                            const user = users.find(
+                                                (user) => user.id === comment.user_id
+                                            ) || { name: 'Người dùng' }
+                                            return (
+                                                <div key={comment.id} className="item">
+                                                    <div className="info">
+                                                        <img
+                                                            className="img-user"
+                                                            src="/img/user-1.png"
+                                                            alt="User"
+                                                        />
+                                                        <div className="username">{user.name} </div>
+                                                    </div>
+                                                    <div className="date">
+                                                        {moment(comment.created_at).format(
+                                                            'YYYY-MM-DD'
+                                                        )}
+                                                        <span>
+                                                            {moment(comment.created_at).format(
+                                                                'HH:mm:ss'
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        className="content-comment"
+                                                        style={{ display: 'flex' }}
+                                                    >
+                                                        <p>{comment.content}</p>
+                                                        <span>
+                                                            {userData?.id === comment.user_id && (
+                                                                <Button
+                                                                    className="btn-del-comment"
+                                                                    text
+                                                                    onClick={() =>
+                                                                        handleDeleteComment(
+                                                                            comment.id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Xóa
+                                                                </Button>
+                                                            )}
+                                                        </span>
                                                     </div>
                                                 </div>
-                                                <div className="date">
-                                                    {moment(comment.created_at).format(
-                                                        'YYYY-MM-DD'
-                                                    )}
-                                                    <span>
-                                                        {moment(comment.created_at).format(
-                                                            'HH:mm:ss'
-                                                        )}
-                                                    </span>
-                                                </div>
-                                                <div
-                                                    className="content-comment"
-                                                    style={{ display: 'flex' }}
-                                                >
-                                                    <p>{comment.content}</p>
-                                                    <span>
-                                                        {userData?.id === comment.user_id && (
-                                                            <Button
-                                                                className="btn-del-comment"
-                                                                text
-                                                                onClick={() =>
-                                                                    handleDeleteComment(comment.id)
-                                                                }
-                                                            >
-                                                                Xóa
-                                                            </Button>
-                                                        )}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        ))}
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </div>

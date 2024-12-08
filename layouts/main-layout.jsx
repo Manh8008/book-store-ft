@@ -1,25 +1,34 @@
+'use client'
 import { useEffect } from 'react'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
 
 const MainLayout = ({ children }) => {
     useEffect(() => {
-        // Đảm bảo script chỉ chạy ở phía client (browser)
-        const script = document.createElement('script')
-        script.src = 'https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1'
-        script.async = true
-        document.body.appendChild(script)
+        const scriptSrc =
+            'https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1'
 
-        // Clean up when component unmounts
+        // Kiểm tra và chỉ thêm script nếu chưa có
+        if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
+            const script = document.createElement('script')
+            script.src = scriptSrc
+            script.async = true
+            document.body.appendChild(script)
+        }
+
         return () => {
-            document.body.removeChild(script)
+            // Dọn dẹp khi unmount
+            const dfMessenger = document.querySelector('df-messenger')
+            if (dfMessenger) {
+                dfMessenger.remove()
+            }
         }
     }, [])
 
     return (
         <>
             <Header />
-            {/* Add the chatbot */}
+            {/* Vùng hiển thị chatbot */}
             <div
                 style={{
                     width: '100%',

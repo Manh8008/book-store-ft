@@ -1,9 +1,10 @@
 'use client'
-import '@/public/styles/main.scss'
-import { MainBanner } from '@/components/banner/main-banner'
-import MainLayout from '@/layouts/main-layout'
-import { ProductList } from '@/components/product-list'
 import { useEffect, useState } from 'react'
+import MainLayout from '@/layouts/main-layout'
+import { MainBanner } from '@/components/banner/main-banner'
+import { BannerSale } from '@/components/banner/banner-sale'
+import { bannerApiRequest } from '@/apiRequests/banner'
+import { ProductList } from '@/components/product-list'
 import { productApiRequest } from '@/apiRequests/product'
 import { handleHttpError } from '@/lib/utils'
 import { ToastError } from '@/components/ui/ToastError'
@@ -11,7 +12,7 @@ import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { reviewApiRequest } from '@/apiRequests/post'
 import ReviewHome from '@/components/review-home/page'
 import Introduce from '@/components/introduce/introduce'
-import { BannerSale } from '@/components/banner/banner-sale'
+import '@/public/styles/main.scss'
 
 export default function Home() {
     const [loading, setLoading] = useState(false)
@@ -20,6 +21,7 @@ export default function Home() {
     const [booksBestSeller, setBooksBestSeller] = useState([])
     const [newEstBooks, setNewEstBooks] = useState([])
     const [review, setReview] = useState([])
+    const [banner, setBanner] = useState([])
 
     const fetchReview = async () => {
         const result = await reviewApiRequest.getAllPost()
@@ -54,10 +56,25 @@ export default function Home() {
         }
     }
 
+    const fetchBanner = async () => {
+        if (loading) return
+        setError(null)
+        setLoading(true)
+        try {
+            const result = await bannerApiRequest.getAllBanner()
+            setBanner(result.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
         fetchBooksBestSeller()
         fetchNewEstBooks()
         fetchReview()
+        fetchBanner()
     }, [])
 
     if (loading) return <LoadingSkeleton />
@@ -66,7 +83,7 @@ export default function Home() {
         <MainLayout>
             <ToastError errorMessage={error} />
             <main style={{ background: '#F5F5FA' }}>
-                <MainBanner />
+                <MainBanner data={banner} />
 
                 <Introduce />
 
@@ -77,9 +94,7 @@ export default function Home() {
                             <h2 className="sub-title">TOP SÁCH BÁN CHẠY</h2>
                         </div>
 
-                        <div className="list-product">
-                            <ProductList title="" seeMore={false} data={booksBestSeller} />
-                        </div>
+                        <ProductList title="" seeMore={false} data={booksBestSeller} />
                     </div>
                 </div>
 
@@ -92,9 +107,9 @@ export default function Home() {
                             <h2 className="sub-title">TOP SÁCH MỚI NHẤT</h2>
                         </div>
 
-                        <div className="list-product">
-                            <ProductList title="" seeMore={true} data={newEstBooks} />
-                        </div>
+                        {/* <div className="list-product"> */}
+                        <ProductList title="" seeMore={true} data={newEstBooks} />
+                        {/* </div> */}
                     </div>
                 </div>
 

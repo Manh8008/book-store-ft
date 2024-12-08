@@ -1,16 +1,19 @@
 'use client'
-import { authApiRequest } from '@/apiRequests/auth'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { authAdminApiRequest } from '@/apiRequests/auth'
+import { Button } from '@/components/ui/button'
 
 export default function LeftBar() {
+    const router = useRouter()
+
     const handleLogout = async () => {
         try {
-            await authApiRequest.logoutAdmin
+            await authAdminApiRequest.logoutFromNextClientToServer()
             localStorage.removeItem('sessionTokenAdmin')
             router.push('/admin/auth/login')
         } catch (error) {
-            alert('Đăng xuất thất bại!')
+            console.error(error)
         }
     }
     return (
@@ -18,7 +21,7 @@ export default function LeftBar() {
             {/* <!-- Sidebar  --> */}
             <div className="iq-sidebar">
                 <div className="iq-sidebar-logo d-flex justify-content-between">
-                    <a href="admin-dashboard.html" className="header-logo">
+                    <a href="/admin" className="header-logo">
                         <img src="/images/logo.png" className="img-fluid rounded-normal" alt="" />
                         <div className="logo-title">
                             <span className="text-primary text-uppercase">NhasachTV</span>
@@ -83,9 +86,9 @@ export default function LeftBar() {
                                 </Link>
                             </li>
                             <li>
-                                <Button outline onClick={handleLogout}>
+                                <Link href="#" onClick={handleLogout}>
                                     <i className="ri-record-circle-line"></i>Đăng Xuất
-                                </Button>
+                                </Link>
                             </li>
                         </ul>
                     </nav>

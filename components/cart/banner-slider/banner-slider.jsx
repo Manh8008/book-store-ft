@@ -4,22 +4,8 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import './banner-slider.scss'
-import { bannerApiRequest } from '@/apiRequests/banner'
 
-const BannerSlider = () => {
-    const [banner, setBanner] = useState([])
-
-    const fetchBanner = async () => {
-        const result = await bannerApiRequest.getAllBanner()
-        setBanner(result.payload.data)
-    }
-
-    // console.log(banner)
-
-    useEffect(() => {
-        fetchBanner();
-    }, [])
-
+const BannerSlider = ({ data }) => {
     const settings = {
         dots: true,
         infinite: true,
@@ -34,11 +20,12 @@ const BannerSlider = () => {
     return (
         <div className="banner-slider">
             <Slider {...settings}>
-                {banner.map((banner) => (
-                    <div key={banner.id}>
-                        <img src={banner.image_url} alt="" className="banner-image" />
-                    </div>
-                ))}
+                {data &&
+                    data.map((item) => (
+                        <div key={item.id}>
+                            <img src={item.image_url} alt="" className="banner-image" />
+                        </div>
+                    ))}
             </Slider>
         </div>
     )

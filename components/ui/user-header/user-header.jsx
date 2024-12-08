@@ -38,9 +38,9 @@ function UserHeader() {
                 <>
                     <div className={cx('user-icon')} onClick={toggleAccountMenu}>
                         <div className="link">
-                            <i className="fa-regular fa-user"></i>
-                            <div className="text text-user">
-                                <span>{'Tài khoản'}</span>
+                            <div className={cx('text text-user')}>
+                                <i className="fa-regular fa-user"></i>
+                                <span>Tài khoản</span>
                             </div>
                         </div>
                     </div>

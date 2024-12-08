@@ -8,6 +8,7 @@ import SearchAdmin from '../components/search-admin'
 import { ToastError } from '@/components/ui/ToastError'
 
 import styles from './order.module.scss'
+import { DropdownMenu } from '@/components/ui/dropdown-menu'
 const cx = classNames.bind(styles)
 
 export default function Order() {
@@ -36,8 +37,23 @@ export default function Order() {
         fetchOrders()
     }, [])
 
+    const orderStatusOrder = {
+        'Chờ xác nhận': 1,
+        'Đã xác nhận': 2,
+        complete: 3,
+        'Đã hủy': 4
+    }
+
     const handleChangeOrderStatus = async (e, id) => {
         const newStatus = e.target.value
+
+        // Kiểm tra nếu trạng thái mới không hợp lệ
+        const currentOrderStatus = orderData.find((order) => order.id === id)?.order_status
+        if (orderStatusOrder[newStatus] < orderStatusOrder[currentOrderStatus]) {
+            setError('Trạng thái không thể quay lại trạng thái cũ!')
+            return
+        }
+
         if (loading) return
         setLoading(true)
         setError('')
@@ -80,14 +96,43 @@ export default function Order() {
     // Tính toán các sản phẩm hiển thị trên trang hiện tại
     const indexOfLastItem = currentPage * itemsPerPage
     const indexOfFirstItem = indexOfLastItem - itemsPerPage
-    const currentItems = orderData.slice(indexOfFirstItem, indexOfLastItem)
 
-    // Tạo danh sách các trang
-    const totalPages = Math.ceil(orderData.length / itemsPerPage)
-    const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1)
+    const currentItems = Array.isArray(orderData)
+        ? orderData.slice(indexOfFirstItem, indexOfLastItem)
+        : []
+
+    const totalPages = Array.isArray(orderData) ? Math.ceil(orderData.length / itemsPerPage) : 0
+
+    const pageNumbers = totalPages > 0 ? [...Array(totalPages).keys()].map((num) => num + 1) : []
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber)
+    }
+
+    const filterOrdersByStatus = async (status) => {
+        setLoading(true)
+        setError(null)
+
+        try {
+            let result
+            if (status === 'pending') {
+                result = await orderApiRequest.pendingOrders()
+            } else if (status === 'confirmed') {
+                result = await orderApiRequest.confirmOrder()
+            } else if (status === 'canceled') {
+                result = await orderApiRequest.canceledOrder()
+            } else if (status === 'complete') {
+                result = await orderApiRequest.conpleteOrder()
+            } else {
+                result = await orderApiRequest.getAll()
+            }
+
+            setOrderData(result.payload.data)
+        } catch (err) {
+            handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -102,6 +147,7 @@ export default function Order() {
                                     <div className="iq-header-title">
                                         <h4 className="card-title">Danh sách đơn hàng</h4>
                                     </div>
+                                    <DropdownMenu onStatusSort={filterOrdersByStatus} />
                                     <SearchAdmin
                                         query={query}
                                         setQuery={setQuery}
@@ -116,30 +162,34 @@ export default function Order() {
                                         </p>
                                     )}
                                     <div className="table-responsive">
-                                        <table
-                                            className="data-tables table table-striped table-bordered"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <thead>
-                                                <tr>
-                                                    <th style={{ width: '15%' }}>Mã đơn hàng</th>
-                                                    <th
-                                                        className="text-start"
-                                                        style={{ width: '15%' }}
-                                                    >
-                                                        Thông tin khách hàng
-                                                    </th>
-                                                    <th style={{ width: '25%' }}>
-                                                        Địa chỉ nhận hàng
-                                                    </th>
-                                                    <th style={{ width: '10%' }}>Ngày đặt hàng</th>
-                                                    <th style={{ width: '15%' }}>Trạng thái</th>
-                                                    <th style={{ width: '8%' }}>Hoạt động</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {currentItems &&
-                                                    currentItems.map((item) => (
+                                        {currentItems.length > 0 ? (
+                                            <table
+                                                className="data-tables table table-striped table-bordered"
+                                                style={{ width: '100%' }}
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th style={{ width: '15%' }}>
+                                                            Mã đơn hàng
+                                                        </th>
+                                                        <th
+                                                            className="text-start"
+                                                            style={{ width: '15%' }}
+                                                        >
+                                                            Thông tin khách hàng
+                                                        </th>
+                                                        <th style={{ width: '25%' }}>
+                                                            Địa chỉ nhận hàng
+                                                        </th>
+                                                        <th style={{ width: '10%' }}>
+                                                            Ngày đặt hàng
+                                                        </th>
+                                                        <th style={{ width: '15%' }}>Trạng thái</th>
+                                                        <th style={{ width: '8%' }}>Hoạt động</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {currentItems.map((item) => (
                                                         <tr key={item.id}>
                                                             <td>{item.order_code || ''}</td>
                                                             <td className="text-start">
@@ -188,7 +238,6 @@ export default function Order() {
                                                             <td>
                                                                 <select
                                                                     className={cx('form-select')}
-                                                                    aria-label="Default select example"
                                                                     value={item.order_status}
                                                                     onChange={(e) =>
                                                                         handleChangeOrderStatus(
@@ -197,20 +246,33 @@ export default function Order() {
                                                                         )
                                                                     }
                                                                 >
-                                                                    <option value="Chờ xác nhận">
+                                                                    <option
+                                                                        value="Chờ xác nhận"
+                                                                        style={{ color: 'orange' }}
+                                                                    >
                                                                         Chờ xác nhận
                                                                     </option>
-                                                                    <option value="Đã xác nhận">
+                                                                    <option
+                                                                        value="Đã xác nhận"
+                                                                        style={{ color: 'blue' }}
+                                                                    >
                                                                         Đã xác nhận
                                                                     </option>
-                                                                    <option value="complete">
+                                                                    <option
+                                                                        value="complete"
+                                                                        style={{ color: 'green' }}
+                                                                    >
                                                                         Đã hoàn thành
                                                                     </option>
-                                                                    <option value="Đã hủy">
+                                                                    <option
+                                                                        value="Đã hủy"
+                                                                        style={{ color: 'red' }}
+                                                                    >
                                                                         Đã hủy
                                                                     </option>
                                                                 </select>
                                                             </td>
+
                                                             <td>
                                                                 <div className="flex align-items-center list-user-action">
                                                                     <Link
@@ -237,8 +299,13 @@ export default function Order() {
                                                             </td>
                                                         </tr>
                                                     ))}
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        ) : (
+                                            <div className="text-center py-4">
+                                                <p>Không có đơn hàng nào!</p>
+                                            </div>
+                                        )}
                                     </div>
 
                                     {/* Phân trang */}

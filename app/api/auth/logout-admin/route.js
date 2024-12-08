@@ -1,4 +1,4 @@
-import { authApiRequest } from '@/apiRequests/auth'
+import { authAdminApiRequest } from '@/apiRequests/auth'
 import { cookies } from 'next/headers'
 
 export async function POST(request) {
@@ -18,7 +18,9 @@ export async function POST(request) {
 
     try {
         //Xóa Token trên trình duyệt
-        const result = await authApiRequest.logoutFromNextServerToServer(sessionTokenAdmin.value)
+        const result = await authAdminApiRequest.logoutFromNextServerToServer(
+            sessionTokenAdmin.value
+        )
         return Response.json(result.payload, {
             status: 200,
             headers: {
