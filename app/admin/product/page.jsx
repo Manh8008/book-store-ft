@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import SearchAdmin from '../components/search-admin'
 import { ToastError } from '@/components/ui/ToastError'
+import { FilterTop } from '@/components/ui/filter-top'
 
 export default function Product() {
     const [product, setProduct] = useState([])
@@ -104,6 +105,52 @@ export default function Product() {
         setCurrentPage(pageNumber)
     }
 
+    const sortBooksByPrice = async (sortType) => {
+        setLoading(true)
+        setError(null)
+
+        try {
+            let result
+            if (sortType === 'asc') {
+                result = await productApiRequest.getBooksOrderPriceAsc()
+            } else if (sortType === 'desc') {
+                result = await productApiRequest.getBooksOrderPriceDesc()
+            } else if (sortType === 'bestSeller') {
+                result = await productApiRequest.getBooksBestSeller()
+            } else if (sortType === 'newest') {
+                result = await productApiRequest.getNewBook()
+            } else {
+                result = await productApiRequest.getAllBooks()
+            }
+
+            setProduct(result.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const filterByPrice = async (minPrice, maxPrice) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const validMinPrice = Number(minPrice)
+            const validMaxPrice = Number(maxPrice)
+
+            if (isNaN(validMinPrice) || isNaN(validMaxPrice)) {
+                throw new Error('Giá phải là số hợp lệ')
+            }
+
+            const result = await productApiRequest.filterByPrice(validMinPrice, validMaxPrice)
+            setProduct(result.payload.data)
+        } catch (error) {
+            handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
             <ToastError errorMessage={error} />
@@ -127,7 +174,9 @@ export default function Product() {
                                         </a>
                                     </div>
                                 </div>
+                                {/* Bộ lọc giá */}
                                 <div className="iq-card-body">
+                                    <FilterTop onPriceChange={filterByPrice} onPriceSort={sortBooksByPrice} />
                                     {searchedQuery && (
                                         <p>
                                             Kết quả tìm kiếm cho từ khóa "
@@ -212,9 +261,7 @@ export default function Product() {
                                     <nav className="mt-4">
                                         <ul className="pagination pagination-lg justify-content-center">
                                             <li
-                                                className={`page-item ${
-                                                    currentPage === 1 ? 'disabled' : ''
-                                                }`}
+                                                className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}
                                             >
                                                 <button
                                                     className="page-link"
@@ -229,9 +276,8 @@ export default function Product() {
                                             {pageNumbers.map((number) => (
                                                 <li
                                                     key={number}
-                                                    className={`page-item ${
-                                                        number === currentPage ? 'active' : ''
-                                                    }`}
+                                                    className={`page-item ${number === currentPage ? 'active' : ''
+                                                        }`}
                                                 >
                                                     <button
                                                         className="page-link"
@@ -242,9 +288,7 @@ export default function Product() {
                                                 </li>
                                             ))}
                                             <li
-                                                className={`page-item ${
-                                                    currentPage === totalPages ? 'disabled' : ''
-                                                }`}
+                                                className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}
                                             >
                                                 <button
                                                     className="page-link"
@@ -264,6 +308,7 @@ export default function Product() {
                     </div>
                 </div>
             </div>
+
         </>
     )
 }
