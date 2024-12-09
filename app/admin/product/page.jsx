@@ -47,7 +47,7 @@ export default function Product() {
             const result = await productApiRequest.searchBook(query)
             setProduct(result.payload.data)
             setSearchedQuery(query)
-            setCurrentPage(1) // Reset về trang 1 sau khi tìm kiếm
+            setCurrentPage(1)
         } catch (error) {
             setError(`Không có sản phẩm nào cho từ khóa ${query}`)
             setSearchedQuery('')
@@ -265,7 +265,9 @@ export default function Product() {
                                             >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage - 1)
+                                                    }
                                                     aria-label="Previous"
                                                 >
                                                     <span aria-hidden="true">&laquo;</span>
@@ -274,7 +276,8 @@ export default function Product() {
                                             {pageNumbers.map((number) => (
                                                 <li
                                                     key={number}
-                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                    className={`page-item ${number === currentPage ? 'active' : ''
+                                                        }`}
                                                 >
                                                     <button
                                                         className="page-link"
@@ -289,7 +292,9 @@ export default function Product() {
                                             >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage + 1)
+                                                    }
                                                     aria-label="Next"
                                                 >
                                                     <span aria-hidden="true">&raquo;</span>

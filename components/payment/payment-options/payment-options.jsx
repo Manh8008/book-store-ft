@@ -43,7 +43,7 @@ const PaymentOptions = ({ onPaymentMethodChange }) => {
                                 alt="delivery-method-icon"
                                 src="/img/vn-pay.png"
                             />
-                            <span className={cx('method-text')}>Giao siêu tốc 2h</span>
+                            <span className={cx('method-text')}>VnPay</span>
                         </div>
                     </span>
                 </label>
