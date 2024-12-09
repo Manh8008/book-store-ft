@@ -19,7 +19,6 @@ import { useUser } from '@/context/user-context'
 import { ToastError } from '@/components/ui/ToastError'
 import MainLayout from '@/layouts/main-layout'
 import { CommentForm } from '@/components/book-detail/comment-form'
-import { RightContent } from '@/components/book-detail/right-content'
 import { userApiRequestAdmin } from '@/apiRequests/users'
 
 const cx = classNames.bind(styles)
@@ -33,6 +32,18 @@ export default function ProductDetail({ params }) {
     const [users, setUsers] = useState([])
     const [quantity, setQuantity] = useState(1)
     const dispatch = useDispatch()
+    const [isExpanded, setIsExpanded] = useState(false)
+
+    // Thu gọn/ xêm thêm mô tả
+    const toggleDescription = () => {
+        setIsExpanded(!isExpanded)
+    }
+
+    const maxDescriptionLength = 400
+    const isLongDescription = product?.short_summary?.length > maxDescriptionLength
+    const shortDescription = isLongDescription
+        ? product?.short_summary.slice(0, maxDescriptionLength) + '...'
+        : product?.short_summary
 
     const decrement = () => {
         if (quantity > 1) setQuantity(quantity - 1)
@@ -117,7 +128,7 @@ export default function ProductDetail({ params }) {
             <ToastError errorMessage={error} />
             <main className={cx('main-container')}>
                 <div className={cx('product-detail')}>
-                    <div className={cx('content')}>
+                    <div className={cx('content-detail')}>
                         <Beardcrumb />
 
                         <div className={cx('product-detail-container')}>
@@ -153,7 +164,7 @@ export default function ProductDetail({ params }) {
                                                         Loại sách:
                                                     </td>
                                                     <td className={cx('table-value')}>
-                                                        {product.category.name}
+                                                        {product?.category?.name}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -161,7 +172,7 @@ export default function ProductDetail({ params }) {
                                                         Số lượng còn lại:
                                                     </td>
                                                     <td className={cx('table-value')}>
-                                                        {product.stock > 0
+                                                        {product?.stock > 0
                                                             ? 'Còn hàng'
                                                             : 'Hết hàng'}
                                                     </td>
@@ -190,22 +201,22 @@ export default function ProductDetail({ params }) {
                                             </div>
                                         </div>
 
-                                        <Button
+                                        <button
                                             className={cx('action-btn')}
                                             primary
                                             onClick={() => dispatch(addItem({ product, quantity }))}
                                         >
                                             <FaShoppingCart />
                                             Thêm vào giỏ hàng
-                                        </Button>
+                                        </button>
 
-                                        <Button
+                                        <button
                                             className={cx('action-btn', 'right')}
                                             primary
                                             onClick={() => dispatch(addItem({ product, quantity }))}
                                         >
                                             <FaPhoneVolume /> Gọi điện đặt hàng
-                                        </Button>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -216,11 +227,10 @@ export default function ProductDetail({ params }) {
                             </div>
 
                             <div className={cx('tab-content')}>
-                                <div className={cx('title')}>{product?.name}</div>
-                                <p className={cx('text-desc')}>{product?.short_summary}</p>
-
                                 <div className={cx('table-desc')}>
-                                    <div className={cx('text')}>Thông tin chi tiết</div>
+                                    <div className={cx('tab-content-title')}>
+                                        Thông tin chi tiết
+                                    </div>
                                     <table className={cx('table')}>
                                         <tbody>
                                             <tr>
@@ -245,6 +255,23 @@ export default function ProductDetail({ params }) {
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>
+
+                                <div className={cx('tab-content-title')}>Mô tả sản phẩm</div>
+                                <p className={cx('text-desc')}>
+                                    {isExpanded ? product?.short_summary : shortDescription}
+                                </p>
+
+                                <div className={cx('btn-xemthem')}>
+                                    {isLongDescription && (
+                                        <Button
+                                            outline
+                                            onClick={toggleDescription}
+                                            className={cx('toggle-description')}
+                                        >
+                                            {isExpanded ? 'Thu gọn' : 'Xem thêm'}
+                                        </Button>
+                                    )}
                                 </div>
 
                                 <CommentForm onAddComment={handleAddComment} />

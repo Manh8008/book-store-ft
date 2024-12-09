@@ -49,7 +49,6 @@ const CommentForm = ({ onAddComment }) => {
             <div className={cx('comment-form')}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className={cx('form-group')}>
-                        <label htmlFor="content">Bình luận</label>
                         <textarea
                             id="content"
                             placeholder="Nhập nội dung bình luận"

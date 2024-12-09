@@ -196,29 +196,37 @@
     padding: 15px;
 }
 
+.search-mobi {
+    display: none;
+}
+
+.cart-icon-mobi {
+    display: none;
+}
+
 /* =================== Responsive Header =================== */
 @media (max-width: 768px) {
+    .header-logo {
+    }
+
+    .m-0 {
+        display: none;
+    }
+
     .topHeader {
         display: none;
     }
 
     .hamburgerMenu {
         display: block;
+        font-size: 2rem;
+        cursor: pointer;
+        background: none;
+        border: none;
     }
 
     .menuList {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        background-color: var(--primary-color);
-        top: 80px;
-        left: 0;
-        right: 0;
-        padding: 15px;
-    }
-
-    .menuList.open {
-        display: flex;
+        display: none !important;
     }
 
     .midHeader {
@@ -255,5 +263,91 @@
     .list .item .link i {
         font-size: 1.5rem;
         color: var(--primary-color);
+    }
+
+    .botHeader {
+        .category-list {
+            display: none !important;
+        }
+
+        .navbar {
+            padding: 0;
+        }
+    }
+
+    .hamburgerMenu {
+        color: var(--white-color);
+    }
+
+    /* Menu Sidebar */
+    .menuSidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 66.66%; /* 2/3 of the screen */
+        height: 100%;
+        background-color: white;
+        box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .menuList {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .menuList a {
+        font-size: 1.6rem;
+        color: #333;
+        padding: 10px 0;
+        text-align: left;
+    }
+
+    .menuList a:hover {
+        color: var(--primary-color);
+    }
+
+    .search-mobi {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        max-width: 300px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .searchInput {
+        flex: 1;
+        border: none;
+        padding: 8px 12px;
+        font-size: 1.4rem;
+        outline: none;
+    }
+
+    .searchButton {
+        display: flex;
+        width: 40px;
+        height: 100%;
+        background: var(--primary-color);
+        border: var(--primary-color);
+        cursor: pointer;
+        padding: 10px 10px;
+    }
+
+    .searchButton i {
+        color: var(--white-color);
+        font-size: 1.4rem;
+        margin-right: 8px;
+    }
+
+    .cart-icon-mobi {
+        display: block;
     }
 }

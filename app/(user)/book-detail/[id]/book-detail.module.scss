@@ -2,11 +2,17 @@
     width: 1369px;
 }
 
+.content-detail {
+    width: 1349px;
+    max-width: calc(100% - 85px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .product-detail-container {
     display: flex;
     max-width: 1200px;
     margin: 20px auto;
-    padding: 20px;
     background-color: #fff;
     border-radius: 8px;
 }
@@ -26,6 +32,7 @@
     height: auto;
     border-radius: 8px;
     border: 1px solid #ddd;
+    object-fit: cover;
 }
 
 .product-table {
@@ -62,6 +69,7 @@
 
     span {
         margin-right: 5px;
+        font-size: 12px;
     }
 
     .quantity-control {
@@ -78,8 +86,8 @@
         background-color: #f0f0f0;
         color: #333;
         font-size: 22px;
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         border: none;
         cursor: pointer;
         display: flex;
@@ -94,7 +102,7 @@
 
     .quantity-value {
         font-size: 20px;
-        width: 50px;
+        width: 40px;
         text-align: center;
         color: #333;
         background-color: #f9f9f9;
@@ -103,7 +111,17 @@
 }
 
 .action-btn {
-    padding: 20px 20px 25px 20px !important;
+    background-color: var(--primary-color);
+    padding: 16px 16px 20px 20px !important;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    color: var(--white-color);
+    border-radius: 8px;
+
+    &:hover {
+        background-color: #d83f0c;
+    }
 
     svg {
         margin-right: 6px;
@@ -114,6 +132,7 @@
     &.right {
         background-color: rgb(107, 173, 9);
         border: rgb(107, 173, 9);
+        margin-left: 16px;
 
         &:hover {
             background-color: rgb(79, 119, 18);
@@ -127,17 +146,17 @@
     padding-left: 20px;
 }
 
-.product-info {
-    font-family: Arial, sans-serif;
-    color: #333;
-}
-
 .product-title {
-    font-size: 2.4rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #222;
+    font-size: 30px;
+    line-height: 1.4;
+    color: #000;
+    font-weight: 500;
     text-transform: uppercase;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-author {
@@ -198,27 +217,11 @@
     font-size: 1.4rem;
 }
 
-.product-image {
-    flex: 1;
-    padding-right: 20px;
-}
-
 .product-image img {
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 8px;
     object-fit: cover;
-}
-
-.main-detail .product-info {
-    flex: 2;
-}
-
-.product-title {
-    font-size: 2.2rem;
-    font-weight: 400;
-    margin-bottom: 10px;
-    text-transform: capitalize;
 }
 
 .product-price {
@@ -241,10 +244,6 @@
     text-decoration: line-through;
     letter-spacing: 0.00938em;
     font-weight: 400;
-}
-
-.tab-container {
-    margin-top: 400px;
 }
 
 .tab-container .tabs {
@@ -279,46 +278,64 @@
 }
 
 .tab-container .tab-content .text-desc {
+    font-size: 14px;
     white-space: pre-line;
     line-height: 1.6;
     text-align: justify;
     margin-top: 20px;
 }
 
-.tab-container .table-desc .text {
+.tab-content-title {
     margin-top: 20px;
-    color: #f47830;
+    color: #666;
     font-weight: 500;
-    font-size: 2rem;
+    font-size: 16px;
+    font-weight: 600;
 }
 
-.table {
-    margin-top: 20px;
-    width: 70%;
-    border-collapse: collapse;
+.table-desc {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+
+    .text {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .table {
+        margin-top: 10px;
+        width: 40%;
+        border-collapse: collapse;
+
+        td {
+            padding: 5px 10px;
+            vertical-align: top;
+
+            &:first-child {
+                font-weight: bold;
+                color: #666;
+                width: 30%;
+            }
+
+            &:last-child {
+                width: 70%;
+            }
+        }
+    }
 }
 
-.table th,
-.table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+.btn-xemthem {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
 }
 
-.table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-.table td:first-child {
-    color: black;
-    font-weight: 500;
-    width: 40%;
-}
-
-.table td:last-child {
-    width: 60%;
-}
+// .toggle-description {
+//     margin-left: calc(1200px / 2 - 18px);
+// }
 
 .tab-container .user-comment {
     margin-top: 40px;
@@ -364,4 +381,82 @@
 .btn-del-comment {
     color: rgb(186, 15, 15);
     margin-top: 9px;
+}
+
+@media (max-width: 1200px) {
+    .main-detail {
+        flex-direction: column;
+    }
+
+    .main-left,
+    .main-right {
+        width: 100%;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .product-table {
+        font-size: 1.2rem;
+    }
+
+    .product-title {
+        font-size: 24px;
+        line-height: 1.3;
+    }
+
+    .quantity-control {
+        width: 100%;
+    }
+
+    .quantity-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .quantity-value {
+        font-size: 16px;
+    }
+
+    .price-retail {
+        font-size: 1.4rem;
+    }
+
+    .action-btn {
+        padding: 10px 10px 15px 10px !important;
+    }
+
+    .product-price {
+        font-size: 1.4rem;
+    }
+}
+@media (max-width: 768px) {
+    .product-title {
+        font-size: 20px;
+    }
+
+    .product-info .price-sale {
+        font-size: 2.4rem;
+    }
+
+    .product-info .price-retail {
+        font-size: 1.3rem;
+    }
+
+    .tab-container {
+        margin-top: 20px;
+    }
+
+    .table {
+        width: 100% !important;
+    }
+
+    .action-btn {
+        width: 100%;
+        &.right {
+            margin-top: 8px;
+            margin-right: -8px;
+            margin-left: 0;
+        }
+    }
 }
