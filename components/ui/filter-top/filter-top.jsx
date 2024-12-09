@@ -37,7 +37,8 @@ const FilterTop = ({ onPriceChange, onPriceSort }) => {
 
             <div className={cx('select-input')}>
                 <span className={cx('select-input__label')}>Giá</span>
-                <i className={cx('select-input__icon', 'fa-solid', 'fa-angle-down')}></i>
+                <i className={cx('select-input__icon', 'fa-solid', 'ri-arrow-down-s-line')}></i>
+
                 <ul className={cx('select-input__list')}>
                     <li className={cx('select-input__item')}>
                         <button
