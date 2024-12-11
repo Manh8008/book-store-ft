@@ -85,7 +85,7 @@ export default function ProductDetail({ params }) {
         try {
             const result = await userApiRequestAdmin.getAllUser()
             setUsers(result.payload.data)
-        } catch (error) {}
+        } catch (error) { }
     }
 
     useEffect(() => {
@@ -129,7 +129,7 @@ export default function ProductDetail({ params }) {
             <main className={cx('main-container')}>
                 <div className={cx('product-detail')}>
                     <div className={cx('content-detail')}>
-                        <Beardcrumb />
+                        {/* <Beardcrumb /> */}
 
                         <div className={cx('product-detail-container')}>
                             <div className={cx('main-detail')}>
