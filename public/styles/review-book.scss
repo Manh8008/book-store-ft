@@ -191,3 +191,119 @@
     vertical-align: middle;
     font-size: 1.4rem;
 }
+
+/* Reponsive CSS cho trang bài viết */
+
+/* Mobile-first approach */
+@media (max-width: 576px) {
+    .beardcrumb {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 10px;
+    }
+
+    .home-news .content {
+        padding: 10px;
+    }
+
+    .wrap-news {
+        gap: 10px;
+    }
+
+    .top-posts {
+        flex-direction: column;
+    }
+
+    .bottom-posts {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .list-new {
+        flex-direction: column;
+    }
+
+    .main-left {
+        width: 100%;
+    }
+
+    .list-new .item-post {
+        flex-direction: column;
+    }
+
+    .list-new .item-post img {
+        width: 330px;
+    }
+
+    .list-new .item-post .title {
+        width: 330px;
+    }
+
+    .list-new .item-post .sub-title {
+        width: 330px;
+    }
+
+    .main-right {
+        display: none; /* Ẩn phần tin nổi bật */
+    }
+
+    .sidebar-category .content-category .nav-item,
+    .sidebar-hotnews .content-hotnews .item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sidebar-hotnews .content-hotnews .img-post img {
+        width: 100%;
+    }
+}
+
+/* Tablet */
+@media (min-width: 577px) and (max-width: 768px) {
+    .beardcrumb {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 15px;
+    }
+
+    .top-posts {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .bottom-posts {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .main-left {
+        width: 100%;
+    }
+
+    .main-right {
+        display: none; /* Ẩn phần tin nổi bật */
+    }
+}
+
+/* Desktop */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .beardcrumb {
+        max-width: 90%;
+    }
+
+    .top-posts {
+        gap: 15px;
+    }
+
+    .bottom-posts {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .main-left {
+        width: 65%;
+    }
+
+    .main-right {
+        display: none; /* Ẩn phần tin nổi bật */
+    }
+}

@@ -24,7 +24,7 @@ export default function LeftBar() {
                     <a href="/admin" className="header-logo">
                         <img src="/images/logo.png" className="img-fluid rounded-normal" alt="" />
                         <div className="logo-title">
-                            <span className="text-primary text-uppercase">NhasachTV</span>
+                            <span className="text-primary text-uppercase">BookShop</span>
                         </div>
                     </a>
                     <div className="iq-menu-bt-sidebar">
@@ -100,7 +100,7 @@ export default function LeftBar() {
                                         type="submit"
                                         className="btn w-100 btn-primary mt-4 view-more"
                                     >
-                                        NhasachTV
+                                        BookShop
                                     </button>
                                 </div>
                             </div>
