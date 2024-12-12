@@ -243,3 +243,114 @@ hr {
     color: var(--primary-color);
     padding: 15px;
 }
+
+.call-container {
+    text-align: center;
+}
+
+.call-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 18px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #28a745;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.call-button i {
+    margin-right: 4px;
+}
+
+.call-button:hover {
+    background-color: #218838;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.call-button:active {
+    background-color: #1e7e34;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.call-container {
+    position: fixed; /* Giữ nút ở vị trí cố định khi cuộn trang */
+    bottom: 90px; /* Khoảng cách từ cạnh dưới */
+    right: 20px; /* Khoảng cách từ cạnh phải */
+    z-index: 1000; /* Đảm bảo nút hiển thị trên các phần tử khác */
+}
+
+.chat-button {
+    position: fixed; /* Giữ nút ở vị trí cố định */
+    bottom: 160px; /* Khoảng cách từ cạnh dưới */
+    right: 20px; /* Khoảng cách từ cạnh phải */
+    width: 55px; /* Chiều rộng của nút */
+    height: 55px; /* Chiều cao của nút (phải bằng với width để tạo hình tròn) */
+    background-color: #007bff; /* Màu nền của nút */
+    color: white; /* Màu chữ hoặc icon */
+    display: flex; /* Căn giữa nội dung bên trong */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    border-radius: 50%; /* Tạo hình tròn */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng */
+    cursor: pointer; /* Hiệu ứng con trỏ khi rê chuột vào nút */
+    z-index: 1000; /* Đảm bảo luôn hiển thị trên các phần tử khác */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-button:hover {
+    background-color: #007bff;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.chat-button a {
+    text-decoration: none; /* Xóa gạch chân của link */
+    color: white; /* Màu của icon hoặc text */
+    font-size: 24px; /* Kích thước biểu tượng */
+}
+
+/* Tooltip */
+.tooltip {
+    visibility: hidden; /* Ẩn tooltip mặc định */
+    opacity: 0; /* Bắt đầu với độ trong suốt */
+    position: absolute; /* Tooltip nằm tuyệt đối so với parent */
+    right: 70px; /* Đẩy tooltip sang bên trái nút */
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%); /* Căn giữa tuyệt đối theo chiều dọc */
+    background-color: black; /* Màu nền của tooltip */
+    color: white; /* Màu chữ */
+    padding: 5px 10px; /* Khoảng cách bên trong tooltip */
+    border-radius: 4px; /* Bo góc nhẹ */
+    font-size: 14px; /* Kích thước chữ */
+    white-space: nowrap; /* Đảm bảo tooltip không bị xuống dòng */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Hiệu ứng chuyển đổi */
+}
+
+/* Mũi tên cho tooltip */
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 100%; /* Đặt mũi tên bên phải của tooltip */
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 0 6px 6px; /* Tạo tam giác */
+    border-color: transparent transparent transparent black; /* Màu của mũi tên */
+}
+
+.chat-button a:hover .tooltip {
+    visibility: visible; /* Hiển thị tooltip */
+    opacity: 1; /* Tăng độ rõ */
+}
+
+.call-container a:hover .tooltip {
+    visibility: visible; /* Hiển thị tooltip */
+    opacity: 1; /* Tăng độ rõ */
+}

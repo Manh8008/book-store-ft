@@ -7,6 +7,8 @@ import 'remixicon/fonts/remixicon.css'
 import AppProvider from '@/app/AppProvider'
 import Providers from '@/redux/Provider'
 import { UserProvider } from '../../context/user-context'
+import Call from '@/components/ui/call'
+import Chat from '@/components/ui/chat'
 
 export const metadata = {
     title: 'Book store',
@@ -41,6 +43,8 @@ export default function RootLayout({ children }) {
                     </AppProvider>
                 </Providers>
                 {/* Thêm thẻ df-messenger */}
+                <Call></Call>
+                <Chat></Chat>
             </body>
         </html>
     )
