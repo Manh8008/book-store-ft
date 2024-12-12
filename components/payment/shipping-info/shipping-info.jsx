@@ -10,7 +10,7 @@ const ShippingInfo = ({ addressInfoDefault }) => {
         <div className={cx('shipping-info')}>
             <div className={cx('block-header')}>
                 <h3 className={cx('block-header-title')}>Giao tới</h3>
-                <Link className={cx('block-header-nav')} href={'/checkout/shipping'}>
+                <Link className={cx('block-header-nav')} href={'/customer/address'}>
                     Thay đổi
                 </Link>
             </div>

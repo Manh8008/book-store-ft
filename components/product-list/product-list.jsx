@@ -17,8 +17,8 @@ export default function ProductList({ title, data, seeMore }) {
                 </div>
             </div>
             <div className={cx('see_more_button')}>
-                {seeMore && (
-                    <Button outline large>
+                {seeMore !== '' && (
+                    <Button outline large href={`${seeMore}`}>
                         Xem thêm
                     </Button>
                 )}

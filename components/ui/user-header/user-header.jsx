@@ -93,10 +93,12 @@ function UserHeader() {
                     )}
                 </>
             ) : (
-                <Link href="/auth/login" className="link">
-                    <i className="fa-regular fa-user"></i>
-                    <div className="text text-user">
-                        <span>Đăng nhập</span>
+                <Link href="/auth/login" className={cx('link')}>
+                    <div className="link">
+                        <div className={cx('text text-user')}>
+                            <i className="fa-regular fa-user"></i>
+                            <span>Đăng nhập</span>
+                        </div>
                     </div>
                 </Link>
             )}

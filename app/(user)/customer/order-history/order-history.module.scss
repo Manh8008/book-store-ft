@@ -1,0 +1,419 @@
+.container {
+    display: flex;
+    padding: 20px;
+    width: 100%;
+    max-width: 1349px;
+    margin: 0 auto;
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 10px;
+    }
+}
+
+.content {
+    flex: 1;
+    margin-left: 20px;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .heading {
+        font-size: 19px;
+        line-height: 21px;
+        font-weight: 300;
+        margin: 20px 0px 15px;
+    }
+}
+
+.menu {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+
+    @media (max-width: 768px) {
+        justify-content: flex-start;
+        padding: 0 10px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 0 5px;
+        gap: 5px;
+    }
+
+    .menu-item {
+        width: 16.6667%;
+        white-space: nowrap;
+
+        @media (max-width: 768px) {
+            width: auto;
+            padding: 12px 15px;
+        }
+
+        @media (max-width: 480px) {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+    }
+}
+
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+
+    svg {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+    }
+
+    .search-input {
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out,
+            -webkit-box-shadow 0.15s ease-in-out;
+        height: 36px;
+        width: 100%;
+        border-radius: 4px;
+        padding: 10px 12px;
+        line-height: 20px;
+        outline: none;
+        flex: 1 1 0%;
+        border: 1px solid rgb(196, 196, 207);
+        padding-left: 40px;
+
+        &:focus {
+            border-color: var(--primary-color);
+        }
+    }
+
+    .search-button {
+        position: absolute;
+        right: 10px;
+        font-size: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-color);
+        padding: 0px 6px 0px 16px;
+        border-left: 2px solid rgb(221, 221, 227);
+        cursor: pointer;
+    }
+
+    @media (max-width: 576px) {
+        .search-button {
+            display: none;
+        }
+
+        .search-input {
+            font-size: 14px;
+        }
+    }
+}
+
+.my-order {
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px;
+
+    @media (max-width: 576px) {
+        padding: 15px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    .order-item {
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .order-code {
+            padding-bottom: 12px;
+            color: rgb(0, 171, 86);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+
+            @media (max-width: 576px) {
+                font-size: 13px;
+            }
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+
+            .order-wrap {
+                display: flex;
+            }
+
+            .status {
+                font-weight: 500;
+                font-size: 14px;
+                padding: 4px 12px;
+                border-radius: 4px;
+                display: inline-flex;
+                align-items: center;
+                margin-left: 6px;
+
+                // Trạng thái chờ xác nhận
+                &[data-status='Chờ xác nhận'] {
+                    background-color: #fff3e0;
+                    color: #f57c00;
+                    border: 1px solid #ffe0b2;
+                }
+
+                // Trạng thái đã xác nhận
+                &[data-status='Đã xác nhận'] {
+                    background-color: #e3f2fd;
+                    color: #1976d2;
+                    border: 1px solid #bbdefb;
+                }
+
+                // Trạng thái hoàn thành
+                &[data-status='complete'] {
+                    background-color: #e8f5e9;
+                    color: #2e7d32;
+                    border: 1px solid #c8e6c9;
+                }
+
+                // Trạng thái đã hủy
+                &[data-status='Đã hủy'] {
+                    background-color: #ffebee;
+                    color: #d32f2f;
+                    border: 1px solid #ffcdd2;
+                }
+
+                @media (max-width: 576px) {
+                    font-size: 13px;
+                    padding: 3px 8px;
+                }
+            }
+
+            .sub-status {
+                font-weight: 300;
+                font-size: 14px;
+                color: rgb(128, 128, 137);
+            }
+
+            @media (max-width: 576px) {
+                flex-direction: column;
+                gap: 10px;
+
+                .order-wrap {
+                    flex-direction: column;
+
+                    .status {
+                        margin-left: 0;
+                        margin-top: 8px;
+                    }
+                }
+            }
+        }
+
+        .order-body {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+            .item {
+                display: flex;
+                gap: 10px;
+
+                .item-info {
+                    flex: 1;
+
+                    .item-name {
+                        font-size: 14px;
+                    }
+
+                    span {
+                        font-size: 12px;
+                        color: #444;
+                    }
+
+                    .item-phone {
+                        font-size: 14px;
+                        margin: 8px 0;
+                    }
+                }
+
+                .item-price {
+                    color: rgb(56, 56, 61);
+                    font-size: 14px;
+                }
+
+                @media (max-width: 576px) {
+                    flex-direction: column;
+
+                    .item-info {
+                        .item-phone {
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .order-footer {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+
+            .btn-more {
+                display: flex;
+                -webkit-box-pack: start;
+                justify-content: flex-start;
+                -webkit-box-align: center;
+                align-items: center;
+                cursor: pointer;
+                margin-top: 12px;
+
+                p {
+                    padding: 6px 12px;
+                    border-radius: 4px;
+                    border: 1px solid rgb(221, 221, 227);
+                    font-size: 12px;
+                    font-weight: 400;
+                    color: rgb(100, 100, 109);
+                    line-height: 16px;
+                }
+            }
+
+            .actions {
+                .total-price {
+                    font-size: 17px;
+                    display: flex;
+                    margin-bottom: 12px;
+
+                    .title {
+                        font-weight: 300;
+                        color: rgb(128, 128, 137);
+                        margin-right: 8px;
+                    }
+
+                    .total {
+                        font-weight: 400;
+                        color: rgb(56, 56, 61);
+                    }
+                }
+
+                .button-group {
+                    display: flex;
+                    -webkit-box-pack: justify;
+                    justify-content: space-between;
+
+                    & div,
+                    .detail-btn {
+                        padding: 12px 8px;
+                        height: 36px;
+                        border-radius: 4px;
+                        border: 1px solid var(--primary-color);
+                        font-size: 14px;
+                        font-weight: 400;
+                        line-height: 1.4;
+                        color: var(--primary-color);
+                        display: flex;
+                        -webkit-box-pack: center;
+                        justify-content: center;
+                        -webkit-box-align: center;
+                        align-items: center;
+                        cursor: pointer;
+                        margin-left: 8px;
+                        text-decoration: none;
+                    }
+
+                    @media (max-width: 480px) {
+                        flex-direction: column;
+                        gap: 10px;
+
+                        div {
+                            width: 100%;
+                            margin-left: 0;
+                        }
+                    }
+                }
+            }
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+
+                .btn-more {
+                    margin-bottom: 15px;
+                }
+
+                .actions {
+                    .total-price {
+                        justify-content: space-between;
+                    }
+
+                    .button-group {
+                        div {
+                            flex: 1;
+                            margin-left: 4px;
+
+                            &:first-child {
+                                margin-left: 0;
+                            }
+                        }
+
+                        @media (max-width: 480px) {
+                            flex-direction: column;
+                            gap: 10px;
+
+                            div {
+                                width: 100%;
+                                margin-left: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .no-orders {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+
+        .no-orders-image {
+            width: 200px;
+            height: auto;
+            margin-bottom: 16px;
+
+            @media (max-width: 576px) {
+                width: 150px;
+            }
+        }
+
+        p {
+            color: rgb(128, 128, 137);
+            font-size: 15px;
+            line-height: 1.4;
+            font-weight: 400;
+
+            @media (max-width: 576px) {
+                font-size: 14px;
+            }
+        }
+    }
+}

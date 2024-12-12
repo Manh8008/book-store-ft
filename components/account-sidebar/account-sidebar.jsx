@@ -23,9 +23,6 @@ const AccountSidebar = ({ idUser }) => {
                 <Link className={cx('active')} href="/customer/profile">
                     <i className="fas fa-user"></i> Thông tin tài khoản
                 </Link>
-                <Link href="#">
-                    <i className="fas fa-id-card"></i> Hồ sơ cá nhân
-                </Link>
                 <Link href={`/customer/address`}>
                     <i className="fas fa-map-marker-alt"></i> Số địa chỉ
                 </Link>
@@ -38,8 +35,8 @@ const AccountSidebar = ({ idUser }) => {
                 <Link href="#">
                     <i className="fas fa-gift"></i> Ưu đãi thành viên
                 </Link>
-                <Link href="#">
-                    <i className="fas fa-box"></i> Đơn hàng của tôi
+                <Link href="/customer/order-history">
+                    <i className="fas fa-box"></i> Quản lý đơn hàng
                 </Link>
                 <Link href="#">
                     <i className="fas fa-wallet"></i> Ví voucher{' '}

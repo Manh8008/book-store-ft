@@ -29,7 +29,7 @@ const Introduce = () => {
                         của mình, đặc biệt đối với các thế hệ doanh nhân, nhà quản lý và những người
                         trẻ luôn khát khao xây dựng sự nghiệp thành công.
                     </p>
-                    <Link href="/" primary className={cx('section-btn')}>
+                    <Link href="/reviewBook-detail/21" className={cx('section-btn')}>
                         Xem thêm
                         <FaArrowRightLong />
                     </Link>

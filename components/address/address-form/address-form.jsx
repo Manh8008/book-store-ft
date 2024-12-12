@@ -1,5 +1,6 @@
 'use client'
 import classNames from 'classnames/bind'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
 import styles from './address-form.module.scss'
@@ -44,6 +45,15 @@ const AddressForm = () => {
         }
     }
 
+    const handleSavingAddress = async (id) => {
+        try {
+            await addressApiRequest.defaultUpdate(id)
+            window.location.href = '/checkout/payment'
+        } catch (error) {
+            toast.error('Không thể giao tới địa chỉ này.')
+        }
+    }
+
     return (
         <div className={cx('address-container')}>
             <div className={cx('new')}>
@@ -78,12 +88,20 @@ const AddressForm = () => {
                                 </div>
                             </div>
                             <div className={cx('actions')}>
+                                <button
+                                    className={cx('saving-address')}
+                                    onClick={() => handleSavingAddress(address.id)}
+                                >
+                                    Giao tới địa chỉ này
+                                </button>
+
                                 <Link
                                     href={`/customer/address/update/${address.id}`}
                                     className={cx('edit')}
                                 >
                                     Chỉnh sửa
                                 </Link>
+
                                 {address.default !== 1 && (
                                     <button
                                         className={cx('delete')}

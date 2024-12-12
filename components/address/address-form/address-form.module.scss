@@ -93,6 +93,18 @@
         font-size: 14px;
         color: rgb(255, 66, 78);
         border: 0px;
+        background: none;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+        outline: 0px;
+    }
+
+    .saving-address {
+        font-size: 14px;
+        color: var(--white-color);
+        background-color: rgb(2, 159, 209);
+        border: 0px;
         display: inline-block;
         padding: 6px 12px;
         cursor: pointer;

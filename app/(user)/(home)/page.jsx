@@ -94,7 +94,7 @@ export default function Home() {
                             <h2 className="sub-title">TOP SÁCH BÁN CHẠY</h2>
                         </div>
 
-                        <ProductList title="" seeMore={false} data={booksBestSeller} />
+                        <ProductList title="" seeMore={'/shop'} data={booksBestSeller} />
                     </div>
                 </div>
 
@@ -107,25 +107,10 @@ export default function Home() {
                             <h2 className="sub-title">TOP SÁCH MỚI NHẤT</h2>
                         </div>
 
-                        {/* <div className="list-product"> */}
-                        <ProductList title="" seeMore={true} data={newEstBooks} />
-                        {/* </div> */}
+                        <ProductList title="" seeMore={'/shop'} data={newEstBooks} />
                     </div>
                 </div>
 
-                {/* <div className="home-product">
-                    <div className="content">
-                        <div className="title-cate">
-                            <a href="#!">TOP SÁCH MỚI NHẤT</a>
-                        </div>
-
-                        <div className="list-product">
-                            <ProductList title="" seeMore={true} data={newEstBooks} />
-                        </div>
-                    </div>
-                </div> */}
-
-                {/* Review Products */}
                 <div className="review-product">
                     <div className="content">
                         <h2 className="title">Review sách hay</h2>

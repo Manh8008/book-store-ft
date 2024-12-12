@@ -1,20 +1,31 @@
 'use client'
 
 import { reviewApiRequestAdmin } from '@/apiRequests/post'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 
 export default function Review() {
+    const [loading, setLoading] = useState(false)
     const [review, setReview] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 4 // Số sản phẩm mỗi trang
 
     const fetchReview = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllPost`)
-        const newData = await res.json()
-        setReview(newData.data)
+        if (loading) return
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/getAllPost`)
+            const newData = await res.json()
+            setReview(newData.data)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
     }
+
+    if (loading) return <LoadingSkeleton />
 
     useEffect(() => {
         fetchReview()

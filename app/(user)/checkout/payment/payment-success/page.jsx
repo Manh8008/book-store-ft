@@ -19,9 +19,9 @@ const PaymentSuccess = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
-                <h3 className={cx('title', 'success')}>Thanh toán thành công!</h3>
+                <h3 className={cx('title', 'success')}>Đặt hàng thành công !</h3>
                 <p className={cx('message')}>
-                    Đơn hàng của bạn đã được xử lý thành công.
+                    Đơn hàng của bạn đang chờ được xác nhận.
                     <br />
                     {/* Mã giao dịch: <strong>123456789</strong> */}
                     <br />

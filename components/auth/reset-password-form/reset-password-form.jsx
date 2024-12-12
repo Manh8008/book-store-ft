@@ -65,7 +65,7 @@ export const ResetPasswordForm = () => {
             if (result.status === 200) {
                 setSuccess('Đã thay đổi mật khẩu!')
                 setTimeout(() => {
-                    router.push('/')
+                    router.push('/auth/login')
                 }, 2000)
             }
         } catch (error) {

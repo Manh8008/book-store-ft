@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers'
+import Script from 'next/script'
 import '../globals.scss'
 import '../../public/css/bootstrap.min.css'
 import '../../public/css/dataTables.bootstrap4.min.css'
@@ -5,12 +7,9 @@ import '../../public/css/style.css'
 import '../../public/css/responsive.css'
 import '../../public/css/typography.css'
 
-import Head from 'next/head'
-import Script from 'next/script'
 import 'remixicon/fonts/remixicon.css'
 import Footer from './components/footer'
 import AppProvider from '../AppProvider'
-import { cookies } from 'next/headers'
 import { MainLayoutAdmin } from '@/layouts/main-layout-admin'
 
 export const metadata = {

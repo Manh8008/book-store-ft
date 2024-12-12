@@ -3,7 +3,6 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { AddressForm } from '@/components/address/address-form'
 import '@/public/styles/profile.scss'
-import addressApiRequest from '@/apiRequests/address'
 import { AccountSidebar } from '@/components/account-sidebar'
 
 export default function address() {

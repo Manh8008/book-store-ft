@@ -8,27 +8,22 @@ const MainLayout = ({ children }) => {
         const scriptSrc =
             'https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1'
 
-        // Kiểm tra và chỉ thêm script nếu chưa có
         if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
             const script = document.createElement('script')
             script.src = scriptSrc
             script.async = true
-            document.body.appendChild(script)
-        }
-
-        return () => {
-            // Dọn dẹp khi unmount
-            const dfMessenger = document.querySelector('df-messenger')
-            if (dfMessenger) {
-                dfMessenger.remove()
+            script.onload = () => {
+                console.log('Dialogflow script loaded successfully.')
             }
+            document.body.appendChild(script)
+        } else {
+            console.log('Dialogflow script already exists.')
         }
     }, [])
 
     return (
-        <>
+        <div style={{ width: '100%' }}>
             <Header />
-            {/* Vùng hiển thị chatbot */}
             <div
                 style={{
                     width: '100%',
@@ -47,7 +42,7 @@ const MainLayout = ({ children }) => {
             </div>
             {children}
             <Footer />
-        </>
+        </div>
     )
 }
 

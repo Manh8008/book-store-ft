@@ -33,7 +33,8 @@ const PaymentResult = ({ offlinePaymentData }) => {
                     <>
                         <h3 className={cx('title', 'success')}>Thanh toán thành công!</h3>
                         <p className={cx('message')}>
-                            Đơn hàng của bạn đã được xử lý thành công.
+                            Đơn hàng của bạn đã được thanh toán thành công và đang chờ được xác
+                            nhận!
                             <br />
                             {/* Mã giao dịch: <strong>{transactionId}</strong> */}
                             <br />

@@ -203,7 +203,6 @@ export default function ProductDetail({ params }) {
 
                                         <button
                                             className={cx('action-btn')}
-                                            primary
                                             onClick={() => dispatch(addItem({ product, quantity }))}
                                         >
                                             <FaShoppingCart />
@@ -212,7 +211,6 @@ export default function ProductDetail({ params }) {
 
                                         <button
                                             className={cx('action-btn', 'right')}
-                                            primary
                                             onClick={() => dispatch(addItem({ product, quantity }))}
                                         >
                                             <FaPhoneVolume /> Gọi điện đặt hàng

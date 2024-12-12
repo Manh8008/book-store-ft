@@ -23,6 +23,8 @@ export const UserProvider = ({ children }) => {
                 try {
                     const result = await accountApiRequest.getProfile()
 
+                    console.log(result)
+
                     if (result.status === 200) {
                         const profileInfo = result.payload.data
 
@@ -31,7 +33,8 @@ export const UserProvider = ({ children }) => {
                             name: profileInfo.user.name || '',
                             email: profileInfo.user.email || '',
                             phone: profileInfo.user.phone || '',
-                            address: profileInfo.user.address || ''
+                            address: profileInfo.user.address || '',
+                            orders: profileInfo.orders || []
                         })
                     } else {
                         console.log('Chưa nhận được dữ liệu')

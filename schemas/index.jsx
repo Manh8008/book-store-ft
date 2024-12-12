@@ -102,3 +102,15 @@ export const createCatalogSchema = z.object({
 export const commentSchema = z.object({
     content: z.string().min(1, 'Bạn chưa nhập nội dung!')
 })
+
+export const profileSchema = z.object({
+    name: z
+        .string()
+        .min(1, { message: 'Tên là bắt buộc!' })
+        .max(100, { message: 'Tên không được vượt quá 100 ký tự!' }),
+    phone: z
+        .string()
+        .min(10, { message: 'Số điện thoại cần ít nhất 10 chữ số!' })
+        .max(11, { message: 'Số điện thoại không được vượt quá 11 chữ số!' })
+        .regex(/^\d+$/, { message: 'Số điện thoại chỉ được chứa chữ số!' })
+})

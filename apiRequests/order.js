@@ -8,6 +8,8 @@ const orderApiRequest = {
     canceledOrder: () => http.get(`/api/canceled-orders`),
     conpleteOrder: () => http.get(`/api/complete-orders`),
 
+    cancelOrder: (id) => http.post(`/api/cancelOrder/${id}`),
+
     getOrderDetail: (order_id) => http.get(`/api/getOrderDetail/${order_id}`, { type: 'admin' }),
     searchOrder: (q) => http.get(`/api/search-orders?query=${q}`, { type: 'admin' }),
     updateStatus: (id, body) =>

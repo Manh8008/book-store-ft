@@ -13,6 +13,13 @@
     justify-content: center;
 }
 
+.title {
+    font-size: 1.6rem;
+    padding: 10px 0;
+    font-weight: 600;
+    color: #333;
+}
+
 .see_more_button {
     background-color: var(--background-color);
     display: flex;

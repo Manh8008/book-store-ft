@@ -138,7 +138,7 @@ const BookCollection = () => {
                 <Subcategory data={categories} />
                 <FilterTop onPriceChange={filterByPrice} onPriceSort={sortBooksByPrice} />
 
-                <ProductList title="Tất cả sản phẩm" data={currentItems} />
+                <ProductList title="Tất cả sản phẩm" seeMore="" data={currentItems} />
             </div>
 
             {/* Phân trang */}

@@ -28,15 +28,6 @@ export default function OrderDetail({ params }) {
     const province = searchParams.get('province')
     const addressLine = searchParams.get('address_line')
 
-    // In ra các giá trị từ query params
-    useEffect(() => {
-        console.log('Order Status:', orderStatus)
-        console.log('District:', district)
-        console.log('Town:', town)
-        console.log('Province:', province)
-        console.log('Address Line:', addressLine)
-    }, [orderStatus, district, town, province, addressLine])
-
     const fetchOrderDetail = async () => {
         if (loading) return
         setLoading(true)

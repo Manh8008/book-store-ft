@@ -1,82 +1,109 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { handleHttpError } from '@/lib/utils'
+
 import { useUser } from '@/context/user-context'
 import { AccountSidebar } from '@/components/account-sidebar'
 import './profile.scss'
-import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { profileSchema } from '@/schemas'
+import accountApiRequest from '@/apiRequests/account'
 
 export default function Profile() {
     const { userData, setUserData } = useUser()
+    const [loading, setLoading] = useState(false)
 
-    const [defaultAddress, setDefaultAddress] = useState('')
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset
+    } = useForm({
+        resolver: zodResolver(profileSchema),
+        defaultValues: {
+            name: '',
+            phone: ''
+        }
+    })
 
     useEffect(() => {
-        if (userData && userData.address) {
-            const addressList = userData.address || []
-            const defaultAddr = addressList.find((address) => address.default == 1)
-
-            if (defaultAddr) {
-                setDefaultAddress(
-                    `${defaultAddr.address_line}, ${defaultAddr.town}, ${defaultAddr.district}, ${defaultAddr.province}`
-                )
-            }
+        if (userData) {
+            reset({
+                name: userData.name || '',
+                phone: userData.phone || ''
+            })
         }
-    }, [userData])
+    }, [userData, reset])
 
-    const handleChange = (e) => {
-        setUserData({
-            ...userData,
-            [e.target.name]: e.target.value
-        })
+    const onSubmit = async (values) => {
+        if (loading) return
+
+        setLoading(true)
+        try {
+            const result = await accountApiRequest.updateProfile(values)
+            alert('Cập nhật thông tin thành công!')
+            setUserData(result.data)
+        } catch (error) {
+            handleHttpError(error)
+        } finally {
+            setLoading(false)
+        }
     }
-
-    // if (!userData || !userData.id) {
-    //     return <LoadingSkeleton />
-    // }
 
     return (
         <main style={{ background: '#F5F5FA' }}>
             <div className="container">
-                <AccountSidebar idUser={userData.id} />
+                <AccountSidebar idUser={userData?.id} />
                 <div className="content-body">
                     <h2>Hồ sơ cá nhân</h2>
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="form-group">
                             <label htmlFor="fullname">Họ và tên*</label>
                             <Input
-                                id="fullname"
-                                name="name"
-                                placeholder="Nhập họ và tên"
                                 type="text"
-                                value={userData.name || ''}
-                                onChange={handleChange}
+                                className={`form-control mb-0 ${errors.name ? 'is-invalid' : ''}`}
+                                id="name"
+                                placeholder="Nhập họ và tên"
+                                {...register('name')}
                             />
+                            {errors.name && (
+                                <div className="invalid-feedback">{errors.name.message}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email*</label>
                             <Input
+                                type="email"
+                                className={`form-control mb-0 ${errors.email ? 'is-invalid' : ''}`}
                                 id="email"
-                                name="email"
-                                placeholder="Email"
-                                type="text"
-                                value={userData.email || ''}
-                                onChange={handleChange}
+                                placeholder="Nhập email"
+                                value={userData?.email}
+                                disabled
                             />
+                            {errors.email && (
+                                <div className="invalid-feedback">{errors.email.message}</div>
+                            )}
                         </div>
                         <div className="form-group">
                             <label htmlFor="phone">Số điện thoại*</label>
                             <Input
-                                id="phone"
-                                name="phone"
-                                placeholder="Số điện thoại"
                                 type="text"
-                                value={userData.phone || ''}
-                                onChange={handleChange}
+                                className={`form-control mb-0 ${errors.phone ? 'is-invalid' : ''}`}
+                                id="phone"
+                                placeholder="Nhập số điện thoại"
+                                {...register('phone')}
                             />
+                            {errors.phone && (
+                                <div className="invalid-feedback">{errors.phone.message}</div>
+                            )}
                         </div>
-                        <Button primary>Cập nhật</Button>
+                        <Button primary disabled={loading}>
+                            {loading ? 'Đang cập nhật...' : 'Cập nhật'}
+                        </Button>
                     </form>
                 </div>
             </div>
