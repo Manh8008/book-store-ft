@@ -37,10 +37,12 @@ function UserHeader() {
             {token && token ? (
                 <>
                     <div className={cx('user-icon')} onClick={toggleAccountMenu}>
-                        <div className="link">
-                            <div className={cx('text text-user')}>
+                        <div className={cx('link')}>
+                            <div className={cx('icon-wrapper')}>
                                 <i className="fa-regular fa-user"></i>
-                                <span>Tài khoản</span>
+                            </div>
+                            <div className={cx('text')}>
+                                <span className={cx('label')}>Tài khoản</span>
                             </div>
                         </div>
                     </div>
@@ -94,11 +96,11 @@ function UserHeader() {
                 </>
             ) : (
                 <Link href="/auth/login" className={cx('link')}>
-                    <div className="link">
-                        <div className={cx('text text-user')}>
-                            <i className="fa-regular fa-user"></i>
-                            <span>Đăng nhập</span>
-                        </div>
+                    <div className={cx('icon-wrapper')}>
+                        <i className="fa-regular fa-user"></i>
+                    </div>
+                    <div className={cx('text')}>
+                        <span className={cx('label')}>Đăng nhập</span>
                     </div>
                 </Link>
             )}

@@ -22,52 +22,51 @@ export const Header = () => {
     const toggleMenu = () => setIsMenuOpen((prev) => !prev)
 
     return (
-        <header className={cx('header')}>
-            <div className={cx('topHeader')}>
-                <img src="../../../img/banner-sale.jpg" alt="banner-sale" />
+        <header className={cx('root')}>
+            <div className={cx('banner')}>
+                <img src="/img/banner-sale.jpg" alt="banner-sale" />
             </div>
-            <div className={cx('midHeader')}>
-                <nav className={cx('navbar')}>
-                    <div className={cx('row')}>
+            <div className={cx('main')}>
+                <nav className={cx('nav')}>
+                    <div className={cx('wrapper')}>
                         <Link href="/">
-                            <img
-                                src="/img/logo.svg"
-                                className={cx('header-logo')}
-                                alt="Book Shop"
-                            />
+                            <img src="/img/logo.svg" className={cx('logo')} alt="Book Shop" />
                         </Link>
-                        <form className={cx('searchContainer')} action="/search">
+                        <form className={cx('search')} action="/search">
                             <input
                                 type="text"
                                 placeholder="Tìm kiếm..."
-                                className={cx('searchInput')}
+                                className={cx('input')}
                                 name="query"
                             />
-                            <button type="submit" className={cx('searchButton')}>
+                            <button type="submit" className={cx('button')}>
                                 <i className="fas fa-search"></i>
                             </button>
                         </form>
 
-                        <div className={cx('list')}>
-                            <div className={cx('item', 'm-0')}>
+                        <div className={cx('actions')}>
+                            <div className={cx('action')}>
                                 <Link href="#!" className={cx('link')}>
-                                    <i className="fa-solid fa-phone-volume"></i>
-                                    <div className={cx('text', 'textPhone')}>
-                                        <span>Gọi điện đặt hàng</span>
-                                        <br />
-                                        <span>0986 836 563</span>
+                                    <div className={cx('icon-wrapper')}>
+                                        <i className="fa-solid fa-phone-volume"></i>
+                                    </div>
+                                    <div className={cx('text')}>
+                                        <span className={cx('label')}>Gọi điện đặt hàng</span>
+                                        <span className={cx('phone-number')}>0986 836 563</span>
                                     </div>
                                 </Link>
                             </div>
-                            <div className={cx('item', 'm-0')}>
+                            <div className={cx('action')}>
                                 <UserHeader />
                             </div>
-                            <div className={cx('item', 'm-0')}>
+                            <div className={cx('action')}>
                                 <Link href="/cart" className={cx('link')}>
-                                    <i className="fa-solid fa-cart-shopping"></i>
-                                    <div className={cx('text', 'textCart')}>
-                                        <p className={cx('bage')}>{totalItem}</p>
-                                        <span>Giỏ hàng</span>
+                                    <div className={cx('icon-wrapper')}>
+                                        <i className="fa-solid fa-cart-shopping"></i>
+                                    </div>
+                                    <div className={cx('text')}>
+                                        <span className={cx('cart-badge')}>{totalItem}</span>
+                                        <span className={cx('label')}>Giỏ hàng</span>
                                     </div>
                                 </Link>
                             </div>
@@ -75,14 +74,41 @@ export const Header = () => {
                     </div>
                 </nav>
             </div>
-            <div className={cx('botHeader')}>
-                <div className={cx('content')}>
-                    <nav className={cx('navbar')}>
-                        <div className={cx('category-list')}>
+            <div className={cx('bottom')}>
+                <div className={cx('container')}>
+                    <nav className={cx('nav')}>
+                        <div className={cx('nav-left')}>
+                            <button className={cx('hamburger')} onClick={toggleMenu}>
+                                <i className="fas fa-bars"></i>
+                            </button>
+                        </div>
+
+                        <form className={cx('search-mobile')} action="/search">
+                            <input
+                                type="text"
+                                placeholder="Tìm kiếm..."
+                                className={cx('input')}
+                                name="query"
+                            />
+                            <button type="submit" className={cx('button')}>
+                                <i className="fas fa-search"></i>
+                            </button>
+                        </form>
+
+                        <div className={cx('nav-right')}>
+                            <Link href="/cart" className={cx('cart-mobile')}>
+                                <div className={cx('icon-wrapper')}>
+                                    <i className="fa-solid fa-cart-shopping"></i>
+                                    <span className={cx('cart-badge')}>{totalItem}</span>
+                                </div>
+                            </Link>
+                        </div>
+
+                        <div className={cx('categories')}>
                             <CategoryList />
                         </div>
 
-                        <ul className={cx('menuList')}>
+                        <ul className={cx('menu')}>
                             <li>
                                 <Link href="/">Trang chủ</Link>
                             </li>
@@ -97,34 +123,7 @@ export const Header = () => {
                             </li>
                         </ul>
 
-                        {/* Hamburger menu */}
-                        <button className={cx('hamburgerMenu')} onClick={toggleMenu}>
-                            <i className="fas fa-bars"></i>
-                        </button>
-
                         <SidebarMenu isMenuOpen={isMenuOpen} closeMenu={toggleMenu} />
-
-                        <form className={cx('searchContainer', 'search-mobi')} action="/search">
-                            <input
-                                type="text"
-                                placeholder="Tìm kiếm..."
-                                className={cx('searchInput')}
-                                name="query"
-                            />
-                            <button type="submit" className={cx('searchButton')}>
-                                <i className="fas fa-search"></i>
-                            </button>
-                        </form>
-
-                        <div className={cx('cart-icon-mobi')}>
-                            <Link href="/cart" className={cx('link')}>
-                                <i className="fa-solid fa-cart-shopping"></i>
-                                <div className={cx('text', 'textCart')}>
-                                    <p className={cx('bage')}>{totalItem}</p>
-                                    <span>Giỏ hàng</span>
-                                </div>
-                            </Link>
-                        </div>
                     </nav>
                 </div>
             </div>

@@ -5,16 +5,14 @@ const cx = classNames.bind(styles)
 
 const BannerSale = () => {
     return (
-        <>
-            <div className="banner-sale">
-                <div className="content">
-                    <div className="row">
-                        <img src="/img/banner-sale-1.svg" alt="" className="img" />
-                        <img src="/img/banner-sale-2.svg" alt="" className="img" />
-                    </div>
+        <div className={cx('banner-sale')}>
+            <div className={cx('content')}>
+                <div className={cx('row')}>
+                    <img src="/img/banner-sale-1.svg" alt="" className={cx('img')} />
+                    <img src="/img/banner-sale-2.svg" alt="" className={cx('img')} />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

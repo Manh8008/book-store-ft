@@ -1,5 +1,6 @@
 'use client'
-import { useEffect, useState } from 'react'
+import React from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import MainLayout from '@/layouts/main-layout'
 import { MainBanner } from '@/components/banner/main-banner'
 import { BannerSale } from '@/components/banner/banner-sale'
@@ -14,8 +15,18 @@ import ReviewHome from '@/components/review-home/page'
 import Introduce from '@/components/introduce/introduce'
 import '@/public/styles/main.scss'
 
+const MemoizedProductList = React.memo(ProductList)
+const MemoizedReviewHome = React.memo(ReviewHome)
+const MemoizedIntroduce = React.memo(Introduce)
+
 export default function Home() {
-    const [loading, setLoading] = useState(false)
+    // Tách state loading riêng cho từng phần
+    const [loadingStates, setLoadingStates] = useState({
+        bestSeller: false,
+        newBooks: false,
+        review: false,
+        banner: false
+    })
     const [error, setError] = useState('')
 
     const [booksBestSeller, setBooksBestSeller] = useState([])
@@ -23,69 +34,41 @@ export default function Home() {
     const [review, setReview] = useState([])
     const [banner, setBanner] = useState([])
 
-    const fetchReview = async () => {
-        const result = await reviewApiRequest.getAllPost()
-        setReview(result.payload.data)
-    }
-
-    const fetchBooksBestSeller = async () => {
-        if (loading) return
-        setError(null)
-        setLoading(true)
+    const fetchData = async () => {
         try {
-            const result = await productApiRequest.getBooksBestSeller()
-            setBooksBestSeller(result.payload.data)
+            // Fetch data song song
+            const [bestSellerRes, newBooksRes, reviewRes, bannerRes] = await Promise.all([
+                productApiRequest.getBooksBestSeller(),
+                productApiRequest.getNewBook(),
+                reviewApiRequest.getAllPost(),
+                bannerApiRequest.getAllBanner()
+            ])
+
+            setBooksBestSeller(bestSellerRes.payload.data)
+            setNewEstBooks(newBooksRes.payload.data.slice(0, 10))
+            setReview(reviewRes.payload.data)
+            setBanner(bannerRes.payload.data)
         } catch (error) {
             handleHttpError(error, setError)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const fetchNewEstBooks = async () => {
-        if (loading) return
-        setError(null)
-        setLoading(true)
-        try {
-            const result = await productApiRequest.getNewBook()
-            setNewEstBooks(result.payload.data.slice(0, 10))
-        } catch (error) {
-            handleHttpError(error, setError)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const fetchBanner = async () => {
-        if (loading) return
-        setError(null)
-        setLoading(true)
-        try {
-            const result = await bannerApiRequest.getAllBanner()
-            setBanner(result.payload.data)
-        } catch (error) {
-            handleHttpError(error, setError)
-        } finally {
-            setLoading(false)
         }
     }
 
     useEffect(() => {
-        fetchBooksBestSeller()
-        fetchNewEstBooks()
-        fetchReview()
-        fetchBanner()
+        fetchData()
     }, [])
 
-    if (loading) return <LoadingSkeleton />
+    // Chỉ hiện loading skeleton cho phần đang load
+    const isLoading = Object.values(loadingStates).some((state) => state)
+    if (isLoading) {
+        return <LoadingSkeleton />
+    }
 
     return (
         <MainLayout>
             <ToastError errorMessage={error} />
             <main style={{ background: '#F5F5FA' }}>
                 <MainBanner data={banner} />
-
-                <Introduce />
+                <MemoizedIntroduce />
 
                 <div className="product-hot">
                     <div className="content">
@@ -94,7 +77,7 @@ export default function Home() {
                             <h2 className="sub-title">TOP SÁCH BÁN CHẠY</h2>
                         </div>
 
-                        <ProductList title="" seeMore={'/shop'} data={booksBestSeller} />
+                        <MemoizedProductList title="" seeMore={'/shop'} data={booksBestSeller} />
                     </div>
                 </div>
 
@@ -107,7 +90,7 @@ export default function Home() {
                             <h2 className="sub-title">TOP SÁCH MỚI NHẤT</h2>
                         </div>
 
-                        <ProductList title="" seeMore={'/shop'} data={newEstBooks} />
+                        <MemoizedProductList title="" seeMore={'/shop'} data={newEstBooks} />
                     </div>
                 </div>
 
@@ -115,7 +98,7 @@ export default function Home() {
                     <div className="content">
                         <h2 className="title">Review sách hay</h2>
                         <div className="list-review">
-                            <ReviewHome data={review}></ReviewHome>
+                            <MemoizedReviewHome data={review} />
                         </div>
                     </div>
                 </div>

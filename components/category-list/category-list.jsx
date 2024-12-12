@@ -4,6 +4,8 @@ import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
 import styles from './category-list.module.scss'
 import { catalogApiRequest } from '@/apiRequests/category'
+import { HiMenu } from 'react-icons/hi'
+import { FiChevronRight } from 'react-icons/fi'
 
 const cx = classNames.bind(styles)
 
@@ -25,7 +27,7 @@ const CategoryList = () => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('wrap-title')}>
-                <i className="fa-solid fa-bars"></i>
+                <HiMenu className={cx('menu-icon')} />
                 <span>TẤT CẢ DANH MỤC</span>
             </div>
 
@@ -34,7 +36,8 @@ const CategoryList = () => {
                     {categories &&
                         categories.map((category, index) => (
                             <li key={index}>
-                                <i className="fa-solid fa-brain"></i> {category.name}
+                                <span className={cx('category-name')}>{category.name}</span>
+                                <FiChevronRight className={cx('arrow-icon')} />
                             </li>
                         ))}
                 </ul>

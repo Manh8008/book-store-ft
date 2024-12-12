@@ -8,12 +8,29 @@ const cx = classNames.bind(styles)
 const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
     const [expandedItems, setExpandedItems] = useState({})
     const menuRef = useRef(null)
+    const [activeItem, setActiveItem] = useState(null)
 
     const toggleExpand = (item) => {
         setExpandedItems((prev) => ({
             ...prev,
             [item]: !prev[item]
         }))
+    }
+
+    const handleMenuItemClick = (item) => {
+        if (activeItem === item) {
+            setActiveItem(null)
+            setExpandedItems((prev) => ({
+                ...prev,
+                [item]: false
+            }))
+        } else {
+            setActiveItem(item)
+            setExpandedItems((prev) => ({
+                ...prev,
+                [item]: true
+            }))
+        }
     }
 
     useEffect(() => {
@@ -54,7 +71,10 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                     </li>
 
                     <li>
-                        <div className={cx('menuItem')} onClick={() => toggleExpand('alphaBooks')}>
+                        <div
+                            className={cx('menuItem', { active: activeItem === 'alphaBooks' })}
+                            onClick={() => handleMenuItemClick('alphaBooks')}
+                        >
                             Về Alpha Books
                             <i
                                 className={cx(

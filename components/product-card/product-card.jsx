@@ -4,11 +4,12 @@ import Link from 'next/link'
 import classNames from 'classnames/bind'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { memo } from 'react'
 
 import { addItem } from '@/redux/slices/cartslice'
 import styles from './product-card.module.scss'
 const cx = classNames.bind(styles)
-const ProductCard = (props) => {
+const ProductCard = memo((props) => {
     const [quantity] = useState(1)
     const dispatch = useDispatch()
 
@@ -21,13 +22,11 @@ const ProductCard = (props) => {
                         <div className={cx('item')} key={product?.id}>
                             <Link href={`/book-detail/${product?.id}`}>
                                 <img
-                                    src={
-                                        product?.images?.length > 0 && product.images[0]?.url
-                                            ? product.images[0].url
-                                            : undefined
-                                    }
+                                    src={product?.images[0]?.url}
                                     alt={product?.name}
                                     className={cx('thumb')}
+                                    loading="lazy"
+                                    decoding="async"
                                 />
                             </Link>
                             <div className={cx('body')}>
@@ -64,6 +63,6 @@ const ProductCard = (props) => {
                 })}
         </>
     )
-}
+})
 
 export default ProductCard
