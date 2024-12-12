@@ -53,7 +53,7 @@ export default function RecentOrder() {
     }, [])
     return (
         <>
-            <div className="col-md-12 col-lg-12">
+            <div className="col-md-12 col-lg-12 mt-4">
                 <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
                     <div className="iq-card-header d-flex justify-content-between">
                         <div className="iq-header-title">
@@ -121,18 +121,17 @@ export default function RecentOrder() {
                                             </td>
                                             <td>
                                                 <div
-                                                    className={`badge badge-pill text-white ${
-                                                        order.order_status === 'Đã hủy'
-                                                            ? 'bg-danger'
-                                                            : order.order_status === 'Chờ xác nhận'
+                                                    className={`badge badge-pill text-white ${order.order_status === 'Đã hủy'
+                                                        ? 'bg-danger'
+                                                        : order.order_status === 'Chờ xác nhận'
                                                             ? 'bg-warning'
                                                             : order.order_status ===
-                                                                  'Đã xác nhận' ||
-                                                              order.order_status ===
-                                                                  'Đang vận chuyển'
-                                                            ? 'bg-success'
-                                                            : 'bg-secondary'
-                                                    }`}
+                                                                'Đã xác nhận' ||
+                                                                order.order_status ===
+                                                                'Đang vận chuyển'
+                                                                ? 'bg-success'
+                                                                : 'bg-secondary'
+                                                        }`}
                                                 >
                                                     {order.order_status}
                                                 </div>
