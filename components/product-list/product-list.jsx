@@ -16,13 +16,13 @@ export default function ProductList({ title, data, seeMore }) {
                     <ProductCard data={data} />
                 </div>
             </div>
-            <div className={cx('see_more_button')}>
-                {seeMore !== '' && (
+            {seeMore !== '' && (
+                <div className={cx('see_more_button')}>
                     <Button outline large href={`${seeMore}`}>
                         Xem thêm
                     </Button>
-                )}
-            </div>
+                </div>
+            )}
         </>
     )
 }

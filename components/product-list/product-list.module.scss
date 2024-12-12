@@ -18,22 +18,35 @@
     display: flex;
     flex-wrap: wrap;
     gap: clamp(8px, 1vw, 10px);
-    justify-content: center;
-    padding: clamp(10px, 2vw, 20px) 0;
     @media screen and (max-width: 768px) {
         gap: 8px;
     }
 }
 
 .title {
-    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-    padding: 10px 0;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 1rem;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 500;
+    color: var(--text-color);
+    margin: 1.5rem 0;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-left: 1rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 80%;
+        background: var(--primary-color);
+        border-radius: 2px;
+    }
 
     @media screen and (max-width: 768px) {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
+        margin: 1rem 0;
     }
 }
 
@@ -48,13 +61,18 @@
 
     button {
         transition: transform 0.2s ease;
-        
+
         &:hover {
             transform: translateY(-2px);
         }
-        
+
         &:active {
             transform: translateY(0);
         }
     }
+}
+
+.product-list {
+    position: relative;
+    z-index: 1;
 }

@@ -64,6 +64,7 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                             Trang chủ
                         </Link>
                     </li>
+
                     <li>
                         <Link href="/contact" className={cx('menuItem')}>
                             Liên hệ
@@ -107,41 +108,19 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                         {expandedItems['bookcase'] && (
                             <ul className={cx('submenu')}>
                                 <li>
-                                    <Link href="/books/new">Sách tư duy - kỹ năng</Link>
+                                    <Link href="/shop">Sách tư duy - kỹ năng</Link>
                                 </li>
                                 <li>
-                                    <Link href="/books/new">Sách lịch sử chỉnh trị</Link>
+                                    <Link href="/shop">Sách lịch sử chỉnh trị</Link>
                                 </li>
                                 <li>
-                                    <Link href="/books/new">Sách khoa học giáo dục</Link>
+                                    <Link href="/shop">Sách khoa học giáo dục</Link>
                                 </li>
                                 <li>
-                                    <Link href="/books/new">Sách văn hóa nghệ thuật</Link>
+                                    <Link href="/shop">Sách văn hóa nghệ thuật</Link>
                                 </li>
                                 <li>
-                                    <Link href="/books/new">Sách kinh tế tài chính</Link>
-                                </li>
-                            </ul>
-                        )}
-                    </li>
-
-                    <li>
-                        <div className={cx('menuItem')} onClick={() => toggleExpand('services')}>
-                            Dịch vụ HTXB
-                            <i
-                                className={cx(
-                                    'fas',
-                                    expandedItems['services'] ? 'fa-chevron-up' : 'fa-chevron-down'
-                                )}
-                            ></i>
-                        </div>
-                        {expandedItems['services'] && (
-                            <ul className={cx('submenu')}>
-                                <li>
-                                    <Link href="/services/publishing">Xuất bản</Link>
-                                </li>
-                                <li>
-                                    <Link href="/services/events">Tổ chức sự kiện</Link>
+                                    <Link href="/shop">Sách kinh tế tài chính</Link>
                                 </li>
                             </ul>
                         )}
