@@ -1,50 +1,64 @@
 'use client'
 import classNames from 'classnames/bind'
-import styles from './account-sidebar.module.scss'
 import Link from 'next/link'
+import styles from './account-sidebar.module.scss'
+import { useUser } from '@/context/user-context'
+import { usePathname } from 'next/navigation'
 
 const cx = classNames.bind(styles)
 
-const AccountSidebar = ({ idUser }) => {
+const AccountSidebar = () => {
+    const { userData } = useUser()
+    const pathname = usePathname()
+
+    const menuItems = [
+        {
+            href: '/customer/profile',
+            icon: 'fas fa-user',
+            label: 'Thông tin tài khoản'
+        },
+        {
+            href: '/customer/address',
+            icon: 'fas fa-map-marker-alt',
+            label: 'Số địa chỉ'
+        },
+        {
+            href: '/customer/change-password',
+            icon: 'fas fa-key',
+            label: 'Đổi mật khẩu'
+        },
+        {
+            href: '/customer/order-history',
+            icon: 'fas fa-box',
+            label: 'Quản lý đơn hàng'
+        }
+    ]
+
     return (
         <div className={cx('sidebar')}>
             <img
-                alt="User profile picture"
-                height="100"
-                src="https://tse2.mm.bing.net/th?id=OIP.HHd8yrds00omoiO_XM1x2AHaHa&pid=Api&P=0&h=220"
-                width="100"
+                alt="User avatar"
+                src={
+                    userData?.avatar ||
+                    'https://tse2.mm.bing.net/th?id=OIP.HHd8yrds00omoiO_XM1x2AHaHa&pid=Api&P=0&h=220'
+                }
+                width="80"
+                height="80"
             />
             <div className={cx('status')}>
-                <div className={cx('badge')}>Thành viên Bạc</div>
-                <div className={cx('points')}>F-Point tích lũy 0</div>
-                <div className={cx('points')}>Thêm 30.000 để nâng hạng Vàng</div>
+                <div className={cx('user-name')}>{userData?.name || 'Người dùng'}</div>
+                <div className={cx('user-email')}>{userData?.email}</div>
             </div>
             <div className={cx('menu')}>
-                <Link className={cx('active')} href="/customer/profile">
-                    <i className="fas fa-user"></i> Thông tin tài khoản
-                </Link>
-                <Link href={`/customer/address`}>
-                    <i className="fas fa-map-marker-alt"></i> Số địa chỉ
-                </Link>
-                <Link href="/auth/change-password">
-                    <i className="fas fa-key"></i> Đổi mật khẩu
-                </Link>
-                <Link href="#">
-                    <i className="fas fa-file-invoice"></i> Thông tin xuất hóa đơn GTGT
-                </Link>
-                <Link href="#">
-                    <i className="fas fa-gift"></i> Ưu đãi thành viên
-                </Link>
-                <Link href="/customer/order-history">
-                    <i className="fas fa-box"></i> Quản lý đơn hàng
-                </Link>
-                <Link href="#">
-                    <i className="fas fa-wallet"></i> Ví voucher{' '}
-                    <span style={{ color: 'red' }}>14</span>
-                </Link>
-                <Link href="#">
-                    <i className="fas fa-coins"></i> Tài Khoản F-Point / Freeship
-                </Link>
+                {menuItems.map((item) => (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cx({ active: pathname === item.href })}
+                    >
+                        <i className={item.icon}></i> {item.label}
+                    </Link>
+                ))}
             </div>
         </div>
     )

@@ -1,17 +1,17 @@
 'use client'
-
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import classNames from 'classnames/bind'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { handleHttpError } from '@/lib/utils'
-
 import { useUser } from '@/context/user-context'
-import { AccountSidebar } from '@/components/account-sidebar'
-import './profile.scss'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { profileSchema } from '@/schemas'
 import accountApiRequest from '@/apiRequests/account'
+import styles from './profile.module.scss'
+
+const cx = classNames.bind(styles)
 
 export default function Profile() {
     const { userData, setUserData } = useUser()
@@ -41,7 +41,6 @@ export default function Profile() {
 
     const onSubmit = async (values) => {
         if (loading) return
-
         setLoading(true)
         try {
             const result = await accountApiRequest.updateProfile(values)
@@ -55,58 +54,56 @@ export default function Profile() {
     }
 
     return (
-        <main style={{ background: '#F5F5FA' }}>
-            <div className="container">
-                <AccountSidebar idUser={userData?.id} />
-                <div className="content-body">
-                    <h2>Hồ sơ cá nhân</h2>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="form-group">
-                            <label htmlFor="fullname">Họ và tên*</label>
-                            <Input
-                                type="text"
-                                className={`form-control mb-0 ${errors.name ? 'is-invalid' : ''}`}
-                                id="name"
-                                placeholder="Nhập họ và tên"
-                                {...register('name')}
-                            />
-                            {errors.name && (
-                                <div className="invalid-feedback">{errors.name.message}</div>
-                            )}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="email">Email*</label>
-                            <Input
-                                type="email"
-                                className={`form-control mb-0 ${errors.email ? 'is-invalid' : ''}`}
-                                id="email"
-                                placeholder="Nhập email"
-                                value={userData?.email}
-                                disabled
-                            />
-                            {errors.email && (
-                                <div className="invalid-feedback">{errors.email.message}</div>
-                            )}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="phone">Số điện thoại*</label>
-                            <Input
-                                type="text"
-                                className={`form-control mb-0 ${errors.phone ? 'is-invalid' : ''}`}
-                                id="phone"
-                                placeholder="Nhập số điện thoại"
-                                {...register('phone')}
-                            />
-                            {errors.phone && (
-                                <div className="invalid-feedback">{errors.phone.message}</div>
-                            )}
-                        </div>
-                        <Button primary disabled={loading}>
-                            {loading ? 'Đang cập nhật...' : 'Cập nhật'}
+        <div className={cx('profile-container')}>
+            <h2>Hồ sơ cá nhân</h2>
+            <div className={cx('profile-content')}>
+                <form onSubmit={handleSubmit(onSubmit)} className={cx('profile-form')}>
+                    <div className={cx('form-group')}>
+                        <label htmlFor="name">Họ và tên*</label>
+                        <Input
+                            type="text"
+                            id="name"
+                            placeholder="Nhập họ và tên"
+                            error={errors.name}
+                            {...register('name')}
+                        />
+                        {errors.name && (
+                            <span className={cx('error-message')}>{errors.name.message}</span>
+                        )}
+                    </div>
+
+                    <div className={cx('form-group')}>
+                        <label htmlFor="email">Email*</label>
+                        <Input
+                            type="email"
+                            id="email"
+                            value={userData?.email}
+                            disabled
+                            className={cx('disabled-input')}
+                        />
+                    </div>
+
+                    <div className={cx('form-group')}>
+                        <label htmlFor="phone">Số điện thoại*</label>
+                        <Input
+                            type="text"
+                            id="phone"
+                            placeholder="Nhập số điện thoại"
+                            error={errors.phone}
+                            {...register('phone')}
+                        />
+                        {errors.phone && (
+                            <span className={cx('error-message')}>{errors.phone.message}</span>
+                        )}
+                    </div>
+
+                    <div className={cx('form-actions')}>
+                        <Button type="submit" disabled={loading}>
+                            {loading ? 'Đang cập nhật...' : 'Lưu thay đổi'}
                         </Button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-        </main>
+        </div>
     )
 }

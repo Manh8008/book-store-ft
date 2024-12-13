@@ -82,8 +82,6 @@ export default function OrderTracking({ params }) {
         <main style={{ background: '#F5F5FA' }}>
             <ToastError errorMessage={error} />
             <div className={cx('container')}>
-                <AccountSidebar />
-
                 <div className={cx('content-wrap')}>
                     <div className={cx('heading')}>
                         <span>Chi tiết đơn hàng #{orderDetail.order_code}</span>
@@ -171,7 +169,7 @@ export default function OrderTracking({ params }) {
                             <Link href="/customer/order-history" className={cx('back-btn')}>
                                 &#8592; Quay lại đơn hàng của tôi
                             </Link>
-                            {orderStatus !== 'Đã hủy' ? (
+                            {orderStatus == 'Chờ xác nhận' ? (
                                 <button
                                     className={cx('track-btn')}
                                     onClick={() => handleCancelOrder(orderId)}

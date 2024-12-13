@@ -1,13 +1,8 @@
-import { AccountSidebar } from '@/components/account-sidebar'
+
+'use client'
 import { UpdateAddressForm } from '@/components/address/update-address-form'
 
-export default function UpdateAddress({ params }) {
-    return (
-        <main style={{ background: '#F5F5FA' }}>
-            <div className="container">
-                <AccountSidebar />
-                <UpdateAddressForm addressId={params.id} />
-            </div>
-        </main>
-    )
+
+export default function UpdateAddressPage({ params }) {
+    return <UpdateAddressForm addressId={params.id} />
 }

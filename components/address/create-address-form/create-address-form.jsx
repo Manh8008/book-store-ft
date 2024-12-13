@@ -27,6 +27,7 @@ const AddAddressForm = () => {
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const {
         register,
@@ -60,83 +61,84 @@ const AddAddressForm = () => {
                 const data = await response.json()
                 setProvinces(data?.results)
             } catch (error) {
-                handleHttpError(error, setError)
+                console.error(error)
             }
         }
         fetchProvinces()
     }, [])
 
     useEffect(() => {
-        const fetchDistrict = async () => {
+        const fetchDistricts = async () => {
             try {
-                const response = await fetch(
-                    `https://vapi.vnappmob.com/api/province/district/${province}`
-                )
-                const data = await response.json()
-                setDistricts(data?.results)
+                const result = await addressApiRequest.getDistricts(province)
+                setDistricts(result?.results || [])
             } catch (error) {
-                handleHttpError(error, setError)
+                console.error(error)
             }
         }
 
-        if (province) fetchDistrict()
+        if (province) fetchDistricts()
     }, [province])
 
     useEffect(() => {
-        const fetchWard = async () => {
+        const fetchWards = async () => {
             try {
-                const response = await fetch(
-                    `https://vapi.vnappmob.com/api/province/ward/${district}`
-                )
-                const data = await response.json()
-                setWards(data?.results)
+                const result = await addressApiRequest.getWards(district)
+                setWards(result?.results || [])
             } catch (error) {
-                handleHttpError(error, setError)
+                console.error(error)
             }
         }
 
-        if (district) fetchWard()
+        if (district) fetchWards()
     }, [district])
 
     const onSubmit = async (values) => {
+        if (loading) return
+        setLoading(true)
         try {
             const selectedProvince = provinces.find((p) => p.province_id === province)
             const selectedDistrict = districts.find((d) => d.district_id === district)
             const selectedWard = wards.find((w) => w.ward_id === ward)
 
-            values.province = selectedProvince ? selectedProvince.province_name : ''
-            values.provinceCode = selectedProvince ? selectedProvince.province_id : ''
-            values.district = selectedDistrict ? selectedDistrict.district_name : ''
-            values.districtCode = selectedDistrict ? selectedDistrict.district_id : ''
-            values.town = selectedWard ? selectedWard.ward_name : ''
-            values.townCode = selectedWard ? selectedWard.ward_id : ''
-            values.default = isDefault ? 1 : 0
+            const submitData = {
+                ...values,
+                province: selectedProvince?.province_name || '',
+                provinceCode: selectedProvince?.province_id || '',
+                district: selectedDistrict?.district_name || '',
+                districtCode: selectedDistrict?.district_id || '',
+                town: selectedWard?.ward_name || '',
+                townCode: selectedWard?.ward_id || '',
+                default: isDefault ? 1 : 0
+            }
 
-            const result = await addressApiRequest.addAddress(values)
+            const result = await addressApiRequest.addAddress(submitData)
 
             if (result.status === 200 && result.payload) {
                 const newAddress = result.payload.data
+
                 startTransition(() => {
-                    const updatedAddressList = [...userData.address, newAddress]
+                    setUserData((prev) => {
+                        const updatedAddresses = prev.address.map((addr) => ({
+                            ...addr,
+                            default: isDefault ? 0 : addr.default
+                        }))
 
-                    if (values.default) {
-                        updatedAddressList.forEach(
-                            (addr) => (addr.default = addr.id === newAddress.id ? 1 : 0)
-                        )
-                    }
+                        updatedAddresses.push(newAddress)
 
-                    setUserData({
-                        ...userData,
-                        address: updatedAddressList
+                        return {
+                            ...prev,
+                            address: updatedAddresses
+                        }
                     })
 
                     router.push('/customer/address')
                 })
-            } else {
-                handleHttpError(result, setError)
             }
         } catch (error) {
             handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -272,7 +274,7 @@ const AddAddressForm = () => {
                     </label>
                 </div>
 
-                <Button primary type="submit" className={cx('submit-btn')}>
+                <Button primary type="submit" className={cx('submit-btn')} disabled={loading}>
                     Lưu địa chỉ
                 </Button>
             </form>

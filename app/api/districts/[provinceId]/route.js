@@ -1,10 +1,9 @@
-// app/api/provinces/route.js
-
 import { API_URLS } from '@/config/api'
 
-export async function GET() {
+export async function GET(request, { params }) {
     try {
-        const response = await fetch(API_URLS.PROVINCES)
+        const { provinceId } = params
+        const response = await fetch(`${API_URLS.DISTRICTS}/${provinceId}`)
         const data = await response.json()
 
         return Response.json(data)

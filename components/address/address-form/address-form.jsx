@@ -1,6 +1,5 @@
 'use client'
 import classNames from 'classnames/bind'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
 import styles from './address-form.module.scss'
@@ -24,9 +23,6 @@ const AddressForm = () => {
         )
     }
 
-    console.log(userData)
-
-    // Handle delete address
     const handleDelete = async (id) => {
         if (confirm('Bạn có thật sự muốn xóa!') == true) {
             try {
@@ -35,8 +31,6 @@ const AddressForm = () => {
                     ...userData,
                     address: userData.address.filter((address) => address.id !== id)
                 })
-
-                console.log(userData)
             } catch (error) {
                 toast.error('Không thể xóa địa chỉ. Vui lòng thử lại.')
             }
@@ -56,6 +50,8 @@ const AddressForm = () => {
 
     return (
         <div className={cx('address-container')}>
+            <h2>Sổ địa chỉ</h2>
+
             <div className={cx('new')}>
                 <a href="/customer/address/create">
                     <AddAddressIcon />
@@ -88,12 +84,14 @@ const AddressForm = () => {
                                 </div>
                             </div>
                             <div className={cx('actions')}>
-                                <button
-                                    className={cx('saving-address')}
-                                    onClick={() => handleSavingAddress(address.id)}
-                                >
-                                    Giao tới địa chỉ này
-                                </button>
+                                {address.default !== 1 && (
+                                    <button
+                                        className={cx('saving-address')}
+                                        onClick={() => handleSavingAddress(address.id)}
+                                    >
+                                        Giao tới địa chỉ này
+                                    </button>
+                                )}
 
                                 <Link
                                     href={`/customer/address/update/${address.id}`}

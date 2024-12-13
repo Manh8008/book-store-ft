@@ -2,30 +2,57 @@
     padding: 16px;
     background-color: #f7f7fb;
     width: 100%;
+
+    h2 {
+        font-size: 20px;
+        color: #333;
+        font-weight: 500;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    @media (max-width: 768px) {
+        padding: 12px;
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    }
 }
 
 .new {
     width: 100%;
     margin-bottom: 16px;
-}
 
-.new a {
-    width: 100%;
-    background-color: rgb(255, 255, 255);
-    font-size: 15px;
-    height: 60px;
-    border: 1px dashed rgb(216, 216, 216);
-    margin: 0px 0px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-}
+    a {
+        width: 100%;
+        background-color: rgb(255, 255, 255);
+        font-size: 15px;
+        height: 60px;
+        border: 1px dashed rgb(216, 216, 216);
+        margin: 0px 0px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
 
-.new svg {
-    color: rgb(120, 120, 120);
-    font-size: 28px;
-    margin: 0px 20px;
+        @media (max-width: 768px) {
+            height: 50px;
+            font-size: 14px;
+        }
+    }
+
+    svg {
+        color: rgb(120, 120, 120);
+        font-size: 28px;
+        margin: 0px 20px;
+
+        @media (max-width: 768px) {
+            font-size: 24px;
+            margin: 0px 10px;
+        }
+    }
 }
 
 .address-list {
@@ -44,6 +71,14 @@
     justify-content: space-between;
     font-size: 13px;
     line-height: 19px;
+    max-width: 100%;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 15px;
+        padding: 12px;
+        width: 100%;
+    }
 
     &.default {
         border: 1px solid #4caf50;
@@ -54,20 +89,37 @@
     .name {
         text-transform: uppercase;
         margin: 0px 0px 10px;
+        display: flex;
+        align-items: center;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
 
         .default-label {
             font-size: 12px;
             margin: 0px 0px 0px 15px;
             display: inline-block;
-            -webkit-box-align: center;
             align-items: center;
             color: rgb(38, 188, 78);
             text-transform: none;
+
+            @media (max-width: 768px) {
+                margin: 0;
+            }
         }
     }
 
     .address {
         margin: 0px 0px 5px;
+        word-break: break-word;
+
+        @media (max-width: 768px) {
+            font-size: 13px;
+            line-height: 1.4;
+        }
 
         span {
             color: rgb(120, 120, 120);
@@ -75,6 +127,10 @@
     }
 
     .phone {
+        @media (max-width: 768px) {
+            font-size: 13px;
+        }
+
         span {
             color: rgb(120, 120, 120);
         }
@@ -82,11 +138,30 @@
 }
 
 .actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    @media (max-width: 768px) {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
     .edit {
         font-size: 14px;
         color: rgb(27, 168, 255);
         display: inline-block;
         padding: 6px 12px;
+
+        @media (max-width: 768px) {
+            flex: 1;
+            text-align: center;
+            background: rgba(27, 168, 255, 0.1);
+            border-radius: 4px;
+        }
     }
 
     .delete {
@@ -98,6 +173,13 @@
         padding: 6px 12px;
         cursor: pointer;
         outline: 0px;
+
+        @media (max-width: 768px) {
+            flex: 1;
+            text-align: center;
+            background: rgba(255, 66, 78, 0.1);
+            border-radius: 4px;
+        }
     }
 
     .saving-address {
@@ -109,5 +191,13 @@
         padding: 6px 12px;
         cursor: pointer;
         outline: 0px;
+        border-radius: 4px;
+
+        @media (max-width: 768px) {
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            order: -1;
+        }
     }
 }
