@@ -1,16 +1,3 @@
-.container {
-    display: flex;
-    padding: 20px;
-    width: 100%;
-    max-width: 1349px;
-    margin: 0 auto;
-
-    @media (max-width: 1024px) {
-        flex-direction: column;
-        padding: 15px;
-    }
-}
-
 .content-wrap {
     flex: 1;
     margin-left: 20px;

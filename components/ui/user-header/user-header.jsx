@@ -67,7 +67,7 @@ function UserHeader() {
                                     </Link>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="/customer/order-history">
                                         <i className="fa-solid fa-rotate-right"></i>
                                         Quản lý đơn hàng
                                     </a>
@@ -76,12 +76,6 @@ function UserHeader() {
                                     <a href="/customer/address">
                                         <i className="fa-solid fa-location-dot"></i>
                                         Sổ địa chỉ
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i className="fa-regular fa-heart"></i>
-                                        Sản phẩm yêu thích
                                     </a>
                                 </li>
                                 <li>

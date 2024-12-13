@@ -42,5 +42,10 @@ export function middleware(request) {
 
 // Config matcher
 export const config = {
-    matcher: ['/customer/:path*', '/auth/:path*', '/admin/:path*']
+    matcher: [
+        '/api/auth/:path*',
+        '/api/provinces/:path*',
+        '/api/districts/:path*',
+        '/api/wards/:path*'
+    ]
 }

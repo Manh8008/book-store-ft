@@ -65,129 +65,121 @@ export default function OrderHistory() {
     }
 
     return (
-        <main style={{ background: '#F5F5FA' }}>
-            <div className={cx('container')}>
-                <AccountSidebar />
+        <div className={cx('content')}>
+            <h2 className={cx('heading')}>Lịch sử đơn hàng</h2>
 
-                <div className={cx('content')}>
-                    <h2 className={cx('heading')}>Lịch sử đơn hàng</h2>
-
-                    <div className={cx('menu')}>
-                        {Object.values(ORDER_STATUS).map((status) => (
-                            <div
-                                key={status}
-                                className={cx('menu-item', { active: selectedStatus === status })}
-                                onClick={() => handleStatusChange(status)}
-                            >
-                                {getStatusText(status)}
-                            </div>
-                        ))}
+            <div className={cx('menu')}>
+                {Object.values(ORDER_STATUS).map((status) => (
+                    <div
+                        key={status}
+                        className={cx('menu-item', { active: selectedStatus === status })}
+                        onClick={() => handleStatusChange(status)}
+                    >
+                        {getStatusText(status)}
                     </div>
+                ))}
+            </div>
 
-                    <div className={cx('search-bar')}>
-                        <CiSearch />
-                        <input
-                            type="text"
-                            value={searchTerm}
-                            onChange={handleSearch}
-                            placeholder="Tìm đơn hàng theo Mã đơn hàng hoặc Tên người nhận"
-                            className={cx('search-input')}
+            <div className={cx('search-bar')}>
+                <CiSearch />
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    placeholder="Tìm đơn hàng theo Mã đơn hàng hoặc Tên người nhận"
+                    className={cx('search-input')}
+                />
+            </div>
+
+            <div className={cx('my-order')}>
+                {filteredOrders.length === 0 ? (
+                    <div className={cx('no-orders')}>
+                        <img
+                            src="/img/empty-order.png"
+                            alt="Không có đơn hàng"
+                            className={cx('no-orders-image')}
                         />
+                        <p>Không có đơn hàng nào</p>
                     </div>
-
-                    <div className={cx('my-order')}>
-                        {filteredOrders.length === 0 ? (
-                            <div className={cx('no-orders')}>
-                                <img
-                                    src="/img/empty-order.png"
-                                    alt="Không có đơn hàng"
-                                    className={cx('no-orders-image')}
-                                />
-                                <p>Không có đơn hàng nào</p>
-                            </div>
-                        ) : (
-                            <div className={cx('order-list')}>
-                                {filteredOrders.map((order) => (
-                                    <div key={order.id} className={cx('order-item')}>
-                                        <div className={cx('order-header')}>
-                                            <div className={cx('order-wrap')}>
-                                                <span className={cx('order-code')}>
-                                                    Mã đơn hàng: #{order.order_code}
-                                                </span>
-                                                <div>
-                                                    <span
-                                                        className={cx('status')}
-                                                        data-status={order.order_status}
-                                                    >
-                                                        {getStatusText(order.order_status)}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className={cx('sub-status')}>
-                                                Đặt hàng: Ngày {order.order_date}
-                                            </div>
+                ) : (
+                    <div className={cx('order-list')}>
+                        {filteredOrders.map((order) => (
+                            <div key={order.id} className={cx('order-item')}>
+                                <div className={cx('order-header')}>
+                                    <div className={cx('order-wrap')}>
+                                        <span className={cx('order-code')}>
+                                            Mã đơn hàng: #{order.order_code}
+                                        </span>
+                                        <div>
+                                            <span
+                                                className={cx('status')}
+                                                data-status={order.order_status}
+                                            >
+                                                {getStatusText(order.order_status)}
+                                            </span>
                                         </div>
+                                    </div>
+                                    <div className={cx('sub-status')}>
+                                        Đặt hàng: Ngày {order.order_date}
+                                    </div>
+                                </div>
 
-                                        <div className={cx('order-body')}>
-                                            <div className={cx('item')}>
-                                                <div className={cx('item-info')}>
-                                                    <div className={cx('item-name')}>
-                                                        <span>Họ và tên: </span>
-                                                        {order.name}
-                                                    </div>
-                                                    <div className={cx('item-phone')}>
-                                                        <span>Số điện thoại: </span>
-                                                        {order.phone}
-                                                    </div>
-                                                    <div className={cx('item-phone')}>
-                                                        <span>Địa chỉ nhận hàng: </span>
-                                                        {`${order.address_line}, ${order.town}, ${order.district}, ${order.province}`}
-                                                    </div>
-                                                </div>
+                                <div className={cx('order-body')}>
+                                    <div className={cx('item')}>
+                                        <div className={cx('item-info')}>
+                                            <div className={cx('item-name')}>
+                                                <span>Họ và tên: </span>
+                                                {order.name}
                                             </div>
-                                        </div>
-
-                                        <div className={cx('order-footer')}>
-                                            <div className={cx('btn-more')}></div>
-                                            <div className={cx('actions')}>
-                                                <div className={cx('total-price')}>
-                                                    <div className={cx('title')}>Tổng tiền:</div>
-                                                    <div className={cx('total')}>
-                                                        {parseFloat(
-                                                            order.total_amount
-                                                        ).toLocaleString('vi-VN')}
-                                                        đ
-                                                    </div>
-                                                </div>
-                                                <div className={cx('button-group')}>
-                                                    <Link
-                                                        href={`/customer/order-history/tracking/${
-                                                            order.id
-                                                        }?order_status=${
-                                                            order.order_status
-                                                        }&district=${order.district || ''}&town=${
-                                                            order.town || ''
-                                                        }&province=${
-                                                            order.province || ''
-                                                        }&address_line=${
-                                                            order.address_line || ''
-                                                        }&phone=${order.phone || ''}&name=${
-                                                            order.name || ''
-                                                        }&order_date=${order.order_date || ''}`}
-                                                        className={cx('detail-btn')}
-                                                    >
-                                                        Xem chi tiết
-                                                    </Link>
-                                                </div>
+                                            <div className={cx('item-phone')}>
+                                                <span>Số điện thoại: </span>
+                                                {order.phone}
+                                            </div>
+                                            <div className={cx('item-phone')}>
+                                                <span>Địa chỉ nhận hàng: </span>
+                                                {`${order.address_line}, ${order.town}, ${order.district}, ${order.province}`}
                                             </div>
                                         </div>
                                     </div>
-                                ))}
+                                </div>
+
+                                <div className={cx('order-footer')}>
+                                    <div className={cx('btn-more')}></div>
+                                    <div className={cx('actions')}>
+                                        <div className={cx('total-price')}>
+                                            <div className={cx('title')}>Tổng tiền:</div>
+                                            <div className={cx('total')}>
+                                                {parseFloat(order.total_amount).toLocaleString(
+                                                    'vi-VN'
+                                                )}
+                                                đ
+                                            </div>
+                                        </div>
+                                        <div className={cx('button-group')}>
+                                            <Link
+                                                href={`/customer/order-history/tracking/${
+                                                    order.id
+                                                }?order_status=${order.order_status}&district=${
+                                                    order.district || ''
+                                                }&town=${order.town || ''}&province=${
+                                                    order.province || ''
+                                                }&address_line=${order.address_line || ''}&phone=${
+                                                    order.phone || ''
+                                                }&name=${order.name || ''}&order_date=${
+                                                    order.order_date || ''
+                                                }`}
+                                                className={cx('detail-btn')}
+                                            >
+                                                Xem chi tiết
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        )}
+                        ))}
                     </div>
-                </div>
+                )}
             </div>
-        </main>
+        </div>
     )
 }

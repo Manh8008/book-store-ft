@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 import { authApiRequest } from '@/apiRequests/auth'
 import { FormSuccess } from '@/components/auth/form-success'
 import { FormError } from '@/components/auth/form-error'
-import styles from './change-password-form.scss'
+import styles from './change-password-form.module.scss'
 
 const cx = classNames.bind(styles)
 
@@ -22,6 +22,7 @@ export const ChangePasswordForm = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
+
     const {
         register,
         handleSubmit,
@@ -58,60 +59,70 @@ export const ChangePasswordForm = () => {
     }
 
     return (
-        <div className={cx('wrapper')}>
-            <form className={cx('form')} onSubmit={handleSubmit(onSubmit)}>
-                <h2 className={cx('title')}>Đổi mật khẩu</h2>
+        <div className={cx('change-password-container')}>
+            <h2>Đổi mật khẩu</h2>
+            <div className={cx('change-password-content')}>
+                <form onSubmit={handleSubmit(onSubmit)} className={cx('change-password-form')}>
+                    <div className={cx('form-group')}>
+                        <label htmlFor="old_password">Mật khẩu hiện tại</label>
+                        <Input
+                            type="password"
+                            id="old_password"
+                            placeholder="Nhập mật khẩu hiện tại"
+                            error={!!errors.old_password}
+                            {...register('old_password')}
+                            onBlur={() => trigger('old_password')}
+                        />
+                        {errors.old_password && (
+                            <span className={cx('error-message')}>{errors.old_password.message}</span>
+                        )}
+                    </div>
 
-                <div>
-                    <Input
-                        label="Nhập mật khẩu cũ"
-                        type="password"
-                        id="old_password"
-                        placeholder="******"
-                        error={!!errors.old_password}
-                        {...register('old_password')}
-                        onBlur={() => trigger('old_password')}
-                    />
-                    {errors.old_password && (
-                        <p className={cx('error')}>{errors.old_password.message}</p>
-                    )}
-                </div>
+                    <div className={cx('form-group')}>
+                        <label htmlFor="password">Mật khẩu mới</label>
+                        <Input
+                            type="password"
+                            id="password"
+                            placeholder="Nhập mật khẩu mới"
+                            error={!!errors.password}
+                            {...register('password')}
+                            onBlur={() => trigger('password')}
+                        />
+                        {errors.password && (
+                            <span className={cx('error-message')}>{errors.password.message}</span>
+                        )}
+                        <span className={cx('password-hint')}>
+                            Mật khẩu phải dài từ 8 đến 32 ký tự, bao gồm chữ và số
+                        </span>
+                    </div>
 
-                <div>
-                    <Input
-                        label="Nhập mật khẩu mới"
-                        type="password"
-                        id="password"
-                        placeholder="******"
-                        error={!!errors.password}
-                        {...register('password')}
-                        onBlur={() => trigger('password')}
-                    />
-                    {errors.password && <p className={cx('error')}>{errors.password.message}</p>}
-                </div>
+                    <div className={cx('form-group')}>
+                        <label htmlFor="confirm_password">Nhập lại mật khẩu mới</label>
+                        <Input
+                            type="password"
+                            id="confirm_password"
+                            placeholder="Nhập lại mật khẩu mới"
+                            error={!!errors.confirm_password}
+                            {...register('confirm_password')}
+                            onBlur={() => trigger('confirm_password')}
+                        />
+                        {errors.confirm_password && (
+                            <span className={cx('error-message')}>
+                                {errors.confirm_password.message}
+                            </span>
+                        )}
+                    </div>
 
-                <div>
-                    <Input
-                        label="Nhập lại mật khẩu"
-                        type="password"
-                        id="confirm_password"
-                        placeholder="******"
-                        error={!!errors.confirm_password}
-                        {...register('confirm_password')}
-                        onBlur={() => trigger('confirm_password')}
-                    />
-                    {errors.confirm_password && (
-                        <p className={cx('error')}>{errors.confirm_password.message}</p>
-                    )}
-                </div>
+                    <FormSuccess message={success} />
+                    {error && <FormError message={error} />}
 
-                <FormSuccess message={success} />
-                {error && <FormError message={error} />}
-
-                <Button primary fullWidth type="submit" disabled={loading}>
-                    {loading ? 'Đang xử lý...' : 'Đổi mật khẩu'}
-                </Button>
-            </form>
+                    <div className={cx('form-actions')}>
+                        <Button type="submit" disabled={loading}>
+                            {loading ? 'Đang xử lý...' : 'Lưu thay đổi'}
+                        </Button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }

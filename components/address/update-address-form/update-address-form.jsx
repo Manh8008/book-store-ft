@@ -7,9 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { AddressSchema } from '@/schemas'
 import { Button } from '@/components/ui/button'
-import { useUser } from '@/context/user-context'
 import addressApiRequest from '@/apiRequests/address'
 import styles from './update-address-form.module.scss'
+import { handleHttpError } from '@/lib/utils'
 
 const cx = classNames.bind(styles)
 
@@ -17,18 +17,23 @@ const UpdateAddressForm = ({ addressId }) => {
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
     const [wards, setWards] = useState([])
-    const [isAddressDefault, setAddressDefault] = useState('')
 
+    // 2. State quản lý địa chỉ đang chọn
     const [province, setProvince] = useState('')
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
 
+    // 3. State quản lý trạng thái
+    const [isAddressDefault, setAddressDefault] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+
+    // 4. Khởi tạo form với React Hook Form
     const {
         register,
         handleSubmit,
         setValue,
-        formState: { errors },
-        watch
+        formState: { errors }
     } = useForm({
         resolver: zodResolver(AddressSchema),
         defaultValues: {
@@ -45,9 +50,13 @@ const UpdateAddressForm = ({ addressId }) => {
         }
     })
 
-    const isDefault = watch('default') == 1
+    // 5. Xử lý khi checkbox địa chỉ mặc định thay đổi
+    const handleDefaultChange = (e) => {
+        setAddressDefault(e.target.checked)
+        setValue('default', e.target.checked)
+    }
 
-    // Lấy danh sách tỉnh
+    // 6. Load danh sách tỉnh/thành phố khi component mount
     useEffect(() => {
         const fetchProvinces = async () => {
             try {
@@ -61,199 +70,199 @@ const UpdateAddressForm = ({ addressId }) => {
         fetchProvinces()
     }, [])
 
-    // Lấy danh sách quận dựa vào tỉnh
-    useEffect(() => {
-        const fetchDistricts = async () => {
-            if (!province) return
-            try {
-                const provinceCode = provinces.find(
-                    (p) => p.province_name === province
-                )?.province_id
-
-                if (provinceCode) {
-                    const response = await fetch(
-                        `https://vapi.vnappmob.com/api/province/district/${provinceCode}`
-                    )
-                    const data = await response.json()
-                    setDistricts(data?.results || [])
-                }
-            } catch (error) {
-                console.error('Error fetching districts:', error)
-            }
-        }
-        fetchDistricts()
-    }, [province, provinces])
-
-    // Lấy danh sách xã dựa vào quận
-    useEffect(() => {
-        const fetchWards = async () => {
-            if (!district) return
-            try {
-                const districtCode = districts.find(
-                    (d) => d.district_name === district
-                )?.district_id
-
-                if (districtCode) {
-                    const response = await fetch(
-                        `https://vapi.vnappmob.com/api/province/ward/${districtCode}`
-                    )
-                    const data = await response.json()
-                    setWards(data?.results || [])
-                }
-            } catch (error) {
-                console.error('Error fetching wards:', error)
-            }
-        }
-        fetchWards()
-    }, [district, districts])
-
-    // Lấy thông tin địa chỉ hiện tại
+    // 7. Load thông tin địa chỉ cần sửa
     useEffect(() => {
         const fetchAddressById = async () => {
-            const result = await addressApiRequest.getAddressById(addressId)
-
-            //Set để check xem có phải là địa chỉ mặc định không.
-            setAddressDefault(result.payload.data.default)
-
-            if (result?.payload?.data) {
+            try {
+                const result = await addressApiRequest.getAddressById(addressId)
                 const addressData = result.payload.data
 
-                setValue('name', addressData.name)
-                setValue('phone', addressData.phone)
-                setValue('address_line', addressData.address_line)
-                setValue('default', addressData.default ? true : false)
-                setValue('province', addressData.province)
-                setValue('district', addressData.district)
-                setValue('town', addressData.town)
+                // Cập nhật trạng thái địa chỉ mặc định
+                setAddressDefault(addressData.default === 1)
 
-                setProvince(addressData.province)
-                setDistrict(addressData.district)
-                setWard(addressData.town)
+                if (addressData) {
+                    // Cập nhật thông tin cơ bản
+                    setValue('name', addressData.name)
+                    setValue('phone', addressData.phone)
+                    setValue('address_line', addressData.address_line)
+                    setValue('default', addressData.default === 1)
+
+                    // Cập nhật và load thông tin tỉnh/thành
+                    if (addressData.provinceCode) {
+                        setProvince(addressData.provinceCode)
+                        setValue('province', addressData.province)
+                        setValue('provinceCode', addressData.provinceCode)
+
+                        // Load danh sách quận/huyện
+                        const districtsResult = await addressApiRequest.getDistricts(
+                            addressData.provinceCode
+                        )
+                        setDistricts(districtsResult?.results || [])
+                    }
+
+                    if (addressData.districtCode) {
+                        setDistrict(addressData.districtCode)
+                        setValue('district', addressData.district)
+                        setValue('districtCode', addressData.districtCode)
+
+                        // Load danh sách phường/xã
+                        const wardsResult = await addressApiRequest.getWards(
+                            addressData.districtCode
+                        )
+                        setWards(wardsResult?.results || [])
+                    }
+
+                    if (addressData.townCode) {
+                        setWard(addressData.townCode)
+                        setValue('town', addressData.town)
+                        setValue('townCode', addressData.townCode)
+                    }
+                }
+            } catch (error) {
+                console.error(error)
             }
         }
         if (addressId) fetchAddressById()
     }, [addressId, setValue])
 
+    // 8. Xử lý khi submit form
     const onSubmit = async (values) => {
-        try {
-            const selectedProvince = provinces.find((p) => p.province_name === province)
-            const selectedDistrict = districts.find((d) => d.district_name === district)
-            const selectedWard = wards.find((w) => w.ward_name === ward)
+        console.log(values)
 
-            values.province = selectedProvince?.province_name || ''
-            values.district = selectedDistrict?.district_name || ''
-            values.town = selectedWard?.ward_name || ''
-            values.provinceCode = selectedProvince?.province_id || ''
-            values.districtCode = selectedDistrict?.district_id || ''
-            values.townCode = selectedWard?.ward_id || ''
-            values.default = isDefault ? 1 : 0
-            const result = await addressApiRequest.updateAddress(addressId, values)
+        if (loading) return
+        setLoading(true)
+
+        try {
+            // Lấy thông tin địa chỉ đã chọn
+            const selectedProvince = provinces.find((p) => p.province_id === province)
+            const selectedDistrict = districts.find((d) => d.district_id === district)
+            const selectedWard = wards.find((w) => w.ward_id === ward)
+
+            // Tạo dữ liệu gửi đi
+            const submitData = {
+                ...values,
+                province: selectedProvince?.province_name || '',
+                district: selectedDistrict?.district_name || '',
+                town: selectedWard?.ward_name || '',
+                provinceCode: selectedProvince?.province_id || '',
+                districtCode: selectedDistrict?.district_id || '',
+                townCode: selectedWard?.ward_id || '',
+                default: isAddressDefault ? true : Boolean(values.default) // Chuyển đổi sang boolean cho BE
+            }
+
+            const result = await addressApiRequest.updateAddress(addressId, submitData)
 
             if (result.status === 200) {
-                // const updatedAddress = { ...values, id: addressId }
-
-                // setUserData((prevState) => {
-                //     const updatedAddressList = prevState.address.map((address) => {
-                //         return String(address.id) === String(addressId) ? updatedAddress : address
-                //     })
-                //     return {
-                //         ...prevState,
-                //         address: updatedAddressList
-                //     }
-                // })
-
                 window.location.href = '/customer/address'
             }
         } catch (error) {
-            console.error('Lỗi khi cập nhật địa chỉ:', error)
+            handleHttpError(error, setError)
+        } finally {
+            setLoading(false)
         }
     }
 
+    // 9. Render form
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={cx('form-container')}>
             <h2 className={cx('title')}>Chỉnh sửa địa chỉ</h2>
 
-            {/* Họ và tên */}
             <div className={cx('form-group')}>
                 <label>Họ và tên:</label>
                 <input type="text" {...register('name')} className={cx('input')} />
                 {errors.name && <p className={cx('error')}>{errors.name.message}</p>}
             </div>
 
-            {/* Số điện thoại */}
             <div className={cx('form-group')}>
                 <label>Số điện thoại:</label>
                 <input type="text" {...register('phone')} className={cx('input')} />
                 {errors.phone && <p className={cx('error')}>{errors.phone.message}</p>}
             </div>
 
-            {/* Tỉnh */}
             <div className={cx('form-group')}>
                 <label>Tỉnh/Thành phố:</label>
                 <select
                     {...register('province')}
                     className={cx('select')}
                     onChange={(e) => {
+                        const selectedProvince = provinces.find(
+                            (p) => p.province_id === e.target.value
+                        )
                         setProvince(e.target.value)
+                        setValue('province', selectedProvince?.province_name || '')
+                        setValue('provinceCode', selectedProvince?.province_id || '')
+
                         setDistrict('')
                         setWard('')
+                        setValue('district', '')
+                        setValue('districtCode', '')
+                        setValue('town', '')
+                        setValue('townCode', '')
                     }}
                     value={province}
                 >
                     <option value="">Chọn tỉnh/thành phố</option>
-                    {provinces.map((province) => (
-                        <option key={province.province_id} value={province.province_name}>
-                            {province.province_name}
+                    {provinces.map((p) => (
+                        <option key={p.province_id} value={p.province_id}>
+                            {p.province_name}
                         </option>
                     ))}
                 </select>
                 {errors.province && <p className={cx('error')}>{errors.province.message}</p>}
             </div>
 
-            {/* Quận */}
             <div className={cx('form-group')}>
                 <label>Quận/Huyện:</label>
                 <select
                     {...register('district')}
                     className={cx('select')}
                     onChange={(e) => {
+                        const selectedDistrict = districts.find(
+                            (d) => d.district_id === e.target.value
+                        )
                         setDistrict(e.target.value)
+                        setValue('district', selectedDistrict?.district_name || '')
+                        setValue('districtCode', selectedDistrict?.district_id || '')
+
                         setWard('')
+                        setValue('town', '')
+                        setValue('townCode', '')
                     }}
                     value={district}
                 >
                     <option value="">Chọn quận/huyện</option>
-                    {districts.map((district) => (
-                        <option key={district.district_id} value={district.district_name}>
-                            {district.district_name}
+                    {districts.map((d) => (
+                        <option key={d.district_id} value={d.district_id}>
+                            {d.district_name}
                         </option>
                     ))}
                 </select>
                 {errors.district && <p className={cx('error')}>{errors.district.message}</p>}
             </div>
 
-            {/* Xã */}
             <div className={cx('form-group')}>
                 <label>Phường/Xã:</label>
                 <select
                     {...register('town')}
                     className={cx('select')}
                     onChange={(e) => {
+                        const selectedWard = wards.find((w) => w.ward_id === e.target.value)
                         setWard(e.target.value)
+                        setValue('town', selectedWard?.ward_name || '')
+                        setValue('townCode', selectedWard?.ward_id || '')
                     }}
                     value={ward}
                 >
                     <option value="">Chọn phường/xã</option>
-                    {wards.map((ward) => (
-                        <option key={ward.ward_id} value={ward.ward_name}>
-                            {ward.ward_name}
+                    {wards.map((w) => (
+                        <option key={w.ward_id} value={w.ward_id}>
+                            {w.ward_name}
                         </option>
                     ))}
                 </select>
                 {errors.town && <p className={cx('error')}>{errors.town.message}</p>}
             </div>
 
-            {/* Địa chỉ cụ thể */}
             <div className={cx('form-group')}>
                 <label>Địa chỉ:</label>
                 <textarea
@@ -265,16 +274,27 @@ const UpdateAddressForm = ({ addressId }) => {
                     <p className={cx('error')}>{errors.address_line.message}</p>
                 )}
             </div>
-            {isAddressDefault == 0 && (
+            {!isAddressDefault ? (
                 <div className={cx('form-group')}>
                     <label>
-                        <input type="checkbox" {...register('default')} />
+                        <input
+                            type="checkbox"
+                            {...register('default')}
+                            onChange={handleDefaultChange}
+                        />
                         Đặt làm địa chỉ mặc định
                     </label>
                 </div>
+            ) : (
+                <div className={cx('form-group')}>
+                    <label>
+                        <input type="checkbox" checked disabled />
+                        Địa chỉ mặc định
+                    </label>
+                    <input type="hidden" name="default" value="1" />
+                </div>
             )}
 
-            {/* Nút cập nhật */}
             <Button primary className={cx('submit-button')}>
                 Cập nhật
             </Button>
