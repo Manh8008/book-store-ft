@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import classNames from 'classnames/bind'
 import styles from './sidebar-menu.module.scss'
+import { authApiRequest } from '@/apiRequests/auth'
+import { useRouter } from 'next/navigation'
 
 const cx = classNames.bind(styles)
 
@@ -9,6 +11,12 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
     const [expandedItems, setExpandedItems] = useState({})
     const menuRef = useRef(null)
     const [activeItem, setActiveItem] = useState(null)
+    const router = useRouter()
+    const [token, setToken] = useState(null)
+
+    useEffect(() => {
+        setToken(localStorage.getItem('sessionTokenUser'))
+    }, [])
 
     const toggleExpand = (item) => {
         setExpandedItems((prev) => ({
@@ -30,6 +38,17 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                 ...prev,
                 [item]: true
             }))
+        }
+    }
+
+    const handleLogout = async () => {
+        try {
+            await authApiRequest.logoutFromNextClientToServer()
+            localStorage.removeItem('sessionTokenUser')
+            setToken(null) // Cập nhật lại trạng thái token
+            router.push('/auth/login')
+        } catch (error) {
+            alert('Đăng xuất thất bại!')
         }
     }
 
@@ -55,8 +74,29 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                 </button>
                 <ul className={cx('menuList')}>
                     <li className={cx('authLinks')}>
-                        <Link href="/auth/login">Đăng nhập</Link>
-                        <Link href="/auth/register">Đăng ký</Link>
+                        {token ? (
+                            <Link href="#"
+                                style={{
+                                    display: 'inline-block',
+                                    margin: '0 auto',
+                                    padding: '8px 12px',
+                                    textAlign: 'center',
+                                }}
+                                onClick={handleLogout}
+                                className={cx('menuItem', 'logout')}
+                            >
+                                Đăng xuất
+                            </Link>
+                        ) : (
+                            <>
+                                <Link href="/auth/login" className={cx('menuItem')}>
+                                    Đăng nhập
+                                </Link>
+                                <Link href="/auth/register" className={cx('menuItem')}>
+                                    Đăng ký
+                                </Link>
+                            </>
+                        )}
                     </li>
 
                     <li>
@@ -69,6 +109,40 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                         <Link href="/contact" className={cx('menuItem')}>
                             Liên hệ
                         </Link>
+                    </li>
+
+                    <li>
+                        <Link href="/shop" className={cx('menuItem')}>
+                            Cửa hàng
+                        </Link>
+                    </li>
+
+                    <li>
+                        <div className={cx('menuItem')} onClick={() => toggleExpand('customerInfo')}>
+                            Thông tin khách hàng
+                            <i
+                                className={cx(
+                                    'fas',
+                                    expandedItems['customerInfo'] ? 'fa-chevron-up' : 'fa-chevron-down'
+                                )}
+                            ></i>
+                        </div>
+                        {expandedItems['customerInfo'] && (
+                            <ul className={cx('submenu')}>
+                                <li>
+                                    <Link href="/customer/profile">Hồ sơ cá nhân</Link>
+                                </li>
+                                <li>
+                                    <Link href="/admin">Trang quản trị</Link>
+                                </li>
+                                <li>
+                                    <Link href="/customer/address">Sổ địa chỉ</Link>
+                                </li>
+                                <li>
+                                    <Link href="/customer/order-history">Lịch sử đơn hàng</Link>
+                                </li>
+                            </ul>
+                        )}
                     </li>
 
                     <li>
@@ -111,7 +185,7 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                                     <Link href="/shop">Sách tư duy - kỹ năng</Link>
                                 </li>
                                 <li>
-                                    <Link href="/shop">Sách lịch sử chỉnh trị</Link>
+                                    <Link href="/shop">Sách lịch sử chính trị</Link>
                                 </li>
                                 <li>
                                     <Link href="/shop">Sách khoa học giáo dục</Link>

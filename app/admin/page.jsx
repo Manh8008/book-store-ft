@@ -77,7 +77,7 @@ export default function DashBoard() {
                         ></StatusOrderCount>
 
                         {/* <Chart></Chart> */}
-                        <div className="col-md-6">
+                        <div className="col-md-6" style={{ height: '450px' }}>
                             <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
                                 <div className="iq-card-header d-flex justify-content-between align-items-center">
                                     <div className="iq-header-title">

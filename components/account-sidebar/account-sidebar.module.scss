@@ -62,3 +62,9 @@
 .menu a i {
     margin-right: 10px;
 }
+
+@media (max-width: 576px) {
+    .sidebar {
+        display: none;
+    }
+}

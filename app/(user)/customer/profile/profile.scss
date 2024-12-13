@@ -119,3 +119,9 @@ form .form-group input:focus {
 .content-body form .form-group .btn:hover {
     background-color: darkorange;
 }
+
+@media (max-width: 576px) {
+    form .form-group input {
+        width: 100%;
+    }
+}
