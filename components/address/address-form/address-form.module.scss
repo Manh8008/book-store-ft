@@ -201,3 +201,32 @@
         }
     }
 }
+.no-orders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+
+    .no-orders-image {
+        width: 200px;
+        height: auto;
+        margin-bottom: 16px;
+
+        @media (max-width: 576px) {
+            width: 150px;
+        }
+    }
+
+    p {
+        color: rgb(128, 128, 137);
+        font-size: 15px;
+        line-height: 1.4;
+        font-weight: 400;
+
+        @media (max-width: 576px) {
+            font-size: 14px;
+        }
+    }
+}

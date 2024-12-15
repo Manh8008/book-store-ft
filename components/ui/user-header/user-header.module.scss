@@ -15,9 +15,28 @@
 
             .icon-wrapper {
                 background: var(--primary-color);
-                color: white;
+
+                i {
+                    color: white;
+                }
+            }
+
+            .text .label {
+                color: var(--primary-color);
             }
         }
+    }
+}
+
+@keyframes borderPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
     }
 }
 
@@ -30,10 +49,23 @@
     border-radius: 50%;
     background: #f5f5f5;
     transition: all 0.2s ease;
+    animation: borderPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+    animation-delay: 0.7s;
 
     i {
         font-size: 1.4rem;
         color: #333;
+        transition: all 0.2s ease;
+    }
+
+    &:hover {
+        animation: none;
+        box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.6);
+        background: var(--primary-color);
+
+        i {
+            color: white;
+        }
     }
 }
 
@@ -41,6 +73,7 @@
     .label {
         font-size: 1.4rem;
         color: #666;
+        transition: all 0.2s ease;
     }
 }
 

@@ -36,7 +36,6 @@ export const cartSlice = createSlice({
             cart[index].quantity = Math.max(1, quantity)
             return cart
         },
-
         clearCart() {
             return []
         }

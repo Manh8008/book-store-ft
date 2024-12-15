@@ -12,15 +12,10 @@ const cx = classNames.bind(styles)
 const AddressForm = () => {
     const { userData, setUserData } = useUser()
 
-    if (!userData || !userData.address || userData.address.length === 0) {
-        return (
-            <div className={cx('new')}>
-                <a href="/customer/address/create">
-                    <AddAddressIcon />
-                    <span>Thêm địa chỉ mới</span>
-                </a>
-            </div>
-        )
+    console.log('ađress', userData.address)
+
+    if (!userData || !userData.address) {
+        return null
     }
 
     const handleDelete = async (id) => {
@@ -58,60 +53,74 @@ const AddressForm = () => {
                     <span>Thêm địa chỉ mới</span>
                 </a>
             </div>
-            <div className={cx('address-list')}>
-                {userData &&
-                    userData.address &&
-                    userData.address.map((address) => (
-                        <div
-                            key={address.id}
-                            className={cx('address-item', { default: address.default === 1 })}
-                        >
-                            <div className={cx('info')}>
-                                <div className={cx('name')}>
-                                    {address.name}
-                                    {address.default === 1 && (
-                                        <span className={cx('default-label')}>
-                                            Địa chỉ mặc định
-                                        </span>
+
+            {userData.address.length === 0 ? (
+                <div className={cx('no-orders')}>
+                    <img
+                        src="/img/empty-address.webp"
+                        alt="Không có địa chỉ"
+                        className={cx('no-orders-image')}
+                    />
+                    <p>Không có địa chỉ nào</p>
+                </div>
+            ) : (
+                <div className={cx('address-list')}>
+                    {userData &&
+                        userData.address &&
+                        userData.address.map((address) => (
+                            <div
+                                key={address.id}
+                                className={cx('address-item', {
+                                    default: address.default === 1
+                                })}
+                            >
+                                <div className={cx('info')}>
+                                    <div className={cx('name')}>
+                                        {address.name}
+                                        {address.default === 1 && (
+                                            <span className={cx('default-label')}>
+                                                Địa chỉ mặc định
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className={cx('address')}>
+                                        <span>Địa chỉ:</span> {address.address_line}, {address.town}
+                                        ,{address.district}, {address.province}
+                                    </div>
+                                    <div className={cx('phone')}>
+                                        <span>Điện thoại:</span> {address.phone}
+                                    </div>
+                                </div>
+                                <div className={cx('actions')}>
+                                    {address.default !== 1 && (
+                                        <button
+                                            className={cx('saving-address')}
+                                            onClick={() => handleSavingAddress(address.id)}
+                                        >
+                                            Giao tới địa chỉ này
+                                        </button>
+                                    )}
+
+                                    <Link
+                                        href={`/customer/address/update/${address.id}`}
+                                        className={cx('edit')}
+                                    >
+                                        Chỉnh sửa
+                                    </Link>
+
+                                    {address.default !== 1 && (
+                                        <button
+                                            className={cx('delete')}
+                                            onClick={() => handleDelete(address.id)}
+                                        >
+                                            Xóa
+                                        </button>
                                     )}
                                 </div>
-                                <div className={cx('address')}>
-                                    <span>Địa chỉ:</span> {address.address_line}, {address.town},
-                                    {address.district}, {address.province}
-                                </div>
-                                <div className={cx('phone')}>
-                                    <span>Điện thoại:</span> {address.phone}
-                                </div>
                             </div>
-                            <div className={cx('actions')}>
-                                {address.default !== 1 && (
-                                    <button
-                                        className={cx('saving-address')}
-                                        onClick={() => handleSavingAddress(address.id)}
-                                    >
-                                        Giao tới địa chỉ này
-                                    </button>
-                                )}
-
-                                <Link
-                                    href={`/customer/address/update/${address.id}`}
-                                    className={cx('edit')}
-                                >
-                                    Chỉnh sửa
-                                </Link>
-
-                                {address.default !== 1 && (
-                                    <button
-                                        className={cx('delete')}
-                                        onClick={() => handleDelete(address.id)}
-                                    >
-                                        Xóa
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-            </div>
+                        ))}
+                </div>
+            )}
         </div>
     )
 }

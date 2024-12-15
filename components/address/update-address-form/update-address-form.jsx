@@ -125,6 +125,40 @@ const UpdateAddressForm = ({ addressId }) => {
         if (addressId) fetchAddressById()
     }, [addressId, setValue])
 
+    // Thêm useEffect để load districts khi province thay đổi
+    useEffect(() => {
+        const fetchDistricts = async () => {
+            if (province) {
+                try {
+                    const districtsResult = await addressApiRequest.getDistricts(province)
+                    setDistricts(districtsResult?.results || [])
+                } catch (error) {
+                    console.error('Error fetching districts:', error)
+                }
+            } else {
+                setDistricts([])
+            }
+        }
+        fetchDistricts()
+    }, [province])
+
+    // Thêm useEffect để load wards khi district thay đổi
+    useEffect(() => {
+        const fetchWards = async () => {
+            if (district) {
+                try {
+                    const wardsResult = await addressApiRequest.getWards(district)
+                    setWards(wardsResult?.results || [])
+                } catch (error) {
+                    console.error('Error fetching wards:', error)
+                }
+            } else {
+                setWards([])
+            }
+        }
+        fetchWards()
+    }, [district])
+
     // 8. Xử lý khi submit form
     const onSubmit = async (values) => {
         console.log(values)
@@ -192,12 +226,15 @@ const UpdateAddressForm = ({ addressId }) => {
                         setValue('province', selectedProvince?.province_name || '')
                         setValue('provinceCode', selectedProvince?.province_id || '')
 
+                        // Reset district và ward
                         setDistrict('')
                         setWard('')
                         setValue('district', '')
                         setValue('districtCode', '')
                         setValue('town', '')
                         setValue('townCode', '')
+                        setDistricts([])
+                        setWards([])
                     }}
                     value={province}
                 >
@@ -224,9 +261,11 @@ const UpdateAddressForm = ({ addressId }) => {
                         setValue('district', selectedDistrict?.district_name || '')
                         setValue('districtCode', selectedDistrict?.district_id || '')
 
+                        // Reset ward
                         setWard('')
                         setValue('town', '')
                         setValue('townCode', '')
+                        setWards([])
                     }}
                     value={district}
                 >
