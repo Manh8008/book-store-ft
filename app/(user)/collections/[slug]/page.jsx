@@ -26,7 +26,7 @@ const BookCollection = () => {
                         width={1349}
                         height={400}
                         src={'/img/sachkinhte-taichinh.png'}
-                        alt="sách kinh tế"
+                        alt="sách kinh tế-tài chính"
                     />
                 </div>
 
