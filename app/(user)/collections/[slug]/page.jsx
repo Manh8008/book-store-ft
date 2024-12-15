@@ -5,7 +5,6 @@ import { useState } from 'react'
 
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import { Subcategory } from '@/components/ui/subcategory'
-import { FilterBooks } from '@/components/ui/filter-books'
 import { ProductList } from '@/components/product-list'
 import styles from './book-collection.scss'
 import { Pagination } from '@/components/ui/pagination'
