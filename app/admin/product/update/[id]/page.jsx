@@ -36,7 +36,6 @@ export default function UpdateProduct({ params }) {
             const data = await res.json()
             setProduct(data.data)
             setValue('name', data.data.name)
-            setValue('title', data.data.title)
             setValue('category_id', data.data.category_id)
             setValue('authorName', data.data.author.name)
             setValue('authorBio', data.data.author.bio)
@@ -57,7 +56,7 @@ export default function UpdateProduct({ params }) {
             getProduct()
         }
     }, [id, setValue])
-    console.log(product)
+    // console.log(product)
 
     const handleImageChange = (event) => {
         const file = event.target.files[0]
@@ -146,22 +145,6 @@ export default function UpdateProduct({ params }) {
                                             {errors.category_id && (
                                                 <div className="text-danger mt-2">
                                                     {errors.category_id.message}
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="form-group">
-                                            <label>tiêu đề:</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                name="authorName"
-                                                {...register('title', {
-                                                    required: 'Tên tác giả là bắt buộc'
-                                                })}
-                                            />
-                                            {errors.title && (
-                                                <div className="text-danger mt-2">
-                                                    {errors.title.message}
                                                 </div>
                                             )}
                                         </div>

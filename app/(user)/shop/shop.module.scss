@@ -39,11 +39,12 @@
     display: flex;
     justify-content: center;
     margin-top: 10px;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
 
     .pagination {
         display: flex;
         gap: 8px;
+        margin-bottom: 50px;
 
         .page-item {
             .page-link {

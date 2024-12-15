@@ -15,11 +15,6 @@ export default function TopBar() {
                             </div>
                             <div className="iq-navbar-logo d-flex justify-content-between">
                                 <Link href="/admin" className="header-logo">
-                                    {/* <img
-                                        src="/images/logo.png"
-                                        className="img-fluid rounded-normal"
-                                        alt=""
-                                    /> */}
                                     <div className="logo-title">
                                         <span className="text-primary text-uppercase">
                                             NhasachTV
@@ -281,11 +276,11 @@ export default function TopBar() {
                                         href="#"
                                         className="search-toggle iq-waves-effect d-flex align-items-center"
                                     >
-                                        <img
+                                        {/* <img
                                             src="#"
                                             className="img-fluid rounded-circle mr-3"
                                             alt="avatar admin"
-                                        />
+                                        /> */}
                                         <div className="caption">
                                             <h6 className="mb-1 line-height">Admin</h6>
                                             <p className="mb-0 text-primary">Tài Khoản</p>

@@ -108,16 +108,6 @@ export default function Banner() {
                                                                     data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title=""
-                                                                    data-original-title="Sửa"
-                                                                    href=""
-                                                                >
-                                                                    <i className="ri-pencil-line"></i>
-                                                                </Link>
-                                                                <Link
-                                                                    className="bg-primary"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title=""
                                                                     data-original-title="Xoá"
                                                                     href="#"
                                                                     onClick={() =>
