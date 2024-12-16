@@ -86,7 +86,7 @@ export default function ProductDetail({ params }) {
         try {
             const result = await userApiRequestAdmin.getAllUser()
             setUsers(result.payload.data)
-        } catch (error) {}
+        } catch (error) { }
     }
 
     useEffect(() => {
@@ -230,9 +230,8 @@ export default function ProductDetail({ params }) {
 
                                         <button
                                             className={cx('action-btn', 'right')}
-                                            onClick={() => dispatch(addItem({ product, quantity }))}
                                         >
-                                            <FaPhoneVolume /> Gọi điện đặt hàng
+                                            <a style={{ color: 'white' }} href="tel:+84968575978"><FaPhoneVolume /> Gọi điện đặt hàng</a>
                                         </button>
                                     </div>
                                 </div>
