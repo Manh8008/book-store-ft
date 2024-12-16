@@ -7,8 +7,8 @@ export default function Chat() {
                     target="_blank"
                     title="Liên hệ qua Facebook"
                 >
-                    <i className="fab fa-facebook-messenger"></i>
-                    <span className="tooltip">Chat với chúng tôi qua Facebook</span>
+                    <i className="fab fa-facebook"></i>
+                    <span className="tooltip">Liên hệ với chúng tôi qua Facebook</span>
                 </a>
             </div>
         </>

@@ -46,7 +46,13 @@ export default function ReviewBook() {
                                             <Link href={`/reviewBook-detail/${review.id}`}>
                                                 <img src={review.image_url} alt={review.title} />
                                             </Link>
-                                            <div className="caption">
+                                            <div
+                                                className="caption"
+                                                style={{
+                                                    background:
+                                                        'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)'
+                                                }}
+                                            >
                                                 <Link href={`/reviewBook-detail/${review.id}`}>
                                                     <h3 className="post-title">{review.title}</h3>
                                                 </Link>
@@ -129,7 +135,7 @@ export default function ReviewBook() {
                                         <h3>Tin nổi bật</h3>
                                     </div>
                                     <div className="content-hotnews">
-                                        {review.map((review) => (
+                                        {review.slice(0, 5).map((review) => (
                                             <div className="item" key={review.id}>
                                                 <div className="img-post">
                                                     <Link href={`/reviewBook-detail/${review.id}`}>
