@@ -37,6 +37,7 @@ export default function UpdateProduct({ params }) {
             setProduct(data.data)
             setValue('name', data.data.name)
             setValue('category_id', data.data.category_id)
+            setValue('title', data.data.title)
             setValue('authorName', data.data.author.name)
             setValue('authorBio', data.data.author.bio)
             setValue('price', data.data.price)
@@ -79,7 +80,7 @@ export default function UpdateProduct({ params }) {
 
             // Nếu có ảnh mới (chọn từ input), thêm vào FormData
             if (selectedImage instanceof File) {
-                formData.append('images', selectedImage) // Gửi file ảnh thực tế lên server
+                formData.append('images', selectedImage)
             } else if (product?.images) {
                 // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
                 formData.append('images', product.images)
@@ -116,6 +117,21 @@ export default function UpdateProduct({ params }) {
                                                 className="form-control"
                                                 {...register('name', {
                                                     required: 'Tên sách là bắt buộc'
+                                                })}
+                                            />
+                                            {errors.name && (
+                                                <div className="text-danger mt-1">
+                                                    {errors.name.message}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Tiêu đề:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                {...register('title', {
+                                                    required: 'Tiêu đề là bắt buộc'
                                                 })}
                                             />
                                             {errors.name && (

@@ -4,28 +4,39 @@ import { useEffect, useState } from 'react'
 import { reviewApiRequest } from '@/apiRequests/post'
 import { Beardcrumb } from '@/components/ui/breadcrumb'
 import '@/public/styles/reviewBook-detail.scss'
+import { useRouter } from 'next/navigation'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 
 export default function ReviewBookDetail({ params }) {
+    const router = useRouter()
     const id = params.id
     const [review, setReview] = useState([])
     const [listReview, setListReview] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
-        const fetchListReview = async () => {
-            const result = await reviewApiRequest.getAllPost()
-            setListReview(result.payload.data)
+        const fetchData = async () => {
+            try {
+                setIsLoading(true)
+                const [reviewResult, listResult] = await Promise.all([
+                    reviewApiRequest.reviewDetail(id),
+                    reviewApiRequest.getAllPost()
+                ])
+                setReview(reviewResult.payload.data)
+                setListReview(listResult.payload.data)
+            } catch (err) {
+                setError(err.message)
+            } finally {
+                setIsLoading(false)
+            }
         }
-        fetchListReview()
-    }, [])
-
-    useEffect(() => {
-        const fetchReview = async () => {
-            const result = await reviewApiRequest.reviewDetail(id)
-            setReview(result.payload.data)
-        }
-        fetchReview()
+        fetchData()
     }, [id])
-    // console.log(review)
+
+    if (isLoading) return <LoadingSkeleton />
+    if (error) return <div>Có lỗi xảy ra: {error}</div>
+    if (!review) return <div>Không tìm thấy bài viết</div>
 
     const formatDate = (dateString) => {
         const date = new Date(dateString)

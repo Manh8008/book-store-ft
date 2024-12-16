@@ -34,6 +34,10 @@ export default function ReviewBook() {
                 <div className="beardcrumb">
                     <Beardcrumb />
                 </div>
+                <div className="page-title">
+                    <h1>Bài viết</h1>
+                    <p>Những tin tức về những cuốn sách hay</p>
+                </div>
                 <div className="home-news">
                     <div className="content">
                         <div className="wrap-news">

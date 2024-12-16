@@ -120,13 +120,6 @@ export default function ProductByCategories({ params }) {
 
     return (
         <div className={cx('wrapper')}>
-            {error && (
-                <div className={cx('error-message')}>
-                    <p>{error}</p>
-                    <button onClick={fetchData}>Thử lại</button>
-                </div>
-            )}
-
             <div className={cx('wrapper-content')}>
                 <Beardcrumb />
                 <div className={cx('banner')}>
