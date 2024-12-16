@@ -94,77 +94,71 @@ export default function RecentOrder() {
                     </div>
                     <div className="iq-card-body">
                         <div className="table-responsive">
-                            <table className="table mb-0 table-borderless">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Khách hàng</th>
-                                        <th scope="col">Ngày</th>
-                                        <th scope="col">Hóa đơn</th>
-                                        <th scope="col">Số tiền</th>
-                                        <th scope="col">Trạng thái</th>
-                                        <th className="text-center" scope="col">
-                                            Hoạt động
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filterPendingOrders(order).map((order) => (
-                                        <tr key={order.id}>
-                                            <td>{order.name}</td>
-                                            <td>{formatDate(order.order_date)}</td>
-                                            <td>{order.order_code}</td>
-                                            <td>
-                                                {parseFloat(order.total_amount).toLocaleString(
-                                                    'vi-VN'
-                                                )}
-                                                đ
-                                            </td>
-                                            <td>
-                                                <div
-                                                    className={`badge badge-pill text-white ${order.order_status === 'Đã hủy'
-                                                        ? 'bg-danger'
-                                                        : order.order_status === 'Chờ xác nhận'
-                                                            ? 'bg-warning'
-                                                            : order.order_status ===
-                                                                'Đã xác nhận' ||
-                                                                order.order_status ===
-                                                                'Đang vận chuyển'
-                                                                ? 'bg-success'
-                                                                : 'bg-secondary'
-                                                        }`}
-                                                >
-                                                    {order.order_status}
-                                                </div>
-                                            </td>
-
-                                            <td className="text-center">
-                                                <div className="flex align-items-center list-user-action">
-                                                    {order.order_status === 'Chờ xác nhận' ? (
-                                                        <Button
-                                                            outline
-                                                            small
-                                                            onClick={() =>
-                                                                handleChangeStatus(order.id)
-                                                            }
-                                                        >
-                                                            Xác nhận
-                                                        </Button>
-                                                    ) : (
-                                                        <Link
-                                                            className="bg-primary"
-                                                            href={`/order/${order.id}`}
-                                                        >
-                                                            <i className="ri-eye-line"></i>
-                                                        </Link>
-                                                    )}
-                                                </div>
-                                            </td>
+                            {filterPendingOrders(order).length > 0 ? (
+                                <table className="table mb-0 table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Khách hàng</th>
+                                            <th scope="col">Ngày</th>
+                                            <th scope="col">Hóa đơn</th>
+                                            <th scope="col">Số tiền</th>
+                                            <th scope="col">Trạng thái</th>
+                                            <th className="text-center" scope="col">Hoạt động</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {filterPendingOrders(order).map((order) => (
+                                            <tr key={order.id}>
+                                                <td>{order.name}</td>
+                                                <td>{formatDate(order.order_date)}</td>
+                                                <td>{order.order_code}</td>
+                                                <td>
+                                                    {parseFloat(order.total_amount).toLocaleString('vi-VN')}đ
+                                                </td>
+                                                <td>
+                                                    <div
+                                                        className={`badge badge-pill text-white ${order.order_status === 'Đã hủy'
+                                                            ? 'bg-danger'
+                                                            : order.order_status === 'Chờ xác nhận'
+                                                                ? 'bg-warning'
+                                                                : order.order_status === 'Đã xác nhận' ||
+                                                                    order.order_status === 'Đang vận chuyển'
+                                                                    ? 'bg-success'
+                                                                    : 'bg-secondary'
+                                                            }`}
+                                                    >
+                                                        {order.order_status}
+                                                    </div>
+                                                </td>
+                                                <td className="text-center">
+                                                    <div className="flex align-items-center list-user-action">
+                                                        {order.order_status === 'Chờ xác nhận' ? (
+                                                            <Button
+                                                                outline
+                                                                small
+                                                                onClick={() => handleChangeStatus(order.id)}
+                                                            >
+                                                                Xác nhận
+                                                            </Button>
+                                                        ) : (
+                                                            <Link className="bg-primary" href={`/order/${order.id}`}>
+                                                                <i className="ri-eye-line"></i>
+                                                            </Link>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <div className="text-center">
+                                    <p>Không có đơn hàng nào cần xác nhận.</p>
+                                </div>
+                            )}
                         </div>
                     </div>
+
                 </div>
             </div>
         </>
