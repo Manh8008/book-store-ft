@@ -8,7 +8,7 @@ import { AccountSidebar } from '@/components/account-sidebar'
 import orderApiRequest from '@/apiRequests/order'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { handleHttpError } from '@/lib/utils'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 
 const cx = classNames.bind(styles)
 

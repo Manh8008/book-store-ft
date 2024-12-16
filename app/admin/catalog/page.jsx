@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 
 import { catalogApiRequest, catalogApiRequestAdmin } from '@/apiRequests/category'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 import SearchAdmin from '../components/search-admin'
 
 export default function Categories() {
@@ -205,10 +205,16 @@ export default function Categories() {
                                     {/* Phân trang */}
                                     <nav className="mt-4">
                                         <ul className="pagination pagination-lg justify-content-center">
-                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === 1 ? 'disabled' : ''
+                                                }`}
+                                            >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage - 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage - 1)
+                                                    }
                                                     aria-label="Previous"
                                                 >
                                                     <span aria-hidden="true">&laquo;</span>
@@ -217,7 +223,9 @@ export default function Categories() {
                                             {pageNumbers.map((number) => (
                                                 <li
                                                     key={number}
-                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
+                                                    className={`page-item ${
+                                                        number === currentPage ? 'active' : ''
+                                                    }`}
                                                 >
                                                     <button
                                                         className="page-link"
@@ -227,10 +235,16 @@ export default function Categories() {
                                                     </button>
                                                 </li>
                                             ))}
-                                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                            <li
+                                                className={`page-item ${
+                                                    currentPage === totalPages ? 'disabled' : ''
+                                                }`}
+                                            >
                                                 <button
                                                     className="page-link"
-                                                    onClick={() => handlePageChange(currentPage + 1)}
+                                                    onClick={() =>
+                                                        handlePageChange(currentPage + 1)
+                                                    }
                                                     aria-label="Next"
                                                 >
                                                     <span aria-hidden="true">&raquo;</span>
@@ -238,7 +252,6 @@ export default function Categories() {
                                             </li>
                                         </ul>
                                     </nav>
-
                                 </div>
                             </div>
                         </div>

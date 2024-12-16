@@ -13,7 +13,6 @@ export const cartSlice = createSlice({
                 //Chưa có -> thêm vào
                 if (!checkLogin()) return
                 cart.push({ ...product, quantity })
-                alert('Thêm vào giỏ hàng thành công !')
             } else {
                 //Đã có -> tăng số lượng
                 cart[index].quantity = Number(cart[index].quantity) + Number(quantity)

@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { catalogApiRequestAdmin } from '@/apiRequests/category'
 import { handleHttpError } from '@/lib/utils'
 import { productApiRequestAdmin } from '@/apiRequests/product'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 
 export default function UpdateProduct({ params }) {
     const [error, setError] = useState('')

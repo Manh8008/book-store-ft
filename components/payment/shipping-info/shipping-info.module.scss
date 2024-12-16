@@ -1,66 +1,60 @@
+@import '@/styles/_variables.scss';
+
 //shipping information
 .shipping-info {
-    border-radius: 4px;
-    margin-bottom: 12px;
-    font-size: 14px;
-    line-height: 20px;
-    position: relative;
+    background: #fff;
+    border-radius: 8px;
     padding: 16px;
-    background-color: rgb(255, 255, 255);
+    margin-bottom: 16px;
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 12px;
+    }
 }
 
 .block-header {
     display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: justify;
     justify-content: space-between;
-    margin-bottom: 12px;
+    align-items: center;
+    margin-bottom: 16px;
 }
 
 .block-header-title {
-    color: rgb(128, 128, 137);
-    font-weight: normal;
-    margin: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
 }
 
 .block-header-nav {
     color: var(--primary-color);
-    text-decoration: none;
+    font-size: 14px;
 }
 
 .customer_info {
     display: flex;
-    -webkit-box-align: center;
     align-items: center;
-    color: rgb(56, 56, 61);
-    margin-bottom: 2px;
-    font-weight: 600;
+    gap: 8px;
+    margin-bottom: 8px;
 
-    & i {
-        display: block;
+    i {
         width: 1px;
-        height: 20px;
-        background-color: rgb(235, 235, 240);
-        margin: 0px 8px;
+        height: 16px;
+        background: #e5e7eb;
     }
 }
 
-.customer_info__name {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    overflow: hidden;
-}
-
+.customer_info__name,
 .customer_info__phone {
-    margin: 0px;
-    word-break: break-word;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
 }
 
 .address {
-    color: rgb(128, 128, 137);
-    font-weight: normal;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .address__type {

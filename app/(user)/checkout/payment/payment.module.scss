@@ -1,8 +1,4 @@
-.align-center {
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-}
+@import '@/styles/_variables.scss';
 
 .text {
     font-size: 14px;
@@ -19,32 +15,71 @@
 }
 
 .wrapper {
+    padding: 16px;
     background-color: #f5f5fa;
-    width: 100%;
+    min-height: calc(100vh - var(--header-height));
+
+    @media (max-width: $breakpoint-md) {
+        padding: 8px;
+    }
+}
+
+.main-title {
+    margin: 20px 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgb(0, 0, 0);
+    line-height: 28px;
+    text-transform: uppercase;
+
+    @media (max-width: $breakpoint-md) {
+        font-size: 18px;
+        margin: 15px 0;
+    }
 }
 
 .content {
     display: flex;
-    padding: 20px 0;
-    width: 1349px;
+    gap: 16px;
+    max-width: 1280px;
     margin: 0 auto;
+
+    @media (max-width: $breakpoint-xl) {
+        width: 95%;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    @media (max-width: $breakpoint-lg) {
+        flex-direction: column;
+    }
+
+    @media (max-width: $breakpoint-md) {
+        padding: 8px;
+    }
 }
 
 .left {
-    width: calc(100% - 350px);
-    margin-right: 20px;
+    flex: 1;
+    min-width: 0;
 }
 
 .section-container {
+    background: #fff;
+    border-radius: 8px;
     padding: 16px;
     margin-bottom: 16px;
-    background-color: white;
-    border-radius: 8px;
 }
 
 .title {
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 500;
     margin-bottom: 16px;
+    color: #333;
+
+    @media (max-width: $breakpoint-md) {
+        font-size: 16px;
+    }
 }
 
 //.shipping-package
@@ -78,12 +113,20 @@
         -webkit-box-align: center;
         align-items: center;
         margin-right: 8px;
+
+        img {
+            margin-right: 8px;
+        }
     }
 }
 
 .left-content {
     margin-right: 46px;
     max-width: 482px;
+}
+
+.package-item-list {
+    margin-top: 16px;
 }
 
 .right-content {
@@ -120,36 +163,11 @@
     }
 }
 
-// Tổng kết đơn hàng
-.package-summary {
-    margin-top: 8px;
-    width: 482px;
-    display: flex;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-
-    .shipping-fee {
-        font-size: 14px;
-        line-height: 20px;
-        display: flex;
-        -webkit-box-align: center;
-        align-items: center;
-
-        .current-fee {
-            color: rgb(56, 56, 61);
-            font-weight: 500;
-        }
-    }
-}
-
 .order-summary {
-    background: rgb(240, 248, 255);
-    border: 1px solid rgb(255, 234, 194);
-    border-radius: 10px;
+    background: #fff;
+    border-radius: 8px;
     padding: 16px;
-    display: grid;
-    row-gap: 12px;
-    z-index: 0;
+    margin-bottom: 16px;
 }
 
 .order-summary {
@@ -170,7 +188,13 @@
 }
 
 .right {
-    width: 350px;
+    width: 320px;
+    margin-top: 70px;
+
+    @media (max-width: 992px) {
+        width: 100%;
+        margin-top: 0;
+    }
 
     .order-summary {
         background-color: #fff;
@@ -179,60 +203,45 @@
 
         .summary-header {
             display: flex;
-            -webkit-box-pack: justify;
             justify-content: space-between;
-
-            font-size: 14px;
-            line-height: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgb(235, 235, 240);
+            align-items: center;
+            margin-bottom: 16px;
         }
 
         .summary-title {
+            font-size: 16px;
             font-weight: 500;
-            color: rgb(56, 56, 61);
-            margin: 0px;
         }
 
         .summary-title-nav {
             color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .summary-discount,
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
+            font-size: 14px;
         }
 
         .summary-discount {
-            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: #666;
             font-size: 14px;
-            color: rgb(128, 128, 137);
         }
 
         .summary-total {
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-            .total-amount {
-                color: var(--primary-color);
-            }
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 0;
+            font-weight: 500;
+        }
+
+        .total-amount {
+            color: var(--primary-color);
+            font-size: 20px;
         }
 
         .checkout-button {
             width: 100%;
-            background-color: var(--primary-color);
-            color: #fff;
-            border: none;
-            padding: 10px 0;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 8px;
-
-            &:hover {
-                background-color: #e0393e;
-            }
+            height: 44px;
+            font-size: 16px;
         }
     }
 }

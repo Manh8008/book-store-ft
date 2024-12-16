@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { handleHttpError } from '@/lib/utils'
 
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 import { catalogApiRequestAdmin } from '@/apiRequests/category'
 
 const UpdateCatalog = ({ params }) => {
@@ -35,7 +35,7 @@ const UpdateCatalog = ({ params }) => {
                 setCatalog(result.payload.data)
                 setValue('name', result.payload.data.name)
                 // Lưu URL ảnh cũ vào state
-                const imageUrl = result.payload.data.image;
+                const imageUrl = result.payload.data.image
                 setSelectedImage(imageUrl)
                 setValue('image', imageUrl)
             } else {
@@ -46,40 +46,40 @@ const UpdateCatalog = ({ params }) => {
     }, [id, setValue])
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files[0]
         if (file) {
-            setSelectedImage(file);
+            setSelectedImage(file)
         }
-    };
+    }
 
     const onSubmit = async (data) => {
         try {
-            const formData = new FormData();
-            formData.append('_method', 'PUT');
+            const formData = new FormData()
+            formData.append('_method', 'PUT')
 
             // Thêm các giá trị khác ngoài ảnh
             for (const key in data) {
                 if (key !== 'image') {
-                    formData.append(key, data[key]);
+                    formData.append(key, data[key])
                 }
             }
 
             // Nếu có ảnh mới (chọn từ input), thêm vào FormData
             if (selectedImage instanceof File) {
-                formData.append('image', selectedImage); // Gửi file ảnh thực tế lên server
+                formData.append('image', selectedImage) // Gửi file ảnh thực tế lên server
             } else if (review?.image) {
                 // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
-                formData.append('image', catalog.image);
+                formData.append('image', catalog.image)
             }
 
             const result = await catalogApiRequestAdmin.updateCatalog(id, formData)
             if (result.status === 200) {
-                router.push('/admin/catalog');
+                router.push('/admin/catalog')
             }
         } catch (error) {
-            handleHttpError(error, setError);
+            handleHttpError(error, setError)
         }
-    };
+    }
 
     return (
         <div id="content-page" className="content-page">
@@ -107,7 +107,6 @@ const UpdateCatalog = ({ params }) => {
                                                 onChange={handleImageChange}
                                             />
                                             <label className="custom-file-label">Choose file</label>
-
                                         </div>
                                         {errors.image && (
                                             <div className="text-danger mt-4">
@@ -117,7 +116,11 @@ const UpdateCatalog = ({ params }) => {
                                         <div className="bg-secondary-subtle mb-3 mt-4 p-2">
                                             {selectedImage ? (
                                                 <img
-                                                    src={selectedImage instanceof File ? URL.createObjectURL(selectedImage) : selectedImage}
+                                                    src={
+                                                        selectedImage instanceof File
+                                                            ? URL.createObjectURL(selectedImage)
+                                                            : selectedImage
+                                                    }
                                                     className="img-fluid"
                                                     style={{ maxWidth: '300px', height: 'auto' }}
                                                     alt="Product Image"

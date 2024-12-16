@@ -1,5 +1,5 @@
 .container {
-    width: 1349px;
+    width: 1280px;
     max-width: calc(100% - 85px);
     margin-left: auto;
     margin-right: auto;
@@ -103,7 +103,7 @@ figure.image > figcaption {
 }
 
 /* Media Queries cho các màn hình nhỏ */
-@media (max-width: 1200px) {
+@media (max-width: 1280px) {
     .main-left {
         width: 60%;
     }

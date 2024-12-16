@@ -25,7 +25,7 @@ export default function ProductByCategories({ params }) {
     const [productByCate, setProductByCate] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
 
-    const itemsPerPage = 20 
+    const itemsPerPage = 20
     const { currentItems, totalPages } = useMemo(() => {
         const indexOfLastItem = currentPage * itemsPerPage
         const indexOfFirstItem = indexOfLastItem - itemsPerPage
@@ -131,7 +131,7 @@ export default function ProductByCategories({ params }) {
                 <Beardcrumb />
                 <div className={cx('banner')}>
                     <Image
-                        width={1349}
+                        width={1280}
                         height={400}
                         src={'/img/sachkinhte-taichinh.png'}
                         alt="sách kinh tế"

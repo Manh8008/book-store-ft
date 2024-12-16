@@ -8,13 +8,27 @@ import { memo } from 'react'
 
 import { addItem } from '@/redux/slices/cartslice'
 import styles from './product-card.module.scss'
+import { ToastContainer, ToastSuccess } from '../ui/toast-success/toast-success'
+
 const cx = classNames.bind(styles)
 const ProductCard = memo((props) => {
     const [quantity] = useState(1)
     const dispatch = useDispatch()
+    const [toasts, setToasts] = useState([])
+
+    const handleAddToCart = (product) => {
+        dispatch(addItem({ product, quantity }))
+        const newToast = {
+            id: Date.now(),
+            message: 'Thêm vào giỏ hàng thành công!'
+        }
+        setToasts((prev) => [...prev, newToast])
+    }
 
     return (
         <>
+            <ToastContainer toasts={toasts} />
+
             {props &&
                 props.data &&
                 props.data.map((product) => {
@@ -33,27 +47,20 @@ const ProductCard = memo((props) => {
                                 <div className={cx('price')}>
                                     {parseFloat(product?.price).toLocaleString('vi-VN')}đ
                                 </div>
-                                <div className={cx('price-sale')}>
-                                    {(parseFloat(product?.price) * 1.2).toLocaleString('vi-VN')}đ
-                                </div>
+
                                 <h3 className={cx('title')}>
                                     <Link href={`/book-detail/${product?.id}`}>
                                         {product?.name}
                                     </Link>
                                 </h3>
                                 <div className={cx('rating-container')}>
-                                    <div className={cx('stars')}>
-                                        {[...Array(5)].map((_, index) => (
-                                            <img key={index} src="/img/star.svg" alt="Star" />
-                                        ))}
-                                    </div>
                                     <span className={cx('sold-count')}>
                                         Đã bán {product.sales_count}
                                     </span>
                                 </div>
                                 <button
                                     className={cx('buy-now')}
-                                    onClick={() => dispatch(addItem({ product, quantity }))}
+                                    onClick={() => handleAddToCart(product)}
                                 >
                                     Thêm vào giỏ hàng
                                 </button>

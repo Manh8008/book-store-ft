@@ -1,0 +1,21 @@
+// Breakpoints
+$breakpoint-xl: 1280px; // Extra large devices
+$breakpoint-lg: 992px; // Large devices
+$breakpoint-md: 768px; // Medium devices
+$breakpoint-sm: 576px; // Small devices
+
+.container {
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+
+    @media (max-width: $breakpoint-xl) {
+        width: 95%;
+    }
+
+    @media (max-width: $breakpoint-md) {
+        width: 100%;
+        padding: 0 15px;
+    }
+}

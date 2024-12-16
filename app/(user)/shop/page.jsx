@@ -130,7 +130,7 @@ const BookCollection = () => {
                     <>
                         <div className={cx('banner')}>
                             <Image
-                                width={1349}
+                                width={1280}
                                 height={400}
                                 src={'/img/sachkinhte-taichinh.png'}
                                 alt="sách kinh tế"

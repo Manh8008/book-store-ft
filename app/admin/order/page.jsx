@@ -5,7 +5,7 @@ import classNames from 'classnames/bind'
 
 import orderApiRequest from '@/apiRequests/order'
 import SearchAdmin from '../components/search-admin'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 
 import styles from './order.module.scss'
 import { DropdownMenu } from '@/components/ui/dropdown-menu'
