@@ -46,9 +46,9 @@ export default function User() {
                                                     <th style={{ width: 20 + '%' }}>
                                                         Tên người dùng
                                                     </th>
-                                                    <th style={{ width: 35 + '%' }}>Email</th>
+                                                    <th style={{ width: 35 + '%' }}>Số điện thoại</th>
+                                                    <th style={{ width: 20 + '%' }}>Email</th>
                                                     <th style={{ width: 20 + '%' }}>Vai trò</th>
-                                                    <th style={{ width: 10 + '%' }}>Hoạt động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -56,36 +56,15 @@ export default function User() {
                                                     <tr key={user.id}>
                                                         <td>{index + 1}</td>
                                                         <td>{user.name}</td>
+                                                        <td className={!user.address?.[0]?.phone && !user.phone ? "text-danger" : ""}>
+                                                            {user.address?.[0]?.phone || user.phone || "Chưa cập nhật số điện thoại"}
+                                                        </td>
                                                         <td>
                                                             <p className="mb-0">
                                                                 {user.email}
                                                             </p>
                                                         </td>
                                                         <td>{user.role}</td>
-                                                        <td>
-                                                            <div className="flex align-items-center list-user-action">
-                                                                <Link
-                                                                    className="bg-primary"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title=""
-                                                                    data-original-title="Edit"
-                                                                    href="#"
-                                                                >
-                                                                    <i className="ri-pencil-line"></i>
-                                                                </Link>
-                                                                <Link
-                                                                    className="bg-primary"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title=""
-                                                                    data-original-title="Xoá"
-                                                                    href="#"
-                                                                >
-                                                                    <i className="ri-delete-bin-line"></i>
-                                                                </Link>
-                                                            </div>
-                                                        </td>
                                                     </tr>
                                                 ))}
                                             </tbody>

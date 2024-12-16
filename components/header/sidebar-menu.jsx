@@ -146,30 +146,6 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                     </li>
 
                     <li>
-                        <div
-                            className={cx('menuItem', { active: activeItem === 'alphaBooks' })}
-                            onClick={() => handleMenuItemClick('alphaBooks')}
-                        >
-                            Về Alpha Books
-                            <i
-                                className={cx(
-                                    'fas',
-                                    expandedItems['alphaBooks']
-                                        ? 'fa-chevron-up'
-                                        : 'fa-chevron-down'
-                                )}
-                            ></i>
-                        </div>
-                        {expandedItems['alphaBooks'] && (
-                            <ul className={cx('submenu')}>
-                                <li>
-                                    <Link href="/about-me">Lịch sử</Link>
-                                </li>
-                            </ul>
-                        )}
-                    </li>
-
-                    <li>
                         <div className={cx('menuItem')} onClick={() => toggleExpand('bookcase')}>
                             Tủ sách
                             <i
@@ -181,20 +157,37 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                         </div>
                         {expandedItems['bookcase'] && (
                             <ul className={cx('submenu')}>
-                                <li>
-                                    <Link href="/shop">Sách tư duy - kỹ năng</Link>
+                                <li className={cx('horizontal-list-item')}>
+                                    <Link href="/shop" className={cx('horizontal-link')}>
+                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_dDRm3HWy.gif" title="Sách Tư Duy - Kỹ Năng" /></span>
+                                        Sách Tư Duy - Kỹ Năng
+                                    </Link>
                                 </li>
-                                <li>
-                                    <Link href="/shop">Sách lịch sử chính trị</Link>
+
+                                <li className={cx('horizontal-list-item')}>
+                                    <Link href="/shop" className={cx('horizontal-link')}>
+                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_pvUcuXXZ.gif" title="Sách Lịch Sử - Chính Trị" /></span>
+                                        Sách Lịch Sử - Chính Trị
+                                    </Link>
                                 </li>
-                                <li>
-                                    <Link href="/shop">Sách khoa học giáo dục</Link>
+
+                                <li className={cx('horizontal-list-item')}>
+                                    <Link href="/shop" className={cx('horizontal-link')}>
+                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_6r1HlvHe.gif" title="Sách Khoa Học - Giáo dục" /></span>
+                                        Sách Khoa Học - Giáo dục
+                                    </Link>
                                 </li>
-                                <li>
-                                    <Link href="/shop">Sách văn hóa nghệ thuật</Link>
+                                <li className={cx('horizontal-list-item')}>
+                                    <Link href="/shop" className={cx('horizontal-link')}>
+                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_6r1HlvHe.gif" title="Sách văn hóa - nghệ thuật" /></span>
+                                        Sách Văn Hóa - Nghệ Thuật
+                                    </Link>
                                 </li>
-                                <li>
-                                    <Link href="/shop">Sách kinh tế tài chính</Link>
+                                <li className={cx('horizontal-list-item')}>
+                                    <Link href="/shop" className={cx('horizontal-link')}>
+                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_eo3ZhEx3.gif" title="Sách Kinh Tế - Tài Chính" /></span>
+                                        Sách Kinh Tế - Tài Chính
+                                    </Link>
                                 </li>
                             </ul>
                         )}

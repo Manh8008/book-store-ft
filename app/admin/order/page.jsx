@@ -93,6 +93,14 @@ export default function Order() {
         }
     }
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString)
+        const day = String(date.getDate()).padStart(2, '0')
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const year = date.getFullYear()
+        return `${day}/${month}/${year}`
+    }
+
     // Tính toán các sản phẩm hiển thị trên trang hiện tại
     const indexOfLastItem = currentPage * itemsPerPage
     const indexOfFirstItem = indexOfLastItem - itemsPerPage
@@ -234,7 +242,7 @@ export default function Order() {
                                                                     </strong>
                                                                 </small>
                                                             </td>
-                                                            <td>{item.updated_at || '---'}</td>
+                                                            <td>{formatDate(item.created_at) || '---'}</td>
                                                             <td>
                                                                 <select
                                                                     className={cx('form-select')}
@@ -277,21 +285,14 @@ export default function Order() {
                                                                 <div className="flex align-items-center list-user-action">
                                                                     <Link
                                                                         className="bg-primary"
-                                                                        href={`/admin/order/${
-                                                                            item.id
-                                                                        }?order_status=${
-                                                                            item.order_status
-                                                                        }&district=${
-                                                                            item.district || ''
-                                                                        }&town=${
-                                                                            item.town || ''
-                                                                        }&province=${
-                                                                            item.province || ''
-                                                                        }&address_line=${
-                                                                            item.address_line || ''
-                                                                        }&phone=${
-                                                                            item.phone || ''
-                                                                        }&name=${item.name || ''}`}
+                                                                        href={`/admin/order/${item.id
+                                                                            }?order_status=${item.order_status
+                                                                            }&district=${item.district || ''
+                                                                            }&town=${item.town || ''
+                                                                            }&province=${item.province || ''
+                                                                            }&address_line=${item.address_line || ''
+                                                                            }&phone=${item.phone || ''
+                                                                            }&name=${item.name || ''}`}
                                                                     >
                                                                         <i className="ri-eye-line"></i>
                                                                     </Link>
@@ -312,9 +313,8 @@ export default function Order() {
                                     <nav className="mt-4">
                                         <ul className="pagination pagination-lg justify-content-center">
                                             <li
-                                                className={`page-item ${
-                                                    currentPage === 1 ? 'disabled' : ''
-                                                }`}
+                                                className={`page-item ${currentPage === 1 ? 'disabled' : ''
+                                                    }`}
                                             >
                                                 <button
                                                     className="page-link"
@@ -329,9 +329,8 @@ export default function Order() {
                                             {pageNumbers.map((number) => (
                                                 <li
                                                     key={number}
-                                                    className={`page-item ${
-                                                        number === currentPage ? 'active' : ''
-                                                    }`}
+                                                    className={`page-item ${number === currentPage ? 'active' : ''
+                                                        }`}
                                                 >
                                                     <button
                                                         className="page-link"
@@ -342,9 +341,8 @@ export default function Order() {
                                                 </li>
                                             ))}
                                             <li
-                                                className={`page-item ${
-                                                    currentPage === totalPages ? 'disabled' : ''
-                                                }`}
+                                                className={`page-item ${currentPage === totalPages ? 'disabled' : ''
+                                                    }`}
                                             >
                                                 <button
                                                     className="page-link"
