@@ -11,15 +11,16 @@ import styles from './book-detail.module.scss'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { productApiRequest } from '@/apiRequests/product'
 import { addItem } from '@/redux/slices/cartslice'
-import { handleHttpError } from '@/lib/utils'
+import { checkLogin, handleHttpError } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { commentApiRequest } from '@/apiRequests/comment'
-import { Beardcrumb } from '@/components/ui/breadcrumb'
 import { useUser } from '@/context/user-context'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 import MainLayout from '@/layouts/main-layout'
 import { CommentForm } from '@/components/book-detail/comment-form'
 import { userApiRequestAdmin } from '@/apiRequests/users'
+import { ToastContainer } from '@/components/ui/toast-success/toast-success'
+import { useRouter } from 'next/navigation'
 
 const cx = classNames.bind(styles)
 
@@ -33,6 +34,8 @@ export default function ProductDetail({ params }) {
     const [quantity, setQuantity] = useState(1)
     const dispatch = useDispatch()
     const [isExpanded, setIsExpanded] = useState(false)
+    const [toasts, setToasts] = useState([])
+    const router = useRouter()
 
     // Thu gọn/ xêm thêm mô tả
     const toggleDescription = () => {
@@ -85,7 +88,7 @@ export default function ProductDetail({ params }) {
         try {
             const result = await userApiRequestAdmin.getAllUser()
             setUsers(result.payload.data)
-        } catch (error) { }
+        } catch (error) {}
     }
 
     useEffect(() => {
@@ -121,11 +124,34 @@ export default function ProductDetail({ params }) {
         }
     }
 
+    const addToast = (message) => {
+        const newToast = {
+            id: Date.now(),
+            message,
+            onClose: () => {
+                setToasts((currentToasts) =>
+                    currentToasts.filter((toast) => toast.id !== newToast.id)
+                )
+            }
+        }
+        setToasts((currentToasts) => [...currentToasts, newToast])
+    }
+
+    const handleAddToCart = () => {
+        if (!checkLogin()) {
+            router.push('/auth/login')
+            return
+        }
+        dispatch(addItem({ product, quantity }))
+        addToast('Thêm vào giỏ hàng thành công!')
+    }
+
     if (loading) return <LoadingSkeleton />
 
     return (
         <MainLayout>
             <ToastError errorMessage={error} />
+            <ToastContainer toasts={toasts} />
             <main className={cx('main-container')}>
                 <div className={cx('product-detail')}>
                     <div className={cx('content-detail')}>
@@ -149,12 +175,11 @@ export default function ProductDetail({ params }) {
                                             <span>Tác giả:</span> {product?.author.name}
                                         </div>
                                         <p className={cx('product-price')}>
+                                            Giá:
                                             <span className={cx('price-sale')}>
                                                 {parseFloat(product?.price).toLocaleString('vi-VN')}{' '}
                                                 đ
                                             </span>
-                                            Giá cũ:
-                                            <span className={cx('price-retail')}>169.000đ</span>
                                         </p>
 
                                         <table className={cx('product-table')}>
@@ -203,17 +228,16 @@ export default function ProductDetail({ params }) {
 
                                         <button
                                             className={cx('action-btn')}
-                                            onClick={() => dispatch(addItem({ product, quantity }))}
+                                            onClick={handleAddToCart}
                                         >
                                             <FaShoppingCart />
                                             Thêm vào giỏ hàng
                                         </button>
 
-                                        <button
-                                            className={cx('action-btn', 'right')}
-                                            onClick={() => dispatch(addItem({ product, quantity }))}
-                                        >
-                                            <FaPhoneVolume /> Gọi điện đặt hàng
+                                        <button className={cx('action-btn', 'right')}>
+                                            <a style={{ color: 'white' }} href="tel:+84968575978">
+                                                <FaPhoneVolume /> Gọi điện đặt hàng
+                                            </a>
                                         </button>
                                     </div>
                                 </div>
@@ -272,47 +296,52 @@ export default function ProductDetail({ params }) {
                                     )}
                                 </div>
 
-                                <CommentForm onAddComment={handleAddComment} />
+                                <div className={cx('comment-section')}>
+                                    <CommentForm onAddComment={handleAddComment} />
 
-                                <div className={cx('user-comment')}>
-                                    {comments.map((comment) => {
-                                        const user = users.find(
-                                            (user) => user.id === comment.user_id
-                                        ) || { name: 'Người dùng' }
-                                        return (
-                                            <div key={comment.id} className={cx('item')}>
-                                                <div className={cx('info')}>
-                                                    <img
-                                                        className={cx('img-user')}
-                                                        src="/img/user-1.png"
-                                                        alt="User"
-                                                    />
-                                                    <div className={cx('username')}>
-                                                        {user.name}
+                                    <div className={cx('comment-list')}>
+                                        {comments.map((comment) => {
+                                            const user = users.find(
+                                                (user) => user.id === comment.user_id
+                                            ) || { name: 'Người dùng' }
+                                            return (
+                                                <div
+                                                    key={comment.id}
+                                                    className={cx('comment-item')}
+                                                >
+                                                    <div className={cx('user-info')}>
+                                                        <img
+                                                            className={cx('avatar')}
+                                                            src="/img/user-1.png"
+                                                            alt="User"
+                                                        />
+                                                        <div className={cx('username')}>
+                                                            {user.name}
+                                                        </div>
+                                                    </div>
+                                                    <div className={cx('comment-meta')}>
+                                                        {moment(comment.created_at).format(
+                                                            'YYYY-MM-DD HH:mm:ss'
+                                                        )}
+                                                    </div>
+                                                    <div className={cx('comment-content')}>
+                                                        <p>{comment.content}</p>
+                                                        {userData?.id === comment.user_id && (
+                                                            <Button
+                                                                className={cx('delete-btn')}
+                                                                text
+                                                                onClick={() =>
+                                                                    handleDeleteComment(comment.id)
+                                                                }
+                                                            >
+                                                                Xóa
+                                                            </Button>
+                                                        )}
                                                     </div>
                                                 </div>
-                                                <div className={cx('date')}>
-                                                    {moment(comment.created_at).format(
-                                                        'YYYY-MM-DD HH:mm:ss'
-                                                    )}
-                                                </div>
-                                                <div className={cx('content-comment')}>
-                                                    <p>{comment.content}</p>
-                                                    {userData?.id === comment.user_id && (
-                                                        <Button
-                                                            className={cx('btn-del-comment')}
-                                                            text
-                                                            onClick={() =>
-                                                                handleDeleteComment(comment.id)
-                                                            }
-                                                        >
-                                                            Xóa
-                                                        </Button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
+                                            )
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -11,7 +11,7 @@
     position: relative;
     overflow: hidden;
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1280px) {
         width: calc(25% - 8px);
         font-size: 0.95em;
     }
@@ -39,6 +39,7 @@
 
         .buy-now {
             display: block;
+            animation: fadeInUp 0.3s ease;
         }
 
         .thumb {
@@ -73,14 +74,6 @@
     display: inline-block;
 }
 
-.price-sale {
-    font-size: 0.9em;
-    color: #777;
-    text-decoration: line-through;
-    display: inline-block;
-    margin-right: 5px;
-}
-
 .title a {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -106,14 +99,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-}
-
-.stars {
-    display: flex;
-    margin: 12px 0;
-    & img {
-        width: 1.2rem;
-    }
 }
 
 .sold-count {

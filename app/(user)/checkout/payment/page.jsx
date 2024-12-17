@@ -93,6 +93,8 @@ const Payment = () => {
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
                 <div className={cx('left')}>
+                    <h2 className={cx('main-title')}>Thanh toán</h2>
+
                     <div className={cx('section-container')}>
                         <h3 className={cx('title')}>Các sản phẩm bạn đã thêm</h3>
                         <div className={cx('shipping-package')}>
@@ -108,19 +110,6 @@ const Payment = () => {
                                 </div>
                             </div>
                             <div className={cx('left-content')}>
-                                <div className={cx('package-summary')}>
-                                    <div className={cx('align-center')}>
-                                        <span
-                                            className={cx('method-text')}
-                                            style={{ textTransform: 'uppercase' }}
-                                        >
-                                            Giao tiết kiệm
-                                        </span>
-                                    </div>
-                                    <div className={cx('shipping-fee')}>
-                                        <span className={cx('current-fee text')}>21.000đ</span>
-                                    </div>
-                                </div>
                                 <div className={cx('package-item-list')}>
                                     <PackageItem cart={cart} />
                                 </div>

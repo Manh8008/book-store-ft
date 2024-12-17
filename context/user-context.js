@@ -23,8 +23,6 @@ export const UserProvider = ({ children }) => {
                 try {
                     const result = await accountApiRequest.getProfile()
 
-                    console.log(result)
-
                     if (result.status === 200) {
                         const profileInfo = result.payload.data
 

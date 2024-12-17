@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { AddressSchema } from '@/schemas'
 import addressApiRequest from '@/apiRequests/address'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 import styles from './create-address-form.module.scss'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@/context/user-context'

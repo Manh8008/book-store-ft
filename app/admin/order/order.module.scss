@@ -110,3 +110,122 @@
 .form-select:focus {
     box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
 }
+
+/* Style cho status badge */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+
+    &.pending {
+        background-color: #fff3e6;
+        color: #ff9500;
+        border: 1px solid #ffd699;
+    }
+
+    &.confirmed {
+        background-color: #e6f3ff;
+        color: #0066cc;
+        border: 1px solid #99ccff;
+    }
+
+    &.completed {
+        background-color: #e6ffe6;
+        color: #008000;
+        border: 1px solid #99ff99;
+    }
+
+    &.cancelled {
+        background-color: #ffe6e6;
+        color: #cc0000;
+        border: 1px solid #ff9999;
+    }
+}
+
+/* Style cho select dropdown */
+.status-select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    font-size: 0.9rem;
+    width: 100%;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: #bbbbbb;
+    }
+
+    &:focus {
+        border-color: #2684ff;
+        box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.2);
+        outline: none;
+    }
+
+    option {
+        padding: 10px;
+
+        &[value='Chờ xác nhận'] {
+            color: #ff9500;
+        }
+
+        &[value='Đã xác nhận'] {
+            color: #0066cc;
+        }
+
+        &[value='complete'] {
+            color: #008000;
+        }
+
+        &[value='Đã hủy'] {
+            color: #cc0000;
+        }
+    }
+}
+
+/* Style cho nút sort */
+.sort-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    background-color: white;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &:hover {
+        border-color: #2684ff;
+        color: #2684ff;
+    }
+
+    &:active {
+        background-color: #f0f8ff;
+    }
+
+    i {
+        font-size: 1.1rem;
+    }
+}
+
+.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+
+    p {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        color: #666;
+    }
+}

@@ -13,40 +13,39 @@ const cx = classNames.bind(styles)
 const fetchPostName = async (id) => {
     try {
         // Gửi yêu cầu đến API để lấy bài viết theo id
-        const result = await reviewApiRequestAdmin.getPostById(id);
-        console.log('Dữ liệu trả về từ API:', result);
+        const result = await reviewApiRequestAdmin.getPostById(id)
+        console.log('Dữ liệu trả về từ API:', result)
 
         if (result.payload && result.payload.data && result.payload.data.title) {
-            console.log('Tên bài viết:', result.payload.data.title);
-            return result.payload.data.title; // Trả về tên bài viết
+            console.log('Tên bài viết:', result.payload.data.title)
+            return result.payload.data.title // Trả về tên bài viết
         } else {
-            console.error('Không tìm thấy tên bài viết trong dữ liệu trả về'); // In lỗi nếu không có tên bài viết
-            throw new Error('Không tìm thấy tên bài viết');
+            console.error('Không tìm thấy tên bài viết trong dữ liệu trả về') // In lỗi nếu không có tên bài viết
+            throw new Error('Không tìm thấy tên bài viết')
         }
     } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu bài viết:', error); // In lỗi khi gặp sự cố
-        return `Chi tiết bài viết ${id}`; // Giá trị mặc định nếu có lỗi
+        console.error('Lỗi khi lấy dữ liệu bài viết:', error) // In lỗi khi gặp sự cố
+        return `Chi tiết bài viết ${id}` // Giá trị mặc định nếu có lỗi
     }
 }
 
 // Hàm lấy tên danh mục từ API
 const fetchCategoryName = async (id) => {
     try {
-        const result = await catalogApiRequestAdmin.getCatalogById(id); // API lấy danh mục
-        console.log('Dữ liệu trả về từ API (danh mục):', result);
+        const result = await catalogApiRequestAdmin.getCatalogById(id) // API lấy danh mục
+        console.log('Dữ liệu trả về từ API (danh mục):', result)
 
         if (result.payload && result.payload.data && result.payload.data.name) {
-            console.log('Tên danh mục:', result.payload.data.name);
-            return result.payload.data.name; // Trả về tên danh mục
+            return result.payload.data.name // Trả về tên danh mục
         } else {
-            console.error('Không tìm thấy tên danh mục trong dữ liệu trả về');
-            throw new Error('Không tìm thấy tên danh mục');
+            console.error('Không tìm thấy tên danh mục trong dữ liệu trả về')
+            throw new Error('Không tìm thấy tên danh mục')
         }
     } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu danh mục:', error);
-        return `Danh mục ${id}`; // Giá trị mặc định nếu có lỗi
+        console.error('Lỗi khi lấy dữ liệu danh mục:', error)
+        return `Danh mục ${id}` // Giá trị mặc định nếu có lỗi
     }
-};
+}
 
 export const Beardcrumb = () => {
     const pathname = usePathname() // Lấy đường dẫn hiện tại
@@ -54,39 +53,39 @@ export const Beardcrumb = () => {
 
     useEffect(() => {
         const generateBreadcrumb = async () => {
-            const segments = pathname.split('/').filter(Boolean); // Tách các segment từ URL
-            const breadcrumbArray = [{ name: 'Trang chủ', href: '/' }];
+            const segments = pathname.split('/').filter(Boolean) // Tách các segment từ URL
+            const breadcrumbArray = [{ name: 'Trang chủ', href: '/' }]
 
             for (let i = 0; i < segments.length; i++) {
-                const segment = segments[i];
-                const href = `/${segments.slice(0, i + 1).join('/')}`;
+                const segment = segments[i]
+                const href = `/${segments.slice(0, i + 1).join('/')}`
 
                 if (segment === 'shop') {
-                    breadcrumbArray.push({ name: 'Cửa hàng', href });
+                    breadcrumbArray.push({ name: 'Cửa hàng', href })
                 } else if (!isNaN(segment) && segments[i - 1] === 'shop') {
                     // Nếu segment là categoryId (số) và trước nó là 'shop'
-                    const categoryId = segment;
-                    const categoryName = await fetchCategoryName(categoryId);
-                    breadcrumbArray.push({ name: categoryName, href: `/shop/${categoryId}` });
+                    const categoryId = segment
+                    const categoryName = await fetchCategoryName(categoryId)
+                    breadcrumbArray.push({ name: categoryName, href: `/shop/${categoryId}` })
                 } else if (segment === 'review-book') {
-                    breadcrumbArray.push({ name: 'Bài viết', href });
+                    breadcrumbArray.push({ name: 'Bài viết', href })
                 } else if (segment === 'reviewBook-detail' && segments[i + 1]) {
-                    const id = segments[i + 1];
+                    const id = segments[i + 1]
                     if (id && !isNaN(id)) {
-                        const postName = await fetchPostName(id);
-                        breadcrumbArray.push({ name: postName, href: `/reviewBook-detail/${id}` });
-                        break;
+                        const postName = await fetchPostName(id)
+                        breadcrumbArray.push({ name: postName, href: `/reviewBook-detail/${id}` })
+                        break
                     }
                 } else if (segment === 'contact') {
-                    breadcrumbArray.push({ name: 'Liên hệ', href });
+                    breadcrumbArray.push({ name: 'Liên hệ', href })
                 }
             }
 
-            setBreadcrumb(breadcrumbArray);
-        };
+            setBreadcrumb(breadcrumbArray)
+        }
 
-        generateBreadcrumb();
-    }, [pathname]);
+        generateBreadcrumb()
+    }, [pathname])
 
     return (
         <div className={cx('breadcrumb')}>

@@ -99,8 +99,9 @@
 .map {
     margin-top: 2rem;
     padding: 0 2rem 2rem;
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 2rem auto;
+    padding-bottom: 50px;
 
     @media (max-width: 768px) {
         padding: 0 1rem 1rem;

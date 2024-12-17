@@ -2,10 +2,11 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import classNames from 'classnames/bind'
+import Image from 'next/image'
 
 import orderApiRequest from '@/apiRequests/order'
 import SearchAdmin from '../components/search-admin'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 
 import styles from './order.module.scss'
 import { DropdownMenu } from '@/components/ui/dropdown-menu'
@@ -93,6 +94,14 @@ export default function Order() {
         }
     }
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString)
+        const day = String(date.getDate()).padStart(2, '0')
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const year = date.getFullYear()
+        return `${day}/${month}/${year}`
+    }
+
     // Tính toán các sản phẩm hiển thị trên trang hiện tại
     const indexOfLastItem = currentPage * itemsPerPage
     const indexOfFirstItem = indexOfLastItem - itemsPerPage
@@ -135,10 +144,28 @@ export default function Order() {
         }
     }
 
+    const sortOrdersByDate = (order) => {
+        if (loading) return
+        setLoading(true)
+        setError('')
+
+        try {
+            const sortedOrders = [...orderData].sort((a, b) => {
+                return new Date(b.created_at) - new Date(a.created_at)
+            })
+            setOrderData(sortedOrders)
+        } catch (err) {
+            setError('Không thể sắp xếp đơn hàng!')
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
             <div id="content-page" className="content-page">
                 <ToastError errorMessage={error} />
+
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
@@ -147,12 +174,18 @@ export default function Order() {
                                     <div className="iq-header-title">
                                         <h4 className="card-title">Danh sách đơn hàng</h4>
                                     </div>
-                                    <DropdownMenu onStatusSort={filterOrdersByStatus} />
-                                    <SearchAdmin
-                                        query={query}
-                                        setQuery={setQuery}
-                                        onSearch={handleSearch}
-                                    />
+                                    <button className={cx('sort-btn')} onClick={sortOrdersByDate}>
+                                        <i className="ri-time-line me-1"></i>
+                                        Mới nhất
+                                    </button>
+                                    <div className="d-flex gap-3 align-items-center">
+                                        <DropdownMenu onStatusSort={filterOrdersByStatus} />
+                                        <SearchAdmin
+                                            query={query}
+                                            setQuery={setQuery}
+                                            onSearch={handleSearch}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="iq-card-body">
                                     {searchedQuery && (
@@ -184,7 +217,10 @@ export default function Order() {
                                                         <th style={{ width: '10%' }}>
                                                             Ngày đặt hàng
                                                         </th>
-                                                        <th style={{ width: '15%' }}>Trạng thái</th>
+                                                        <th style={{ width: '10%' }}>Trạng thái</th>
+                                                        <th style={{ width: '15%' }}>
+                                                            Thay đổi trạng thái
+                                                        </th>
                                                         <th style={{ width: '8%' }}>Hoạt động</th>
                                                     </tr>
                                                 </thead>
@@ -234,10 +270,36 @@ export default function Order() {
                                                                     </strong>
                                                                 </small>
                                                             </td>
-                                                            <td>{item.updated_at || '---'}</td>
+                                                            <td>
+                                                                {formatDate(item.created_at) ||
+                                                                    '---'}
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    className={cx('status-badge', {
+                                                                        pending:
+                                                                            item.order_status ===
+                                                                            'Chờ xác nhận',
+                                                                        confirmed:
+                                                                            item.order_status ===
+                                                                            'Đã xác nhận',
+                                                                        completed:
+                                                                            item.order_status ===
+                                                                            'complete',
+                                                                        cancelled:
+                                                                            item.order_status ===
+                                                                            'Đã hủy'
+                                                                    })}
+                                                                >
+                                                                    {item.order_status ===
+                                                                    'complete'
+                                                                        ? 'Đã hoàn thành'
+                                                                        : item.order_status}
+                                                                </span>
+                                                            </td>
                                                             <td>
                                                                 <select
-                                                                    className={cx('form-select')}
+                                                                    className={cx('status-select')}
                                                                     value={item.order_status}
                                                                     onChange={(e) =>
                                                                         handleChangeOrderStatus(
@@ -246,28 +308,16 @@ export default function Order() {
                                                                         )
                                                                     }
                                                                 >
-                                                                    <option
-                                                                        value="Chờ xác nhận"
-                                                                        style={{ color: 'orange' }}
-                                                                    >
+                                                                    <option value="Chờ xác nhận">
                                                                         Chờ xác nhận
                                                                     </option>
-                                                                    <option
-                                                                        value="Đã xác nhận"
-                                                                        style={{ color: 'blue' }}
-                                                                    >
+                                                                    <option value="Đã xác nhận">
                                                                         Đã xác nhận
                                                                     </option>
-                                                                    <option
-                                                                        value="complete"
-                                                                        style={{ color: 'green' }}
-                                                                    >
+                                                                    <option value="complete">
                                                                         Đã hoàn thành
                                                                     </option>
-                                                                    <option
-                                                                        value="Đã hủy"
-                                                                        style={{ color: 'red' }}
-                                                                    >
+                                                                    <option value="Đã hủy">
                                                                         Đã hủy
                                                                     </option>
                                                                 </select>
@@ -302,62 +352,72 @@ export default function Order() {
                                                 </tbody>
                                             </table>
                                         ) : (
-                                            <div className="text-center py-4">
-                                                <p>Không có đơn hàng nào!</p>
+                                            <div className="text-center py-5">
+                                                <Image
+                                                    width={400}
+                                                    height={400}
+                                                    src="/img/empty-order.png"
+                                                    alt="Không có đơn hàng"
+                                                />
+                                                <p className="mt-3 text-muted">
+                                                    Không có đơn hàng nào
+                                                </p>
                                             </div>
                                         )}
                                     </div>
 
                                     {/* Phân trang */}
-                                    <nav className="mt-4">
-                                        <ul className="pagination pagination-lg justify-content-center">
-                                            <li
-                                                className={`page-item ${
-                                                    currentPage === 1 ? 'disabled' : ''
-                                                }`}
-                                            >
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() =>
-                                                        handlePageChange(currentPage - 1)
-                                                    }
-                                                    aria-label="Previous"
-                                                >
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </button>
-                                            </li>
-                                            {pageNumbers.map((number) => (
+                                    {currentItems.length > 0 && (
+                                        <nav className="mt-4">
+                                            <ul className="pagination pagination-lg justify-content-center">
                                                 <li
-                                                    key={number}
                                                     className={`page-item ${
-                                                        number === currentPage ? 'active' : ''
+                                                        currentPage === 1 ? 'disabled' : ''
                                                     }`}
                                                 >
                                                     <button
                                                         className="page-link"
-                                                        onClick={() => handlePageChange(number)}
+                                                        onClick={() =>
+                                                            handlePageChange(currentPage - 1)
+                                                        }
+                                                        aria-label="Previous"
                                                     >
-                                                        {number}
+                                                        <span aria-hidden="true">&laquo;</span>
                                                     </button>
                                                 </li>
-                                            ))}
-                                            <li
-                                                className={`page-item ${
-                                                    currentPage === totalPages ? 'disabled' : ''
-                                                }`}
-                                            >
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() =>
-                                                        handlePageChange(currentPage + 1)
-                                                    }
-                                                    aria-label="Next"
+                                                {pageNumbers.map((number) => (
+                                                    <li
+                                                        key={number}
+                                                        className={`page-item ${
+                                                            number === currentPage ? 'active' : ''
+                                                        }`}
+                                                    >
+                                                        <button
+                                                            className="page-link"
+                                                            onClick={() => handlePageChange(number)}
+                                                        >
+                                                            {number}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                                <li
+                                                    className={`page-item ${
+                                                        currentPage === totalPages ? 'disabled' : ''
+                                                    }`}
                                                 >
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() =>
+                                                            handlePageChange(currentPage + 1)
+                                                        }
+                                                        aria-label="Next"
+                                                    >
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    )}
                                 </div>
                             </div>
                         </div>

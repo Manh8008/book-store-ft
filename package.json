@@ -24,6 +24,7 @@
         "classnames": "^2.5.1",
         "datatables.net-bs4": "^2.1.8",
         "formik": "^2.4.6",
+        "framer-motion": "^11.14.4",
         "frontend": "file:",
         "js-cookie": "^3.0.5",
         "lottie-react": "^2.4.0",

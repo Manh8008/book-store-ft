@@ -1,12 +1,11 @@
 .container {
-    width: 1349px;
-    max-width: calc(100% - 85px);
+    width: 1280px;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: 50px;
 }
 
 .home_news {
-    background: #ffffff;
     border-radius: 4px;
     display: flex;
 }
@@ -103,7 +102,7 @@ figure.image > figcaption {
 }
 
 /* Media Queries cho các màn hình nhỏ */
-@media (max-width: 1200px) {
+@media (max-width: 1280px) {
     .main-left {
         width: 60%;
     }

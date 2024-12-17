@@ -130,9 +130,9 @@ const BookCollection = () => {
                     <>
                         <div className={cx('banner')}>
                             <Image
-                                width={1349}
+                                width={1280}
                                 height={400}
-                                src={'/img/sachkinhte-taichinh.png'}
+                                src={'/img/banner-doc-sach-vi-tuong-lai-amo-vietnam-2018.jpg'}
                                 alt="sách kinh tế"
                                 priority
                             />

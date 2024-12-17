@@ -11,6 +11,7 @@ import { productApiRequestAdmin } from '@/apiRequests/product'
 export default function CreateProduct() {
     const productFormSchema = z.object({
         name: z.string().min(1, { message: 'Tên sách là bắt buộc' }),
+        title: z.string().min(1, { message: 'Tên sách là bắt buộc' }),
         category_id: z.string().min(1, { message: 'Danh mục sách là bắt buộc' }),
         authorName: z.string().min(1, { message: 'Tác giả sách là bắt buộc' }),
         authorBio: z.string().min(1, { message: 'Tiểu sử tác giả là bắt buộc' }),
@@ -60,6 +61,7 @@ export default function CreateProduct() {
         resolver: zodResolver(productFormSchema),
         defaultValues: {
             name: '',
+            title: '',
             category_id: '',
             authorName: '',
             authorBio: '',
@@ -78,6 +80,7 @@ export default function CreateProduct() {
     const onSubmit = async (data) => {
         const formData = new FormData()
         formData.append('name', data.name)
+        formData.append('title', data.title)
         formData.append('category_id', data.category_id)
         formData.append('authorName', data.authorName)
         formData.append('authorBio', data.authorBio)
@@ -125,6 +128,20 @@ export default function CreateProduct() {
                                             {errors.name && (
                                                 <div className="text-danger mt-2">
                                                     {errors.name.message}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Tiêu đề:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                name="title"
+                                                {...register('title')}
+                                            />
+                                            {errors.title && (
+                                                <div className="text-danger mt-2">
+                                                    {errors.title.message}
                                                 </div>
                                             )}
                                         </div>
@@ -203,7 +220,10 @@ export default function CreateProduct() {
                                                     <img
                                                         src={imagePreview}
                                                         className="img-fluid"
-                                                        style={{ maxWidth: '300px', height: 'auto' }}
+                                                        style={{
+                                                            maxWidth: '300px',
+                                                            height: 'auto'
+                                                        }}
                                                         alt="Product Image"
                                                     />
                                                 )}

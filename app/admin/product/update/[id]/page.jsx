@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { catalogApiRequestAdmin } from '@/apiRequests/category'
 import { handleHttpError } from '@/lib/utils'
 import { productApiRequestAdmin } from '@/apiRequests/product'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 
 export default function UpdateProduct({ params }) {
     const [error, setError] = useState('')
@@ -36,8 +36,8 @@ export default function UpdateProduct({ params }) {
             const data = await res.json()
             setProduct(data.data)
             setValue('name', data.data.name)
-            setValue('title', data.data.title)
             setValue('category_id', data.data.category_id)
+            setValue('title', data.data.title)
             setValue('authorName', data.data.author.name)
             setValue('authorBio', data.data.author.bio)
             setValue('price', data.data.price)
@@ -57,7 +57,7 @@ export default function UpdateProduct({ params }) {
             getProduct()
         }
     }, [id, setValue])
-    console.log(product)
+    // console.log(product)
 
     const handleImageChange = (event) => {
         const file = event.target.files[0]
@@ -80,10 +80,10 @@ export default function UpdateProduct({ params }) {
 
             // Nếu có ảnh mới (chọn từ input), thêm vào FormData
             if (selectedImage instanceof File) {
-                formData.append('images', selectedImage) // Gửi file ảnh thực tế lên server
-            } else if (product?.images) {
+                formData.append('images', selectedImage)
+            } else if (product?.images?.[0]?.url) {
                 // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
-                formData.append('images', product.images)
+                formData.append('images', product.images[0].url)
             }
 
             const result = await productApiRequestAdmin.updateBook(id, formData)
@@ -126,6 +126,21 @@ export default function UpdateProduct({ params }) {
                                             )}
                                         </div>
                                         <div className="form-group">
+                                            <label>Tiêu đề:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                {...register('title', {
+                                                    required: 'Tiêu đề là bắt buộc'
+                                                })}
+                                            />
+                                            {errors.name && (
+                                                <div className="text-danger mt-1">
+                                                    {errors.name.message}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="form-group">
                                             <label>Danh mục sách:</label>
                                             <select
                                                 className="form-control"
@@ -146,22 +161,6 @@ export default function UpdateProduct({ params }) {
                                             {errors.category_id && (
                                                 <div className="text-danger mt-2">
                                                     {errors.category_id.message}
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="form-group">
-                                            <label>tiêu đề:</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                name="authorName"
-                                                {...register('title', {
-                                                    required: 'Tên tác giả là bắt buộc'
-                                                })}
-                                            />
-                                            {errors.title && (
-                                                <div className="text-danger mt-2">
-                                                    {errors.title.message}
                                                 </div>
                                             )}
                                         </div>
@@ -205,7 +204,7 @@ export default function UpdateProduct({ params }) {
                                                     className="custom-file-input"
                                                     name="images"
                                                     {...register('images', {
-                                                        required: 'Ảnh sản phẩm là bắt buộc'
+                                                        required: false
                                                     })}
                                                     onChange={handleImageChange}
                                                 />

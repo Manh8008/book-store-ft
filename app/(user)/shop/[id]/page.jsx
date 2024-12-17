@@ -25,7 +25,7 @@ export default function ProductByCategories({ params }) {
     const [productByCate, setProductByCate] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
 
-    const itemsPerPage = 20 
+    const itemsPerPage = 20
     const { currentItems, totalPages } = useMemo(() => {
         const indexOfLastItem = currentPage * itemsPerPage
         const indexOfFirstItem = indexOfLastItem - itemsPerPage
@@ -120,20 +120,13 @@ export default function ProductByCategories({ params }) {
 
     return (
         <div className={cx('wrapper')}>
-            {error && (
-                <div className={cx('error-message')}>
-                    <p>{error}</p>
-                    <button onClick={fetchData}>Thử lại</button>
-                </div>
-            )}
-
             <div className={cx('wrapper-content')}>
                 <Beardcrumb />
                 <div className={cx('banner')}>
                     <Image
-                        width={1349}
+                        width={1280}
                         height={400}
-                        src={'/img/sachkinhte-taichinh.png'}
+                        src={'/img/banner-doc-sach-vi-tuong-lai-amo-vietnam-2018.jpg'}
                         alt="sách kinh tế"
                         priority
                     />
@@ -144,9 +137,21 @@ export default function ProductByCategories({ params }) {
                     onPriceSort={sortBooksByPrice}
                     isLoading={isLoadingAction}
                 />
-                <div className={cx('productByCate')}>
-                    <ProductCard data={currentItems} />
-                </div>
+                {filteredProducts.length > 0 ? (
+                    <div className={cx('productByCate')}>
+                        <ProductCard data={currentItems} />
+                    </div>
+                ) : (
+                    <div className={cx('no-products')}>
+                        <Image
+                            width={400}
+                            height={400}
+                            src="/img/empty-product.webp"
+                            alt="Không tìm thấy sản phẩm"
+                        />
+                        <p>Không tìm thấy sản phẩm nào</p>
+                    </div>
+                )}
             </div>
 
             {!isLoadingInitial && !isLoadingAction && filteredProducts.length > itemsPerPage && (

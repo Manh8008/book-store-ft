@@ -3,7 +3,7 @@
 
     &-content {
         width: 100%;
-        max-width: 1349px;
+        max-width: 1280px;
         margin: 0 auto;
         padding: 0 15px;
 
@@ -39,11 +39,12 @@
     display: flex;
     justify-content: center;
     margin-top: 10px;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
 
     .pagination {
         display: flex;
         gap: 8px;
+        margin-bottom: 50px;
 
         .page-item {
             .page-link {
@@ -72,5 +73,20 @@
                 border-color: var(--primary-color);
             }
         }
+    }
+}
+
+.no-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+
+    p {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        color: #666;
     }
 }

@@ -1,24 +1,35 @@
+@import '@/styles/_variables.scss';
+
 .cart {
     background-color: #f5f5fa;
     min-height: 100vh;
     padding: 20px 0;
+
+    @media (max-width: 480px) {
+        padding: 10px 0;
+    }
 }
 
 .cart-content {
     display: flex;
-    width: 1200px;
+    width: 1280px;
     margin: 0 auto;
     gap: 20px;
 
-    @media (max-width: 1280px) {
+    @media (max-width: $breakpoint-xl) {
         width: 95%;
         padding: 0 20px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-lg) {
         flex-direction: column;
         width: 100%;
         padding: 0 15px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 0 10px;
+        gap: 10px;
     }
 }
 
@@ -27,7 +38,7 @@
     min-width: 0;
     max-width: calc(100% - 320px);
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-lg) {
         width: 100%;
         max-width: 100%;
     }
@@ -41,7 +52,7 @@
     line-height: 28px;
     text-transform: uppercase;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         font-size: 18px;
         margin: 15px 0;
     }
@@ -57,12 +68,13 @@
     margin-bottom: 12px;
     border-radius: 8px;
 
-    @media (max-width: 1024px) {
+    @media (max-width: $breakpoint-lg) {
         grid-template-columns: auto 150px 100px 100px 20px;
         font-size: 1.2rem;
+        padding: 8px 12px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         display: none;
     }
 }
@@ -97,7 +109,7 @@
         color: var(--primary-color);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         font-size: 1.4rem;
     }
 }
@@ -108,7 +120,7 @@
     border-radius: 8px;
     border: 1px solid rgb(255, 209, 164);
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         padding: 15px;
         border: none;
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -164,7 +176,7 @@
     font-weight: 500;
     color: #333;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         font-size: 14px;
     }
 }
@@ -178,17 +190,17 @@
     min-width: 300px;
     margin-top: 70px;
 
-    @media (max-width: 1024px) {
-        width: 280px;
-        min-width: 280px;
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-lg) {
         width: 100%;
         min-width: 100%;
+        margin-top: 20px;
         position: sticky;
         bottom: 0;
         z-index: 10;
+    }
+
+    @media (max-width: 480px) {
+        margin-top: 10px;
     }
 }
 
@@ -197,7 +209,7 @@
     border-radius: 8px;
     overflow: hidden;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         display: none;
     }
 }
@@ -209,9 +221,13 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
 
-    @media (max-width: 768px) {
-        border-radius: 8px 8px 0 0;
+    @media (max-width: $breakpoint-lg) {
         padding: 15px;
+        border-radius: 8px 8px 0 0;
+    }
+
+    @media (max-width: 480px) {
+        padding: 12px;
     }
 
     .summary-row {
@@ -249,7 +265,7 @@
     font-size: 14px;
     color: rgb(128, 128, 137);
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         font-size: 13px;
         margin-bottom: 10px;
     }
@@ -268,7 +284,7 @@
         font-size: 20px;
         font-weight: 600;
 
-        @media (max-width: 768px) {
+        @media (max-width: $breakpoint-md) {
             font-size: 18px;
         }
     }
@@ -280,7 +296,7 @@
     font-size: 16px;
     font-weight: 500;
 
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         height: 40px;
         font-size: 15px;
     }
@@ -293,7 +309,7 @@
 .empty-cart {
     background: #fff;
     border-radius: 8px;
-    padding: 40px;
+    padding: 40px 20px;
     text-align: center;
     margin-bottom: 20px;
     display: flex;
@@ -302,6 +318,14 @@
 
     .cart-items:not(:empty) + & {
         display: none;
+    }
+
+    @media (max-width: $breakpoint-md) {
+        padding: 30px 15px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 20px 10px;
     }
 }
 
@@ -316,7 +340,16 @@
 .empty-cart-img {
     width: 200px;
     height: 200px;
-    margin-bottom: 16px;
+
+    @media (max-width: $breakpoint-md) {
+        width: 150px;
+        height: 150px;
+    }
+
+    @media (max-width: 480px) {
+        width: 120px;
+        height: 120px;
+    }
 }
 
 .empty-cart-text {
@@ -331,7 +364,7 @@
     font-size: 15px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
     .cart-content {
         flex-direction: column;
     }
@@ -367,7 +400,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
     .recommend-section {
         padding: 15px;
 

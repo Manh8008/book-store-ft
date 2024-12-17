@@ -5,8 +5,9 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import SearchAdmin from '../components/search-admin'
-import { ToastError } from '@/components/ui/ToastError'
+import { ToastError } from '@/components/ui/ToastError/ToastError'
 import { FilterTop } from '@/components/ui/filter-top'
+import Image from 'next/image'
 
 export default function Product() {
     const [product, setProduct] = useState([])
@@ -15,7 +16,7 @@ export default function Product() {
     const [query, setQuery] = useState('')
     const [searchedQuery, setSearchedQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 8 // Số sản phẩm mỗi trang
+    const itemsPerPage = 10
 
     const fetchProduct = async () => {
         const result = await productApiRequestAdmin.getAllBooks()
@@ -176,139 +177,164 @@ export default function Product() {
                                 </div>
                                 {/* Bộ lọc giá */}
                                 <div className="iq-card-body">
-                                    <FilterTop onPriceChange={filterByPrice} onPriceSort={sortBooksByPrice} />
+                                    <FilterTop
+                                        onPriceChange={filterByPrice}
+                                        onPriceSort={sortBooksByPrice}
+                                    />
                                     {searchedQuery && (
                                         <p>
                                             Kết quả tìm kiếm cho từ khóa "
                                             <strong>{searchedQuery}</strong>"
                                         </p>
                                     )}
-                                    <div className="table-responsive">
-                                        <table
-                                            className="data-tables table table-striped table-bordered"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <thead>
-                                                <tr>
-                                                    <th width="3%">STT</th>
-                                                    <th width="12%">Hình ảnh</th>
-                                                    <th width="15%">Tên sách</th>
-                                                    <th width="15%">Thể loại sách</th>
-                                                    <th width="15%">Tác giả sách</th>
-                                                    <th width="18%">Mô tả sách</th>
-                                                    <th width="5%">Số lượng</th>
-                                                    <th width="10%">Giá</th>
-                                                    <th width="15%">Hoạt động</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {currentItems.map((product, index) => (
-                                                    <tr key={product.id}>
-                                                        <td>{indexOfFirstItem + index + 1}</td>
-                                                        <td>
-                                                            <img
-                                                                className="img-fluid rounded"
-                                                                src={product.images[0]?.url}
-                                                                alt={product.name}
-                                                            />
-                                                        </td>
-                                                        <td>{product.name}</td>
-                                                        <td>{product.category?.name}</td>
-                                                        <td>{product.author.name}</td>
-                                                        <td>
-                                                            <p className="mb-0">
-                                                                {product.short_summary}
-                                                            </p>
-                                                        </td>
-                                                        <td>{product.stock}</td>
-                                                        <td>
-                                                            {parseFloat(
-                                                                product.price
-                                                            ).toLocaleString('vi-VN')}{' '}
-                                                            đ
-                                                        </td>
-                                                        <td>
-                                                            <div className="flex align-items-center list-user-action">
-                                                                <Link
-                                                                    className="bg-primary"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title="Edit"
-                                                                    href={`/admin/product/update/${product.id}`}
-                                                                >
-                                                                    <i className="ri-pencil-line"></i>
-                                                                </Link>
-                                                                <Link
-                                                                    className="bg-primary"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title="Xoá"
-                                                                    href="#"
-                                                                    onClick={() =>
-                                                                        deleteProduct(product.id)
-                                                                    }
-                                                                >
-                                                                    <i className="ri-delete-bin-line"></i>
-                                                                </Link>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    {/* Phân trang */}
-                                    <nav className="mt-4">
-                                        <ul className="pagination pagination-lg justify-content-center">
-                                            <li
-                                                className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}
+                                    {currentItems.length > 0 ? (
+                                        <div className="table-responsive">
+                                            <table
+                                                className="data-tables table table-striped table-bordered"
+                                                style={{ width: '100%' }}
                                             >
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() =>
-                                                        handlePageChange(currentPage - 1)
-                                                    }
-                                                    aria-label="Previous"
-                                                >
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </button>
-                                            </li>
-                                            {pageNumbers.map((number) => (
+                                                <thead>
+                                                    <tr>
+                                                        <th width="3%">STT</th>
+                                                        <th width="12%">Hình ảnh</th>
+                                                        <th width="15%">Tên sách</th>
+                                                        <th width="15%">Thể loại sách</th>
+                                                        <th width="15%">Tác giả sách</th>
+                                                        <th width="18%">Mô tả sách</th>
+                                                        <th width="5%">Số lượng</th>
+                                                        <th width="10%">Giá</th>
+                                                        <th width="15%">Hoạt động</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {currentItems.map((product, index) => (
+                                                        <tr key={product.id}>
+                                                            <td>{indexOfFirstItem + index + 1}</td>
+                                                            <td>
+                                                                <img
+                                                                    className="img-fluid rounded"
+                                                                    src={product.images[0]?.url}
+                                                                    alt={product.name}
+                                                                />
+                                                            </td>
+                                                            <td>{product.name}</td>
+                                                            <td>{product.category?.name}</td>
+                                                            <td>{product.author.name}</td>
+                                                            <td>
+                                                                <p className="mb-0">
+                                                                    {product.short_summary}
+                                                                </p>
+                                                            </td>
+                                                            <td>{product.stock}</td>
+                                                            <td>
+                                                                {parseFloat(
+                                                                    product.price
+                                                                ).toLocaleString('vi-VN')}{' '}
+                                                                đ
+                                                            </td>
+                                                            <td>
+                                                                <div className="flex align-items-center list-user-action">
+                                                                    <Link
+                                                                        className="bg-primary"
+                                                                        data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Edit"
+                                                                        href={`/admin/product/update/${product.id}`}
+                                                                    >
+                                                                        <i className="ri-pencil-line"></i>
+                                                                    </Link>
+                                                                    <Link
+                                                                        className="bg-primary"
+                                                                        data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Xoá"
+                                                                        href="#"
+                                                                        onClick={() =>
+                                                                            deleteProduct(
+                                                                                product.id
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <i className="ri-delete-bin-line"></i>
+                                                                    </Link>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    ) : (
+                                        <div className="text-center py-5">
+                                            <Image
+                                                width={400}
+                                                height={400}
+                                                src="/img/empty-product.webp"
+                                                alt="Không có sản phẩm"
+                                            />
+                                            <p className="mt-3 text-muted">
+                                                Không tìm thấy sản phẩm nào
+                                            </p>
+                                        </div>
+                                    )}
+                                    {/* Phân trang */}
+                                    {currentItems.length > 0 && (
+                                        <nav className="mt-4">
+                                            <ul className="pagination pagination-lg justify-content-center">
                                                 <li
-                                                    key={number}
-                                                    className={`page-item ${number === currentPage ? 'active' : ''
-                                                        }`}
+                                                    className={`page-item ${
+                                                        currentPage === 1 ? 'disabled' : ''
+                                                    }`}
                                                 >
                                                     <button
                                                         className="page-link"
-                                                        onClick={() => handlePageChange(number)}
+                                                        onClick={() =>
+                                                            handlePageChange(currentPage - 1)
+                                                        }
+                                                        aria-label="Previous"
                                                     >
-                                                        {number}
+                                                        <span aria-hidden="true">&laquo;</span>
                                                     </button>
                                                 </li>
-                                            ))}
-                                            <li
-                                                className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}
-                                            >
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() =>
-                                                        handlePageChange(currentPage + 1)
-                                                    }
-                                                    aria-label="Next"
+                                                {pageNumbers.map((number) => (
+                                                    <li
+                                                        key={number}
+                                                        className={`page-item ${
+                                                            number === currentPage ? 'active' : ''
+                                                        }`}
+                                                    >
+                                                        <button
+                                                            className="page-link"
+                                                            onClick={() => handlePageChange(number)}
+                                                        >
+                                                            {number}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                                <li
+                                                    className={`page-item ${
+                                                        currentPage === totalPages ? 'disabled' : ''
+                                                    }`}
                                                 >
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() =>
+                                                            handlePageChange(currentPage + 1)
+                                                        }
+                                                        aria-label="Next"
+                                                    >
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </>
     )
 }

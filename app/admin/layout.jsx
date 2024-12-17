@@ -37,9 +37,9 @@ export default function RootLayout({ children }) {
                 <Script src="/js/popper.min.js" strategy="beforeInteractive" />
                 <Script src="/js/bootstrap.min.js" strategy="beforeInteractive" />
                 <Script src="/js/dataTables.bootstrap4.min.js" strategy="beforeInteractive" />
-
-                <Script src="/js/slick.min.js" strategy="lazyOnload" />
-                <Script src="/js/owl.carousel.min.js" strategy="lazyOnload" />
+                {/* 
+                <Script src="/js/slick.min.js" strategy="lazyOnload" /> */}
+                {/* <Script src="/js/owl.carousel.min.js" strategy="lazyOnload" /> */}
             </body>
         </html>
     )

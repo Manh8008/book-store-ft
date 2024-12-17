@@ -1,21 +1,20 @@
-"use client"
+'use client'
 
-import { bannerApiRequestAdmin } from "@/apiRequests/banner";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { bannerApiRequestAdmin } from '@/apiRequests/banner'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
-
 
 export default function Banner() {
     const [banner, setBanner] = useState([])
 
     const fetchBanner = async () => {
-        const result = await bannerApiRequestAdmin.getAllBanner();
+        const result = await bannerApiRequestAdmin.getAllBanner()
         // console.log(banner);
-        setBanner(result.payload.data);
+        setBanner(result.payload.data)
     }
     useEffect(() => {
-        fetchBanner();
+        fetchBanner()
     }, [])
 
     const messageDelete = (id) => {
@@ -37,7 +36,7 @@ export default function Banner() {
                         confirmButtonColor: '#3085d6',
                         icon: 'success'
                     })
-                    fetchBanner();
+                    fetchBanner()
                 } else {
                     Swal.fire({
                         title: 'Lỗi',
@@ -53,9 +52,6 @@ export default function Banner() {
     const deleteBanner = (id) => {
         messageDelete(id)
     }
-
-
-
 
     return (
         <>
@@ -108,16 +104,6 @@ export default function Banner() {
                                                                     data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title=""
-                                                                    data-original-title="Sửa"
-                                                                    href=""
-                                                                >
-                                                                    <i className="ri-pencil-line"></i>
-                                                                </Link>
-                                                                <Link
-                                                                    className="bg-primary"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title=""
                                                                     data-original-title="Xoá"
                                                                     href="#"
                                                                     onClick={() =>
@@ -130,7 +116,6 @@ export default function Banner() {
                                                         </td>
                                                     </tr>
                                                 ))}
-
                                             </tbody>
                                         </table>
                                     </div>

@@ -7,63 +7,66 @@ import { useUser } from '@/context/user-context'
 const cx = classNames.bind(styles)
 
 const PackageItem = ({ cart }) => {
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(price)
+    }
+
     return (
-        <>
+        <div className={cx('package-items-container')}>
             {cart &&
                 cart.map((cartItem) => (
-                    <div key={cartItem.id}>
+                    <div key={cartItem.id} className={cx('package-item-wrapper')}>
                         <div className={cx('package-item')}>
                             <div className={cx('item-icon')}>
-                                <picture className={cx('webpimg-container')}>
-                                    {/* <source
-                                        type="image/webp"
-                                        srcSet="https://salt.tikicdn.com/cache/96x96/ts/product/02/9c/b8/36c9e43832a07ac5371fcafeed3a92b2.jpg.webp"
-                                    /> */}
+                                {cartItem.images[0]?.url && (
                                     <img
-                                        src={cartItem.images[0]?.url}
-                                        alt="icon"
-                                        width="48"
-                                        height="48"
-                                        className={cx('WebpImg__StyledImg-sc-h3ozu8-0', 'fWjUGo')}
+                                        src={cartItem.images[0].url}
+                                        alt={cartItem.name}
+                                        className={cx('product-image')}
                                     />
-                                </picture>
+                                )}
                             </div>
 
                             <div className={cx('item-info')}>
-                                <div className={cx('item-info__first-line')}>
-                                    <span
-                                        className={cx('item-info__product-name')}
-                                        title="Nghệ Thuật Để Trở Thành Một Người Tỏa Sáng"
-                                    >
-                                        {cartItem.name}
-                                    </span>
-                                </div>
-                                <div className={cx('item-info__second-line')}>
-                                    <div className={cx('item-info__qty')}>
-                                        SL: {cartItem.quantity}
+                                <div className={cx('item-info__content')}>
+                                    <div className={cx('item-info__title-group')}>
+                                        <h4 className={cx('item-info__product-name')}>
+                                            {cartItem.name}
+                                        </h4>
+                                        <span className={cx('item-info__qty')}>
+                                            Số lượng: {cartItem.quantity}
+                                        </span>
                                     </div>
-                                    <div>
-                                        <div
-                                            className={cx(
-                                                'item-info__price',
-                                                'item-info__price-sale'
-                                            )}
-                                        >
+
+                                    <div className={cx('item-info__price-group')}>
+                                        {cartItem.original_price && (
                                             <span className={cx('item-info__original-price')}>
-                                                129.000 ₫
+                                                {formatPrice(cartItem.original_price)}
                                             </span>
-                                            <span>
-                                                {parseFloat(cartItem.price).toLocaleString('vi-VN')}
-                                                đ
-                                            </span>
-                                        </div>
+                                        )}
+                                        <span className={cx('item-info__current-price')}>
+                                            {formatPrice(cartItem.price)}
+                                        </span>
                                     </div>
                                 </div>
+
+                                {cartItem.original_price && (
+                                    <div className={cx('item-info__discount')}>
+                                        -
+                                        {Math.round(
+                                            (1 - cartItem.price / cartItem.original_price) * 100
+                                        )}
+                                        %
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
                 ))}
-        </>
+        </div>
     )
 }
 
