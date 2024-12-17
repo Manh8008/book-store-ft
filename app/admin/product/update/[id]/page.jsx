@@ -36,7 +36,7 @@ export default function UpdateProduct({ params }) {
             const data = await res.json()
             setProduct(data.data)
             setValue('name', data.data.name)
-            setValue('category_id', data.data.category_id)
+            setValue('category_id', String(data.data.category_id))
             setValue('title', data.data.title)
             setValue('authorName', data.data.author.name)
             setValue('authorBio', data.data.author.bio)
@@ -153,7 +153,10 @@ export default function UpdateProduct({ params }) {
                                                     Danh mục sách
                                                 </option>
                                                 {categories?.map((category) => (
-                                                    <option key={category.id} value={category.id}>
+                                                    <option
+                                                        key={category.id}
+                                                        value={String(category.id)}
+                                                    >
                                                         {category.name}
                                                     </option>
                                                 ))}

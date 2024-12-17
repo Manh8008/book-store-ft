@@ -47,9 +47,14 @@ export default function Order() {
 
     const handleChangeOrderStatus = async (e, id) => {
         const newStatus = e.target.value
+        const currentOrder = orderData.find((order) => order.id === id)
+        const currentOrderStatus = currentOrder?.order_status
 
-        // Kiểm tra nếu trạng thái mới không hợp lệ
-        const currentOrderStatus = orderData.find((order) => order.id === id)?.order_status
+        if (currentOrderStatus === 'complete') {
+            setError('Không thể thay đổi trạng thái của đơn hàng đã hoàn thành!')
+            return
+        }
+
         if (orderStatusOrder[newStatus] < orderStatusOrder[currentOrderStatus]) {
             setError('Trạng thái không thể quay lại trạng thái cũ!')
             return
@@ -306,6 +311,10 @@ export default function Order() {
                                                                             e,
                                                                             item.id
                                                                         )
+                                                                    }
+                                                                    disabled={
+                                                                        item.order_status ===
+                                                                        'complete'
                                                                     }
                                                                 >
                                                                     <option value="Chờ xác nhận">
