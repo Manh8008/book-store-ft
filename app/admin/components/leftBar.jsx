@@ -1,11 +1,12 @@
 'use client'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { authAdminApiRequest } from '@/apiRequests/auth'
 import { Button } from '@/components/ui/button'
 
 export default function LeftBar() {
     const router = useRouter()
+    const pathname = usePathname();
 
     const handleLogout = async () => {
         try {
@@ -40,47 +41,47 @@ export default function LeftBar() {
                 <div id="sidebar-scrollbar">
                     <nav className="iq-sidebar-menu">
                         <ul id="iq-sidebar-toggle" className="iq-menu">
-                            <li>
+                            <li className={pathname === '/admin' ? 'active' : ''}>
                                 <Link href="/admin">
                                     <i className="las la-home iq-arrow-left"></i>Bảng Điều Khiển
                                 </Link>
                             </li>
-                            <li>
+                            <li className={pathname === '/admin/catalog' ? 'active' : ''}>
                                 <Link href="/admin/catalog">
                                     <i className="ri-record-circle-line"></i>Danh Mục Sách
                                 </Link>
                             </li>
-                            <li>
+                            <li className={pathname === '/admin/product' ? 'active' : ''}>
                                 <Link href="/admin/product">
                                     <i className="ri-record-circle-line"></i>Sách
                                 </Link>
                             </li>
-                            <li>
+                            <li className={pathname === '/admin/order' ? 'active' : ''}>
                                 <Link href="/admin/order">
                                     <i className="ri-record-circle-line"></i>Đơn Hàng
                                 </Link>
                             </li>
-                            <li>
+                            <li className={pathname === '/admin/review' ? 'active' : ''}>
                                 <Link href="/admin/review">
                                     <i className="ri-record-circle-line"></i>Bài Viết
                                 </Link>
                             </li>
-                            <li>
+                            <li className={pathname === '/admin/comment' ? 'active' : ''}>
                                 <Link href="/admin/comment">
                                     <i className="ri-record-circle-line"></i>Bình Luận
                                 </Link>
                             </li>
-                            <li>
+                            <li className={pathname === '/admin/banner' ? 'active' : ''}>
                                 <Link href="/admin/banner">
                                     <i className="ri-record-circle-line"></i>Banner
                                 </Link>
                             </li>
-                            <li>
+                            <li className={pathname === '/admin/customer' ? 'active' : ''}>
                                 <Link href="/admin/customer">
                                     <i className="ri-record-circle-line"></i>Người Dùng
                                 </Link>
                             </li>
-                            <li>
+                            <li className={pathname === '/admin/auth/login' ? 'active' : ''}>
                                 <Link href="/admin/auth/login">
                                     <i className="ri-record-circle-line"></i>Đăng Nhập
                                 </Link>
