@@ -8,6 +8,7 @@ import SearchAdmin from '../components/search-admin'
 import { ToastError } from '@/components/ui/ToastError/ToastError'
 import { FilterTop } from '@/components/ui/filter-top'
 import Image from 'next/image'
+import orderApiRequest from '@/apiRequests/order'
 
 export default function Product() {
     const [product, setProduct] = useState([])
@@ -16,10 +17,21 @@ export default function Product() {
     const [query, setQuery] = useState('')
     const [searchedQuery, setSearchedQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
+
     const itemsPerPage = 10
+
+    // Tính toán các sản phẩm hiển thị trên trang hiện tại
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = product.slice(indexOfFirstItem, indexOfLastItem)
+
+    // Tạo danh sách các trang
+    const totalPages = Math.ceil(product.length / itemsPerPage)
+    const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1)
 
     const fetchProduct = async () => {
         const result = await productApiRequestAdmin.getAllBooks()
+
         setProduct(result.payload.data)
     }
 
@@ -59,48 +71,90 @@ export default function Product() {
 
     const messageDelete = (id) => {
         Swal.fire({
-            title: 'Bạn chắc muốn xóa sản phẩm này?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Có, tôi muốn xóa'
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                const response = await productApiRequestAdmin.destroyBook(id)
-
-                if (response.status === 200) {
-                    Swal.fire({
-                        title: 'Xóa thành công',
-                        text: 'Sản phẩm của bạn đã được xóa.',
-                        confirmButtonColor: '#3085d6',
-                        icon: 'success'
-                    })
-                    fetchProduct()
-                } else {
-                    Swal.fire({
-                        title: 'Lỗi',
-                        text: 'Có lỗi xảy ra khi xóa sản phẩm.',
-                        confirmButtonColor: '#3085d6',
-                        icon: 'error'
-                    })
-                }
+            title: 'Đang kiểm tra sản phẩm...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
             }
+        })
+
+        const checkProductInOrders = async () => {
+            try {
+                const orders = await orderApiRequest.getAll()
+
+                for (const order of orders.payload.data) {
+                    const orderDetail = await orderApiRequest.getOrderDetail(order.id)
+                    const hasProduct = orderDetail.payload.data.books.some(
+                        (item) => item.book_id === id
+                    )
+                    if (hasProduct) {
+                        return true
+                    }
+                }
+                return false
+            } catch (error) {
+                console.error('Error checking orders:', error)
+                return false
+            }
+        }
+
+        checkProductInOrders().then((exists) => {
+            Swal.close()
+
+            if (exists) {
+                Swal.fire({
+                    title: 'Không thể xóa',
+                    text: 'Sản phẩm này đang tồn tại trong đơn hàng của khách hàng.',
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6'
+                })
+                return
+            }
+
+            Swal.fire({
+                title: 'Bạn chắc muốn xóa sản phẩm này?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Có, tôi muốn xóa'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const response = await productApiRequestAdmin.destroyBook(id)
+
+                        if (response.status === 200) {
+                            Swal.fire({
+                                title: 'Xóa thành công',
+                                text: 'Sản phẩm của bạn đã được xóa.',
+                                confirmButtonColor: '#3085d6',
+                                icon: 'success'
+                            })
+                            fetchProduct()
+                        } else {
+                            Swal.fire({
+                                title: 'Lỗi',
+                                text: 'Có lỗi xảy ra khi xóa sản phẩm.',
+                                confirmButtonColor: '#3085d6',
+                                icon: 'error'
+                            })
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            title: 'Lỗi',
+                            text: 'Có lỗi xảy ra khi xóa sản phẩm.',
+                            confirmButtonColor: '#3085d6',
+                            icon: 'error'
+                        })
+                    }
+                }
+            })
         })
     }
 
     const deleteProduct = (id) => {
         messageDelete(id)
     }
-
-    // Tính toán các sản phẩm hiển thị trên trang hiện tại
-    const indexOfLastItem = currentPage * itemsPerPage
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage
-    const currentItems = product.slice(indexOfFirstItem, indexOfLastItem)
-
-    // Tạo danh sách các trang
-    const totalPages = Math.ceil(product.length / itemsPerPage)
-    const pageNumbers = [...Array(totalPages).keys()].map((num) => num + 1)
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber)

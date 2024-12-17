@@ -52,7 +52,9 @@ export default function ProductDetail({ params }) {
         if (quantity > 1) setQuantity(quantity - 1)
     }
 
-    const increment = () => setQuantity(quantity + 1)
+    const increment = () => {
+        if (quantity < 20) setQuantity(quantity + 1)
+    }
 
     const fetchProduct = async () => {
         if (loading) return
@@ -235,7 +237,7 @@ export default function ProductDetail({ params }) {
                                         </button>
 
                                         <button className={cx('action-btn', 'right')}>
-                                            <a style={{ color: 'white' }} href="tel:+84968575978">
+                                            <a href="tel:+84968575978" style={{ color: 'white' }}>
                                                 <FaPhoneVolume /> Gọi điện đặt hàng
                                             </a>
                                         </button>

@@ -19,7 +19,7 @@ export default function Order() {
     const [loading, setLoading] = useState(false)
     const [searchedQuery, setSearchedQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 4
+    const itemsPerPage = 10
 
     const fetchOrders = async () => {
         if (loading) return
