@@ -7,6 +7,7 @@ import Swal from 'sweetalert2'
 import { catalogApiRequest, catalogApiRequestAdmin } from '@/apiRequests/category'
 import { ToastError } from '@/components/ui/ToastError/ToastError'
 import SearchAdmin from '../components/search-admin'
+import { productApiRequest } from '@/apiRequests/product'
 
 export default function Categories() {
     const [catalog, setData] = useState([])
@@ -15,7 +16,7 @@ export default function Categories() {
     const [query, setQuery] = useState('')
     const [searchedQuery, setSearchedQuery] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 4 // Số sản phẩm mỗi trang
+    const itemsPerPage = 10 // Số sản phẩm mỗi trang
 
     const fetchCategories = async () => {
         const result = await catalogApiRequestAdmin.getAllCatalog()
@@ -56,21 +57,60 @@ export default function Categories() {
     }
 
     const messageDelete = (id) => {
-        Swal.fire({
-            title: 'Bạn chắc muốn xóa danh mục này?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Có, tôi muốn xóa'
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                const result = await catalogApiRequestAdmin.destroyCatalog(id)
+        // Kiểm tra sản phẩm trong danh mục trước khi xóa
+        const checkProducts = async () => {
+            try {
+                const result = await productApiRequest.getBookByCatalog(id)
+                if (result.payload.data && result.payload.data.length > 0) {
+                    // Nếu có sản phẩm, hiển thị cảnh báo đặc biệt
+                    Swal.fire({
+                        title: 'Cảnh báo!',
+                        text: 'Danh mục này đang chứa sản phẩm. Nếu xóa danh mục, tất cả sản phẩm trong danh mục cũng sẽ bị xóa. Bạn có chắc chắn muốn xóa?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Có, xóa tất cả',
+                        cancelButtonText: 'Hủy'
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            await deleteCategoryAndProducts(id)
+                        }
+                    })
+                } else {
+                    // Nếu không có sản phẩm, hiển thị xác nhận xóa bình thường
+                    Swal.fire({
+                        title: 'Bạn chắc muốn xóa danh mục này?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Có, tôi muốn xóa',
+                        cancelButtonText: 'Hủy'
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            await deleteCategoryAndProducts(id)
+                        }
+                    })
+                }
+            } catch (error) {
+                console.error('Lỗi khi kiểm tra sản phẩm:', error)
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: 'Có lỗi xảy ra khi kiểm tra danh mục.',
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6'
+                })
+            }
+        }
 
+        const deleteCategoryAndProducts = async (categoryId) => {
+            try {
+                const result = await catalogApiRequestAdmin.destroyCatalog(categoryId)
                 if (result.status === 200) {
                     Swal.fire({
                         title: 'Xóa thành công',
-                        text: 'Danh mục của bạn đã được xóa.',
+                        text: 'Danh mục và các sản phẩm liên quan đã được xóa.',
                         confirmButtonColor: '#3085d6',
                         icon: 'success'
                     })
@@ -83,8 +123,18 @@ export default function Categories() {
                         icon: 'error'
                     })
                 }
+            } catch (error) {
+                console.error('Lỗi khi xóa:', error)
+                Swal.fire({
+                    title: 'Lỗi',
+                    text: 'Có lỗi xảy ra khi xóa danh mục.',
+                    confirmButtonColor: '#3085d6',
+                    icon: 'error'
+                })
             }
-        })
+        }
+
+        checkProducts()
     }
 
     const deleteCategories = (id) => {

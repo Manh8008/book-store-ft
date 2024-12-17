@@ -126,7 +126,7 @@ export default function ProductByCategories({ params }) {
                     <Image
                         width={1280}
                         height={400}
-                        src={'/img/sachkinhte-taichinh.png'}
+                        src={'/img/banner-doc-sach-vi-tuong-lai-amo-vietnam-2018.jpg'}
                         alt="sách kinh tế"
                         priority
                     />
@@ -137,9 +137,21 @@ export default function ProductByCategories({ params }) {
                     onPriceSort={sortBooksByPrice}
                     isLoading={isLoadingAction}
                 />
-                <div className={cx('productByCate')}>
-                    <ProductCard data={currentItems} />
-                </div>
+                {filteredProducts.length > 0 ? (
+                    <div className={cx('productByCate')}>
+                        <ProductCard data={currentItems} />
+                    </div>
+                ) : (
+                    <div className={cx('no-products')}>
+                        <Image
+                            width={400}
+                            height={400}
+                            src="/img/empty-product.webp"
+                            alt="Không tìm thấy sản phẩm"
+                        />
+                        <p>Không tìm thấy sản phẩm nào</p>
+                    </div>
+                )}
             </div>
 
             {!isLoadingInitial && !isLoadingAction && filteredProducts.length > itemsPerPage && (

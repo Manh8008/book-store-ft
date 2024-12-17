@@ -11,7 +11,7 @@ import styles from './book-detail.module.scss'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { productApiRequest } from '@/apiRequests/product'
 import { addItem } from '@/redux/slices/cartslice'
-import { handleHttpError } from '@/lib/utils'
+import { checkLogin, handleHttpError } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { commentApiRequest } from '@/apiRequests/comment'
 import { useUser } from '@/context/user-context'
@@ -20,6 +20,7 @@ import MainLayout from '@/layouts/main-layout'
 import { CommentForm } from '@/components/book-detail/comment-form'
 import { userApiRequestAdmin } from '@/apiRequests/users'
 import { ToastContainer } from '@/components/ui/toast-success/toast-success'
+import { useRouter } from 'next/navigation'
 
 const cx = classNames.bind(styles)
 
@@ -34,6 +35,7 @@ export default function ProductDetail({ params }) {
     const dispatch = useDispatch()
     const [isExpanded, setIsExpanded] = useState(false)
     const [toasts, setToasts] = useState([])
+    const router = useRouter()
 
     // Thu gọn/ xêm thêm mô tả
     const toggleDescription = () => {
@@ -86,7 +88,7 @@ export default function ProductDetail({ params }) {
         try {
             const result = await userApiRequestAdmin.getAllUser()
             setUsers(result.payload.data)
-        } catch (error) { }
+        } catch (error) {}
     }
 
     useEffect(() => {
@@ -136,6 +138,10 @@ export default function ProductDetail({ params }) {
     }
 
     const handleAddToCart = () => {
+        if (!checkLogin()) {
+            router.push('/auth/login')
+            return
+        }
         dispatch(addItem({ product, quantity }))
         addToast('Thêm vào giỏ hàng thành công!')
     }
@@ -228,10 +234,10 @@ export default function ProductDetail({ params }) {
                                             Thêm vào giỏ hàng
                                         </button>
 
-                                        <button
-                                            className={cx('action-btn', 'right')}
-                                        >
-                                            <a style={{ color: 'white' }} href="tel:+84968575978"><FaPhoneVolume /> Gọi điện đặt hàng</a>
+                                        <button className={cx('action-btn', 'right')}>
+                                            <a style={{ color: 'white' }} href="tel:+84968575978">
+                                                <FaPhoneVolume /> Gọi điện đặt hàng
+                                            </a>
                                         </button>
                                     </div>
                                 </div>

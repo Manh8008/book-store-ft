@@ -35,9 +35,8 @@ export default function UpdateReview({ params }) {
                 setValue('description', result.payload.data.description)
 
                 // Lưu URL ảnh cũ vào state
-                const imageUrl = result.payload.data.image_url;
+                const imageUrl = result.payload.data.image_url
                 setSelectedImage(imageUrl)
-                setValue('image_url', imageUrl)
             } else {
                 console.error('Không thể lấy bài viết')
             }
@@ -46,40 +45,40 @@ export default function UpdateReview({ params }) {
     }, [id, setValue])
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files[0]
         if (file) {
-            setSelectedImage(file);
+            setSelectedImage(file)
         }
-    };
+    }
 
     const onSubmit = async (data) => {
         try {
-            const formData = new FormData();
-            formData.append('_method', 'PUT');
+            const formData = new FormData()
+            formData.append('_method', 'PUT')
 
             // Thêm các giá trị khác ngoài ảnh
             for (const key in data) {
                 if (key !== 'image') {
-                    formData.append(key, data[key]);
+                    formData.append(key, data[key])
                 }
             }
 
-            // Nếu có ảnh mới (chọn từ input), thêm vào FormData
+            // Xử lý ảnh
             if (selectedImage instanceof File) {
-                formData.append('image', selectedImage); // Gửi file ảnh thực tế lên server
-            } else if (review?.image_url) {
-                // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
-                formData.append('image', review.image_url);
+                formData.append('image', selectedImage)
+            } else if (selectedImage) {
+                // Nếu selectedImage là URL của ảnh cũ
+                formData.append('image', selectedImage)
             }
 
-            const result = await reviewApiRequestAdmin.updatePost(id, formData);
+            const result = await reviewApiRequestAdmin.updatePost(id, formData)
             if (result.status === 200) {
-                router.push('/admin/review');
+                router.push('/admin/review')
             }
         } catch (error) {
-            handleHttpError(error, setError);
+            handleHttpError(error, setError)
         }
-    };
+    }
 
     return (
         <div id="content-page" className="content-page">
@@ -101,7 +100,7 @@ export default function UpdateReview({ params }) {
                                                 type="file"
                                                 className="custom-file-input"
                                                 {...register('image', {
-                                                    required: 'Ảnh bài viết là bắt buộc'
+                                                    required: false
                                                 })}
                                                 onChange={handleImageChange}
                                             />
@@ -115,7 +114,11 @@ export default function UpdateReview({ params }) {
                                         <div className="bg-secondary-subtle mb-3 mt-4 p-2">
                                             {selectedImage ? (
                                                 <img
-                                                    src={selectedImage instanceof File ? URL.createObjectURL(selectedImage) : selectedImage}
+                                                    src={
+                                                        selectedImage instanceof File
+                                                            ? URL.createObjectURL(selectedImage)
+                                                            : selectedImage
+                                                    }
                                                     className="img-fluid"
                                                     style={{ maxWidth: '300px', height: 'auto' }}
                                                     alt="Product Image"

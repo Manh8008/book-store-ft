@@ -81,9 +81,9 @@ export default function UpdateProduct({ params }) {
             // Nếu có ảnh mới (chọn từ input), thêm vào FormData
             if (selectedImage instanceof File) {
                 formData.append('images', selectedImage)
-            } else if (product?.images) {
+            } else if (product?.images?.[0]?.url) {
                 // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
-                formData.append('images', product.images)
+                formData.append('images', product.images[0].url)
             }
 
             const result = await productApiRequestAdmin.updateBook(id, formData)
@@ -204,7 +204,7 @@ export default function UpdateProduct({ params }) {
                                                     className="custom-file-input"
                                                     name="images"
                                                     {...register('images', {
-                                                        required: 'Ảnh sản phẩm là bắt buộc'
+                                                        required: false
                                                     })}
                                                     onChange={handleImageChange}
                                                 />

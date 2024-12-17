@@ -1,6 +1,5 @@
 'use client'
 
-import { z } from 'zod'
 import React, { useEffect, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
@@ -34,7 +33,7 @@ const UpdateCatalog = ({ params }) => {
             if (result?.payload?.data) {
                 setCatalog(result.payload.data)
                 setValue('name', result.payload.data.name)
-                // Lưu URL ảnh cũ vào state
+                // L��u URL ảnh cũ vào state
                 const imageUrl = result.payload.data.image
                 setSelectedImage(imageUrl)
                 setValue('image', imageUrl)
@@ -66,9 +65,8 @@ const UpdateCatalog = ({ params }) => {
 
             // Nếu có ảnh mới (chọn từ input), thêm vào FormData
             if (selectedImage instanceof File) {
-                formData.append('image', selectedImage) // Gửi file ảnh thực tế lên server
-            } else if (review?.image) {
-                // Nếu không có ảnh mới, gửi lại URL của ảnh cũ
+                formData.append('image', selectedImage)
+            } else if (catalog?.image) {
                 formData.append('image', catalog.image)
             }
 
@@ -102,7 +100,7 @@ const UpdateCatalog = ({ params }) => {
                                                 type="file"
                                                 className="custom-file-input"
                                                 {...register('image', {
-                                                    required: 'Ảnh danh mục là bắt buộc'
+                                                    required: false
                                                 })}
                                                 onChange={handleImageChange}
                                             />

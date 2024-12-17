@@ -137,26 +137,28 @@
     margin-top: 27px;
 
     @media (max-width: 768px) {
-        justify-content: center;
+        justify-content: space-between;
+        padding: 0 15px;
     }
 
     @media (max-width: 430px) {
         flex-direction: column;
         align-items: center;
+        padding: 0 10px;
     }
 }
 
 .review-product .list-review .item {
     width: 300px;
     margin-bottom: 50px;
-    height: auto; /* Không cần chiều cao cố định, hình ảnh sẽ tự điều chỉnh */
 
     @media (max-width: 768px) {
-        width: 100%;
+        width: 48%;
     }
 
     @media (max-width: 430px) {
         width: 100%;
+        max-width: 350px;
     }
 }
 
@@ -164,8 +166,8 @@
     position: relative;
     overflow: hidden;
     border-radius: 12px;
-    width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng của item */
-    height: auto; /* Chiều cao cố định cho hình ảnh đồng đều */
+    width: 100%;
+    padding-top: 66.67%;
 
     &::before {
         content: '';
@@ -185,10 +187,12 @@
     }
 
     .thumb {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        display: block;
     }
 }
 
@@ -217,7 +221,7 @@
 
 .review-product .list-review .date {
     position: absolute;
-    bottom: 10px; /* Đẩy lên một chút */
+    bottom: 10px;
     left: 10px;
     padding: 3px 5px;
     color: white;

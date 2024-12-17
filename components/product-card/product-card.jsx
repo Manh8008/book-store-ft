@@ -5,18 +5,26 @@ import classNames from 'classnames/bind'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { memo } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { addItem } from '@/redux/slices/cartslice'
 import styles from './product-card.module.scss'
-import { ToastContainer, ToastSuccess } from '../ui/toast-success/toast-success'
+import { ToastContainer } from '../ui/toast-success/toast-success'
+import { checkLogin } from '@/lib/utils'
 
 const cx = classNames.bind(styles)
 const ProductCard = memo((props) => {
     const [quantity] = useState(1)
     const dispatch = useDispatch()
     const [toasts, setToasts] = useState([])
+    const router = useRouter()
 
     const handleAddToCart = (product) => {
+        if (!checkLogin()) {
+            router.push('/auth/login')
+            return
+        }
+
         dispatch(addItem({ product, quantity }))
         const newToast = {
             id: Date.now(),

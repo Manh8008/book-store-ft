@@ -217,10 +217,17 @@ export default function OrderDetail({ params }) {
                                                         orderDetail.payment_status ===
                                                             'Đã thanh toán'
                                                             ? 'bg-success'
+                                                            : orderStatus === 'Đã hủy'
+                                                            ? 'bg-danger'
                                                             : 'bg-warning'
                                                     )}
                                                 >
-                                                    {orderDetail.payment_status}
+                                                    {orderStatus === 'Đã hủy'
+                                                        ? 'Đã hủy thanh toán'
+                                                        : orderStatus === 'complete' &&
+                                                          orderDetail.payment_method === 'COD'
+                                                        ? 'Đã thanh toán'
+                                                        : orderDetail.payment_status}
                                                 </span>
                                             </p>
                                         </div>

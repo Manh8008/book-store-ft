@@ -1,9 +1,11 @@
+'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import classNames from 'classnames/bind'
 import styles from './sidebar-menu.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
 import { useRouter } from 'next/navigation'
+import { catalogApiRequest } from '@/apiRequests/category'
 
 const cx = classNames.bind(styles)
 
@@ -13,6 +15,19 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
     const [activeItem, setActiveItem] = useState(null)
     const router = useRouter()
     const [token, setToken] = useState(null)
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const categoriesResponse = await catalogApiRequest.getAllCatalog()
+                setCategories(categoriesResponse.payload.data)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        fetchCategories()
+    }, [])
 
     useEffect(() => {
         setToken(localStorage.getItem('sessionTokenUser'))
@@ -75,12 +90,13 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                 <ul className={cx('menuList')}>
                     <li className={cx('authLinks')}>
                         {token ? (
-                            <Link href="#"
+                            <Link
+                                href="#"
                                 style={{
                                     display: 'inline-block',
                                     margin: '0 auto',
                                     padding: '8px 12px',
-                                    textAlign: 'center',
+                                    textAlign: 'center'
                                 }}
                                 onClick={handleLogout}
                                 className={cx('menuItem', 'logout')}
@@ -118,12 +134,43 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                     </li>
 
                     <li>
-                        <div className={cx('menuItem')} onClick={() => toggleExpand('customerInfo')}>
+                        <div className={cx('menuItem')} onClick={() => toggleExpand('bookcase')}>
+                            Tủ sách
+                            <i
+                                className={cx(
+                                    'fas',
+                                    expandedItems['bookcase'] ? 'fa-chevron-up' : 'fa-chevron-down'
+                                )}
+                            ></i>
+                        </div>
+                        {expandedItems['bookcase'] && (
+                            <ul className={cx('submenu')}>
+                                {categories.map((category) => (
+                                    <li key={category.id} className={cx('horizontal-list-item')}>
+                                        <Link
+                                            href={`/shop/${category.id}`}
+                                            className={cx('horizontal-link')}
+                                        >
+                                            {category.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </li>
+
+                    <li>
+                        <div
+                            className={cx('menuItem')}
+                            onClick={() => toggleExpand('customerInfo')}
+                        >
                             Thông tin khách hàng
                             <i
                                 className={cx(
                                     'fas',
-                                    expandedItems['customerInfo'] ? 'fa-chevron-up' : 'fa-chevron-down'
+                                    expandedItems['customerInfo']
+                                        ? 'fa-chevron-up'
+                                        : 'fa-chevron-down'
                                 )}
                             ></i>
                         </div>
@@ -140,54 +187,6 @@ const SidebarMenu = ({ isMenuOpen, closeMenu }) => {
                                 </li>
                                 <li>
                                     <Link href="/customer/order-history">Lịch sử đơn hàng</Link>
-                                </li>
-                            </ul>
-                        )}
-                    </li>
-
-                    <li>
-                        <div className={cx('menuItem')} onClick={() => toggleExpand('bookcase')}>
-                            Tủ sách
-                            <i
-                                className={cx(
-                                    'fas',
-                                    expandedItems['bookcase'] ? 'fa-chevron-up' : 'fa-chevron-down'
-                                )}
-                            ></i>
-                        </div>
-                        {expandedItems['bookcase'] && (
-                            <ul className={cx('submenu')}>
-                                <li className={cx('horizontal-list-item')}>
-                                    <Link href="/shop" className={cx('horizontal-link')}>
-                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_dDRm3HWy.gif" title="Sách Tư Duy - Kỹ Năng" /></span>
-                                        Sách Tư Duy - Kỹ Năng
-                                    </Link>
-                                </li>
-
-                                <li className={cx('horizontal-list-item')}>
-                                    <Link href="/shop" className={cx('horizontal-link')}>
-                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_pvUcuXXZ.gif" title="Sách Lịch Sử - Chính Trị" /></span>
-                                        Sách Lịch Sử - Chính Trị
-                                    </Link>
-                                </li>
-
-                                <li className={cx('horizontal-list-item')}>
-                                    <Link href="/shop" className={cx('horizontal-link')}>
-                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_6r1HlvHe.gif" title="Sách Khoa Học - Giáo dục" /></span>
-                                        Sách Khoa Học - Giáo dục
-                                    </Link>
-                                </li>
-                                <li className={cx('horizontal-list-item')}>
-                                    <Link href="/shop" className={cx('horizontal-link')}>
-                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_6r1HlvHe.gif" title="Sách văn hóa - nghệ thuật" /></span>
-                                        Sách Văn Hóa - Nghệ Thuật
-                                    </Link>
-                                </li>
-                                <li className={cx('horizontal-list-item')}>
-                                    <Link href="/shop" className={cx('horizontal-link')}>
-                                        <span><img src="https://pos.nvncdn.com/fd5775-40602/pc/20240222_eo3ZhEx3.gif" title="Sách Kinh Tế - Tài Chính" /></span>
-                                        Sách Kinh Tế - Tài Chính
-                                    </Link>
                                 </li>
                             </ul>
                         )}

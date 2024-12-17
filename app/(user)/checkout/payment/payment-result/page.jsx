@@ -4,6 +4,7 @@ import classNames from 'classnames/bind'
 import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './payment-result.module.scss'
 import { Button } from '@/components/ui/button'
+import { BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
 
 const cx = classNames.bind(styles)
 
@@ -29,36 +30,45 @@ const PaymentResult = ({ offlinePaymentData }) => {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
+                <div className={cx('result-icon')}>
+                    {paymentStatus === 'success' ? (
+                        <BsCheckCircleFill className={cx('success-icon')} />
+                    ) : (
+                        <BsXCircleFill className={cx('failed-icon')} />
+                    )}
+                </div>
                 {paymentStatus === 'success' ? (
                     <>
                         <h3 className={cx('title', 'success')}>Thanh toán thành công!</h3>
-                        <p className={cx('message')}>
-                            Đơn hàng của bạn đã được thanh toán thành công và đang chờ được xác
-                            nhận!
-                            <br />
-                            {/* Mã giao dịch: <strong>{transactionId}</strong> */}
-                            <br />
-                            Mã đơn hàng: <strong>{orderRef}</strong>
-                        </p>
+                        <div className={cx('message-container')}>
+                            <p className={cx('message')}>
+                                Đơn hàng của bạn đã được thanh toán thành công và đang chờ được xác
+                                nhận!
+                            </p>
+                            <div className={cx('order-info')}>
+                                <p>
+                                    Mã đơn hàng: <strong>{orderRef}</strong>
+                                </p>
+                            </div>
+                        </div>
                     </>
                 ) : (
                     <>
                         <h3 className={cx('title', 'failed')}>Thanh toán thất bại</h3>
-                        <p className={cx('message')}>
-                            Đã có lỗi xảy ra trong quá trình xử lý giao dịch của bạn.
-                            <br />
-                            Vui lòng thử lại hoặc liên hệ bộ phận hỗ trợ.
-                        </p>
-                        <p className={cx('message')}>
-                            Mã giao dịch: <strong>{transactionId}</strong>
-                            <br />
-                            Mã đơn hàng: <strong>{orderRef}</strong>
-                        </p>
+                        <div className={cx('message-container')}>
+                            <p className={cx('message')}>
+                                Đã có lỗi xảy ra trong quá trình xử lý giao dịch của bạn.
+                                <br />
+                                Vui lòng thử lại hoặc liên hệ bộ phận hỗ trợ.
+                            </p>
+                        </div>
                     </>
                 )}
-                <Button primary onClick={handleGoHome}>
-                    Quay lại trang chủ
-                </Button>
+                <div className={cx('action-buttons')}>
+                    <Button primary className={cx('home-button')} onClick={handleGoHome}>
+                        Quay lại trang chủ
+                    </Button>
+                </div>
             </div>
         </div>
     )

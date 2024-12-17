@@ -75,3 +75,18 @@
         }
     }
 }
+
+.no-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+
+    p {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        color: #666;
+    }
+}

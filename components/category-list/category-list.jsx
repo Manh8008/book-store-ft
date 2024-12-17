@@ -2,6 +2,7 @@
 
 import classNames from 'classnames/bind'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import styles from './category-list.module.scss'
 import { catalogApiRequest } from '@/apiRequests/category'
 import { HiMenu } from 'react-icons/hi'
@@ -36,8 +37,13 @@ const CategoryList = () => {
                     {categories &&
                         categories.map((category, index) => (
                             <li key={index}>
-                                <span className={cx('category-name')}>{category.name}</span>
-                                <FiChevronRight className={cx('arrow-icon')} />
+                                <Link 
+                                    href={`/shop/${category.id}`}
+                                    className={cx('category-item')}
+                                >
+                                    <span className={cx('category-name')}>{category.name}</span>
+                                    <FiChevronRight className={cx('arrow-icon')} />
+                                </Link>
                             </li>
                         ))}
                 </ul>
