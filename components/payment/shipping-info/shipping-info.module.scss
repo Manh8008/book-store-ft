@@ -74,3 +74,34 @@
     color: rgb(0, 171, 86);
     background-color: rgb(239, 255, 244);
 }
+
+.address-list {
+    margin-top: 16px;
+}
+
+.address-item {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        border-color: #0d5cb6;
+    }
+
+    &.active {
+        border-color: #0d5cb6;
+        background-color: #f0f8ff;
+    }
+}
+
+.default-label {
+    margin-left: 8px;
+    padding: 2px 6px;
+    background-color: #e6f7ff;
+    color: #0d5cb6;
+    border-radius: 4px;
+    font-size: 12px;
+}

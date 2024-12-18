@@ -22,6 +22,8 @@ export default function OrderHistory() {
     const [orders, setOrders] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedStatus, setSelectedStatus] = useState(ORDER_STATUS.ALL)
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 5
 
     useEffect(() => {
         if (userData?.orders) {
@@ -41,6 +43,14 @@ export default function OrderHistory() {
         })
     }, [orders, selectedStatus, searchTerm])
 
+    const currentOrders = useMemo(() => {
+        const indexOfLastOrder = currentPage * itemsPerPage
+        const indexOfFirstOrder = indexOfLastOrder - itemsPerPage
+        return filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder)
+    }, [filteredOrders, currentPage])
+
+    const totalPages = Math.ceil(filteredOrders.length / itemsPerPage)
+
     const handleStatusChange = (status) => {
         setSelectedStatus(status)
     }
@@ -48,6 +58,15 @@ export default function OrderHistory() {
     const handleSearch = (e) => {
         setSearchTerm(e.target.value)
     }
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [selectedStatus, searchTerm])
 
     const getStatusText = (status) => {
         switch (status) {
@@ -102,82 +121,131 @@ export default function OrderHistory() {
                         <p>Không có đơn hàng nào</p>
                     </div>
                 ) : (
-                    <div className={cx('order-list')}>
-                        {filteredOrders.map((order) => (
-                            <div key={order.id} className={cx('order-item')}>
-                                <div className={cx('order-header')}>
-                                    <div className={cx('order-wrap')}>
-                                        <span className={cx('order-code')}>
-                                            Mã đơn hàng: #{order.order_code}
-                                        </span>
-                                        <div>
-                                            <span
-                                                className={cx('status')}
-                                                data-status={order.order_status}
-                                            >
-                                                {getStatusText(order.order_status)}
+                    <>
+                        <div className={cx('order-list')}>
+                            {currentOrders.map((order) => (
+                                <div key={order.id} className={cx('order-item')}>
+                                    <div className={cx('order-header')}>
+                                        <div className={cx('order-wrap')}>
+                                            <span className={cx('order-code')}>
+                                                Mã đơn hàng: #{order.order_code}
                                             </span>
+                                            <div>
+                                                <span
+                                                    className={cx('status')}
+                                                    data-status={order.order_status}
+                                                >
+                                                    {getStatusText(order.order_status)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className={cx('sub-status')}>
+                                            Đặt hàng: Ngày {order.order_date}
                                         </div>
                                     </div>
-                                    <div className={cx('sub-status')}>
-                                        Đặt hàng: Ngày {order.order_date}
+
+                                    <div className={cx('order-body')}>
+                                        <div className={cx('item')}>
+                                            <div className={cx('item-info')}>
+                                                <div className={cx('item-name')}>
+                                                    <span>Họ và tên: </span>
+                                                    {order.name}
+                                                </div>
+                                                <div className={cx('item-phone')}>
+                                                    <span>Số điện thoại: </span>
+                                                    {order.phone}
+                                                </div>
+                                                <div className={cx('item-phone')}>
+                                                    <span>Địa chỉ nhận hàng: </span>
+                                                    {`${order.address_line}, ${order.town}, ${order.district}, ${order.province}`}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={cx('order-footer')}>
+                                        <div className={cx('btn-more')}></div>
+                                        <div className={cx('actions')}>
+                                            <div className={cx('total-price')}>
+                                                <div className={cx('title')}>Tổng tiền:</div>
+                                                <div className={cx('total')}>
+                                                    {parseFloat(order.total_amount).toLocaleString(
+                                                        'vi-VN'
+                                                    )}
+                                                    đ
+                                                </div>
+                                            </div>
+                                            <div className={cx('button-group')}>
+                                                <Link
+                                                    href={`/customer/order-history/tracking/${
+                                                        order.id
+                                                    }?order_status=${order.order_status}&district=${
+                                                        order.district || ''
+                                                    }&town=${order.town || ''}&province=${
+                                                        order.province || ''
+                                                    }&address_line=${order.address_line || ''}&phone=${
+                                                        order.phone || ''
+                                                    }&name=${order.name || ''}&order_date=${
+                                                        order.order_date || ''
+                                                    }`}
+                                                    className={cx('detail-btn')}
+                                                >
+                                                    Xem chi tiết
+                                                </Link>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            ))}
+                        </div>
 
-                                <div className={cx('order-body')}>
-                                    <div className={cx('item')}>
-                                        <div className={cx('item-info')}>
-                                            <div className={cx('item-name')}>
-                                                <span>Họ và tên: </span>
-                                                {order.name}
-                                            </div>
-                                            <div className={cx('item-phone')}>
-                                                <span>Số điện thoại: </span>
-                                                {order.phone}
-                                            </div>
-                                            <div className={cx('item-phone')}>
-                                                <span>Địa chỉ nhận hàng: </span>
-                                                {`${order.address_line}, ${order.town}, ${order.district}, ${order.province}`}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        {totalPages > 1 && (
+                            <div className={cx('pagination')}>
+                                <button
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    className={cx('page-button')}
+                                >
+                                    &laquo;
+                                </button>
 
-                                <div className={cx('order-footer')}>
-                                    <div className={cx('btn-more')}></div>
-                                    <div className={cx('actions')}>
-                                        <div className={cx('total-price')}>
-                                            <div className={cx('title')}>Tổng tiền:</div>
-                                            <div className={cx('total')}>
-                                                {parseFloat(order.total_amount).toLocaleString(
-                                                    'vi-VN'
-                                                )}
-                                                đ
-                                            </div>
-                                        </div>
-                                        <div className={cx('button-group')}>
-                                            <Link
-                                                href={`/customer/order-history/tracking/${
-                                                    order.id
-                                                }?order_status=${order.order_status}&district=${
-                                                    order.district || ''
-                                                }&town=${order.town || ''}&province=${
-                                                    order.province || ''
-                                                }&address_line=${order.address_line || ''}&phone=${
-                                                    order.phone || ''
-                                                }&name=${order.name || ''}&order_date=${
-                                                    order.order_date || ''
-                                                }`}
-                                                className={cx('detail-btn')}
+                                {[...Array(totalPages)].map((_, index) => {
+                                    const pageNumber = index + 1
+                                    if (
+                                        pageNumber === 1 ||
+                                        pageNumber === totalPages ||
+                                        Math.abs(pageNumber - currentPage) <= 2
+                                    ) {
+                                        return (
+                                            <button
+                                                key={pageNumber}
+                                                onClick={() => handlePageChange(pageNumber)}
+                                                className={cx('page-button', {
+                                                    active: currentPage === pageNumber
+                                                })}
                                             >
-                                                Xem chi tiết
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
+                                                {pageNumber}
+                                            </button>
+                                        )
+                                    } else if (
+                                        pageNumber === currentPage - 3 ||
+                                        pageNumber === currentPage + 3
+                                    ) {
+                                        return <span key={pageNumber}>...</span>
+                                    }
+                                    return null
+                                })}
+
+                                <button
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className={cx('page-button')}
+                                >
+                                    &raquo;
+                                </button>
                             </div>
-                        ))}
-                    </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>

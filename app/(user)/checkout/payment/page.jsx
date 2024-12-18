@@ -26,6 +26,18 @@ const Payment = () => {
     const { userData } = useUser()
     const cart = useSelector((state) => state.cart)
 
+    const searchParams = new URLSearchParams(window.location.search)
+    const selectedAddressId = searchParams.get('selected_address')
+
+    const addressInfo = userData?.address || []
+    const addressInfoDefault = Array.isArray(addressInfo)
+        ? addressInfo.find((addressInfoItem) => addressInfoItem.default === 1)
+        : null
+
+    const currentAddress = selectedAddressId
+        ? addressInfo.find((addr) => addr.id === parseInt(selectedAddressId))
+        : addressInfoDefault
+
     const total = cart.reduce((sum, product) => {
         return sum + parseFloat(product.price) * product.quantity
     }, 0)
@@ -44,12 +56,9 @@ const Payment = () => {
             quantity: product.quantity,
             price: product.price
         })),
-        total_amount: finalTotal
+        total_amount: finalTotal,
+        ...(selectedAddressId && { selected_address_id: parseInt(selectedAddressId) })
     }
-    const addressInfo = userData?.address || []
-    const addressInfoDefault = Array.isArray(addressInfo)
-        ? addressInfo.find((addressInfoItem) => addressInfoItem.default === 1)
-        : null
 
     const handlePaymentMethodChange = (paymentMethod) => {
         setSelectedPaymentMethod(paymentMethod)
@@ -59,7 +68,7 @@ const Payment = () => {
         try {
             let result
 
-            if (!addressInfoDefault) {
+            if (!currentAddress) {
                 alert('Vui lòng thêm địa chỉ giao hàng trước khi đặt hàng.')
                 router.push('/customer/address/create')
                 return
@@ -127,7 +136,7 @@ const Payment = () => {
                 </div>
 
                 <div className={cx('right')}>
-                    <ShippingInfo addressInfoDefault={addressInfoDefault} />
+                    <ShippingInfo addressInfoDefault={currentAddress} />
 
                     <div className={cx('order-summary')}>
                         <div className={cx('summary-header')}>

@@ -28,8 +28,7 @@ export default function RevenueChart() {
                 // Xử lý dữ liệu: Nhóm doanh thu theo tháng
                 const monthlyRevenue = orders.reduce((acc, order) => {
                     if (
-                        order.order_status == 'complete' &&
-                        order.payment_status == 'Đã thanh toán'
+                        order.order_status == 'complete'
                     ) {
                         const month = new Date(order.order_date).getMonth() + 1 // Lấy tháng (1-12)
                         const totalAmount = parseFloat(order.total_amount) // Chuyển đổi thành số

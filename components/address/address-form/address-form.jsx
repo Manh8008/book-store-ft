@@ -12,8 +12,6 @@ const cx = classNames.bind(styles)
 const AddressForm = () => {
     const { userData, setUserData } = useUser()
 
-    console.log('ađress', userData.address)
-
     if (!userData || !userData.address) {
         return null
     }
@@ -36,8 +34,7 @@ const AddressForm = () => {
 
     const handleSavingAddress = async (id) => {
         try {
-            await addressApiRequest.defaultUpdate(id)
-            window.location.href = '/checkout/payment'
+            window.location.href = `/checkout/payment?selected_address=${id}`
         } catch (error) {
             toast.error('Không thể giao tới địa chỉ này.')
         }
@@ -92,14 +89,12 @@ const AddressForm = () => {
                                     </div>
                                 </div>
                                 <div className={cx('actions')}>
-                                    {address.default !== 1 && (
                                         <button
                                             className={cx('saving-address')}
                                             onClick={() => handleSavingAddress(address.id)}
                                         >
                                             Giao tới địa chỉ này
                                         </button>
-                                    )}
 
                                     <Link
                                         href={`/customer/address/update/${address.id}`}
