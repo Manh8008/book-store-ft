@@ -25,10 +25,12 @@ function UserHeader() {
         try {
             setShowAccountMenu(false)
             await authApiRequest.logoutFromNextClientToServer()
-            localStorage.removeItem('sessionTokenUser')
-            router.push('/auth/login')
         } catch (error) {
-            alert('Đăng xuất thất bại!')
+            console.log(error)
+        } finally {
+            localStorage.removeItem('sessionTokenUser')
+            document.cookie = 'sessionTokenUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            router.push('/auth/login')
         }
     }
 
