@@ -4,7 +4,6 @@ import classNames from 'classnames/bind'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import styles from './order-tracking.module.scss'
-import { AccountSidebar } from '@/components/account-sidebar'
 import orderApiRequest from '@/apiRequests/order'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { handleHttpError } from '@/lib/utils'
@@ -39,6 +38,12 @@ export default function OrderTracking({ params }) {
     }
 
     const handleCancelOrder = async (orderId) => {
+        const isConfirmed = window.confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')
+
+        if (!isConfirmed) {
+            return
+        }
+
         try {
             setLoading(true)
             const result = await orderApiRequest.cancelOrder(orderId)
