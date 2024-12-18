@@ -165,18 +165,14 @@ export default function OrderDetail({ params }) {
                                                 <td colSpan="2">Tạm tính</td>
                                                 <td className="text-end">
                                                     {parseFloat(
-                                                        orderDetail?.total_amount
+                                                        orderDetail?.total_amount - 32000
                                                     ).toLocaleString('vi-VN')}
                                                     đ
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td colSpan="2">Phí vận chuyển</td>
-                                                <td className="text-end">20.000đ</td>
-                                            </tr>
-                                            <tr>
-                                                <td colSpan="2">Giảm giá (Mã: NEWYEAR)</td>
-                                                <td className="text-danger text-end">-10.00$</td>
+                                                <td className="text-end">32.000đ</td>
                                             </tr>
                                             <tr className="fw-bold">
                                                 <td colSpan="2">TỔNG CỘNG</td>

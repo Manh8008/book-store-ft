@@ -30,10 +30,13 @@ const Payment = () => {
         return sum + parseFloat(product.price) * product.quantity
     }, 0)
 
+    const shippingFee = 32000
+    const finalTotal = total + shippingFee
+
     const formattedTotal = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND'
-    }).format(total)
+    }).format(finalTotal)
 
     const checkoutData = {
         items: cart.map((product) => ({
@@ -41,7 +44,7 @@ const Payment = () => {
             quantity: product.quantity,
             price: product.price
         })),
-        total_amount: total
+        total_amount: finalTotal
     }
     const addressInfo = userData?.address || []
     const addressInfoDefault = Array.isArray(addressInfo)
@@ -135,15 +138,21 @@ const Payment = () => {
                         </div>
                         <div className={cx('summary-discount')}>
                             <span>Tạm tính</span>
-                            <span>-55.000đ</span>
+                            <span>
+                                {new Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                }).format(total)}
+                            </span>
                         </div>
                         <div className={cx('summary-discount')}>
                             <span>Phí vận chuyển</span>
-                            <span>-55.000đ</span>
-                        </div>
-                        <div className={cx('summary-discount')}>
-                            <span>Giảm giá từ Deal</span>
-                            <span>-55.000đ</span>
+                            <span>
+                                {new Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                }).format(shippingFee)}
+                            </span>
                         </div>
                         <div className={cx('summary-total')}>
                             <span>Tổng tiền</span>

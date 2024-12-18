@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 
 export default function LeftBar() {
     const router = useRouter()
-    const pathname = usePathname();
+    const pathname = usePathname()
 
     const handleLogout = async () => {
         try {
@@ -97,12 +97,13 @@ export default function LeftBar() {
                         <div className="iq-card">
                             <div className="iq-card-body">
                                 <div className="sidebarbottom-content">
-                                    <button
-                                        type="submit"
+                                    <Button
+                                        primary
+                                        href={'/'}
                                         className="btn w-100 btn-primary mt-4 view-more"
                                     >
                                         BookShop
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
