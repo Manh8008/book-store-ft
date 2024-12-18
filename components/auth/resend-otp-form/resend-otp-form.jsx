@@ -1,6 +1,6 @@
 'use client'
 import classNames from 'classnames/bind'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -16,6 +16,9 @@ const cx = classNames.bind(styles)
 export const ResendOtpForm = () => {
     const [error, setError] = useState()
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const emailFromURL = searchParams.get('email') || ''
+
     const {
         register,
         handleSubmit,
@@ -24,7 +27,7 @@ export const ResendOtpForm = () => {
     } = useForm({
         resolver: zodResolver(resendOtpSchema),
         defaultValues: {
-            email: '',
+            email: emailFromURL,
             otp_code: ''
         }
     })
@@ -47,18 +50,7 @@ export const ResendOtpForm = () => {
             <form className={cx('form')} onSubmit={handleSubmit(onSubmit)}>
                 <h2 className={cx('title')}>Nhập mã xác thực</h2>
 
-                <div>
-                    <Input
-                        label="Email"
-                        type="email"
-                        id="email"
-                        placeholder="Nhập email"
-                        error={!!errors.email}
-                        {...register('email')}
-                        onBlur={() => trigger('email')}
-                    />
-                    {errors.email && <p className={cx('error')}>{errors.email.message}</p>}
-                </div>
+                <Input type="hidden" {...register('email')} />
 
                 <div>
                     <Input

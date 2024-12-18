@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Toast, { showToast } from '@/components/ui/Toast'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { RegisterSchema } from '@/schemas'
@@ -46,7 +45,7 @@ export const RegisterForm = () => {
             const result = await authApiRequest.register(values)
             if (result.status === 200) {
                 setSuccess('Đăng ký thành công!')
-                router.push('/auth/resend-otp')
+                router.push(`/auth/resend-otp?email=${encodeURIComponent(values.email)}`)
             }
         } catch (error) {
             handleHttpError(error, setError)
