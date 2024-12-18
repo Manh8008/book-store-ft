@@ -200,7 +200,7 @@ export default function ProductDetail({ params }) {
                                                     </td>
                                                     <td className={cx('table-value')}>
                                                         {product?.stock > 0
-                                                            ? 'Còn hàng'
+                                                            ? `Còn hàng (${product?.stock})`
                                                             : 'Hết hàng'}
                                                     </td>
                                                 </tr>
