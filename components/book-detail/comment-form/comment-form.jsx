@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { commentSchema } from '@/schemas'
 
 import styles from './comment-form.module.scss'
+import { checkLogin } from '@/lib/utils'
 const cx = classNames.bind(styles)
 
 const CommentForm = ({ onAddComment }) => {
@@ -28,6 +29,11 @@ const CommentForm = ({ onAddComment }) => {
 
     const onSubmit = async (values) => {
         if (loading) return
+
+        if (!checkLogin()) {
+            return
+        }
+
         setLoading(true)
         setError('')
         setSuccess('')
@@ -36,7 +42,7 @@ const CommentForm = ({ onAddComment }) => {
             await onAddComment(values)
             reset()
         } catch (error) {
-            handleHttpError(error, setError)
+            console.log(error)
         } finally {
             setLoading(false)
         }

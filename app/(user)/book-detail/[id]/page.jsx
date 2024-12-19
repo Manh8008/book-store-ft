@@ -53,7 +53,14 @@ export default function ProductDetail({ params }) {
     }
 
     const increment = () => {
-        if (quantity < 20) setQuantity(quantity + 1)
+        if (quantity < 20) {
+            setQuantity(quantity + 1)
+        } else {
+            setError('Bạn chỉ có thể mua tối đa 20 sản phẩm!')
+            setTimeout(() => {
+                setError(null)
+            }, 3000)
+        }
     }
 
     const fetchProduct = async () => {

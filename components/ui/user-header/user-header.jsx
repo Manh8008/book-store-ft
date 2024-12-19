@@ -5,11 +5,41 @@ import classNames from 'classnames/bind'
 import Link from 'next/link'
 import styles from './user-header.module.scss'
 import { authApiRequest } from '@/apiRequests/auth'
+import { LoadingSkeleton } from '../LoadingSkeleton'
 
 const cx = classNames.bind(styles)
 
+const LoadingOverlay = () => {
+    return (
+        <div
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 9999
+            }}
+        >
+            <div
+                style={{
+                    textAlign: 'center'
+                }}
+            >
+                <LoadingSkeleton width="300px" height="300px" circle />
+                <p style={{ marginTop: '10px', fontSize: '16px' }}>Đang đăng xuất...</p>
+            </div>
+        </div>
+    )
+}
+
 function UserHeader() {
     const [showAccountMenu, setShowAccountMenu] = useState(false)
+    const [isLoggingOut, setIsLoggingOut] = useState(false)
     const token = localStorage.getItem('sessionTokenUser')
     const router = useRouter()
 
@@ -23,6 +53,7 @@ function UserHeader() {
 
     const handleLogout = async () => {
         try {
+            setIsLoggingOut(true)
             setShowAccountMenu(false)
             await authApiRequest.logoutFromNextClientToServer()
         } catch (error) {
@@ -31,8 +62,11 @@ function UserHeader() {
             localStorage.removeItem('sessionTokenUser')
             document.cookie = 'sessionTokenUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             router.push('/auth/login')
+            setIsLoggingOut(false)
         }
     }
+
+    if (isLoggingOut) return <LoadingOverlay />
 
     return (
         <div className={cx('header__user')}>
