@@ -74,7 +74,9 @@ export const ChangePasswordForm = () => {
                             onBlur={() => trigger('old_password')}
                         />
                         {errors.old_password && (
-                            <span className={cx('error-message')}>{errors.old_password.message}</span>
+                            <span className={cx('error-message')}>
+                                {errors.old_password.message}
+                            </span>
                         )}
                     </div>
 
