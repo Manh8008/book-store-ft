@@ -8,6 +8,7 @@ import { catalogApiRequest, catalogApiRequestAdmin } from '@/apiRequests/categor
 import { ToastError } from '@/components/ui/ToastError/ToastError'
 import SearchAdmin from '../components/search-admin'
 import { productApiRequest } from '@/apiRequests/product'
+import { MainLayoutAdmin } from '@/layouts/main-layout-admin'
 
 export default function Categories() {
     const [catalog, setData] = useState([])
@@ -157,157 +158,164 @@ export default function Categories() {
     return (
         <>
             {/* <!-- Page Content  --> */}
-            <ToastError errorMessage={error} />
+            <MainLayoutAdmin>
+                <ToastError errorMessage={error} />
 
-            <div id="content-page" className="content-page">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-sm-12">
-                            <div className="iq-card">
-                                <div className="iq-card-header d-flex justify-content-between">
-                                    <div className="iq-header-title" style={{ display: 'flex' }}>
-                                        <h4 className="card-title">Danh sách danh mục</h4>
-                                        <SearchAdmin
-                                            query={query}
-                                            setQuery={setQuery}
-                                            onSearch={handleSearch}
-                                        />
-                                    </div>
-                                    <div className="iq-card-header-toolbar d-flex align-items-center">
-                                        <Link
-                                            href="/admin/catalog/create"
-                                            className="btn btn-primary"
+                <div id="content-page" className="content-page">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="iq-card">
+                                    <div className="iq-card-header d-flex justify-content-between">
+                                        <div
+                                            className="iq-header-title"
+                                            style={{ display: 'flex' }}
                                         >
-                                            Thêm danh mục mới
-                                        </Link>
-                                    </div>
-                                </div>
-                                <div className="iq-card-body">
-                                    {searchedQuery && (
-                                        <p>
-                                            Kết quả tìm kiếm cho từ khóa "
-                                            <strong>{searchedQuery}</strong>"
-                                        </p>
-                                    )}
-                                    <div className="table-responsive">
-                                        <table
-                                            className="data-tables table table-striped table-bordered"
-                                            style={{ width: 100 + '%' }}
-                                        >
-                                            <thead>
-                                                <tr>
-                                                    <th width="5%">STT</th>
-                                                    <th width="5%">Ảnh danh mục</th>
-                                                    <th width="20%">Tên danh mục</th>
-                                                    {/* <th width="40%">Mô tả danh mục</th> */}
-                                                    <th width="5%">Hoạt động</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {currentItems.map((cate, index) => (
-                                                    <tr key={cate.id}>
-                                                        <td>{indexOfFirstItem + index + 1}</td>
-                                                        <td>
-                                                            <img
-                                                                className="img-fluid rounded"
-                                                                src={cate.image}
-                                                                alt={cate.name}
-                                                                width="100"
-                                                            />
-                                                        </td>
-                                                        <td>{cate.name}</td>
-                                                        {/* <td>
-                                                            <p className="mb-0">{cate.description}</p>
-                                                        </td> */}
-                                                        <td>
-                                                            <div className="flex align-items-center list-user-action">
-                                                                <Link
-                                                                    className="bg-primary"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title=""
-                                                                    data-original-title="Sửa"
-                                                                    href={`/admin/catalog/update/${cate.id}`}
-                                                                >
-                                                                    <i className="ri-pencil-line"></i>
-                                                                </Link>
-                                                                <Link
-                                                                    className="bg-primary"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title=""
-                                                                    data-original-title="Xoá"
-                                                                    href="#"
-                                                                    onClick={() =>
-                                                                        deleteCategories(cate.id)
-                                                                    }
-                                                                >
-                                                                    <i className="ri-delete-bin-line"></i>
-                                                                </Link>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    {/* Phân trang */}
-                                    <nav className="mt-4">
-                                        <ul className="pagination pagination-lg justify-content-center">
-                                            <li
-                                                className={`page-item ${
-                                                    currentPage === 1 ? 'disabled' : ''
-                                                }`}
+                                            <h4 className="card-title">Danh sách danh mục</h4>
+                                            <SearchAdmin
+                                                query={query}
+                                                setQuery={setQuery}
+                                                onSearch={handleSearch}
+                                            />
+                                        </div>
+                                        <div className="iq-card-header-toolbar d-flex align-items-center">
+                                            <Link
+                                                href="/admin/catalog/create"
+                                                className="btn btn-primary"
                                             >
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() =>
-                                                        handlePageChange(currentPage - 1)
-                                                    }
-                                                    aria-label="Previous"
-                                                >
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </button>
-                                            </li>
-                                            {pageNumbers.map((number) => (
+                                                Thêm danh mục mới
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div className="iq-card-body">
+                                        {searchedQuery && (
+                                            <p>
+                                                Kết quả tìm kiếm cho từ khóa "
+                                                <strong>{searchedQuery}</strong>"
+                                            </p>
+                                        )}
+                                        <div className="table-responsive">
+                                            <table
+                                                className="data-tables table table-striped table-bordered"
+                                                style={{ width: 100 + '%' }}
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th width="5%">STT</th>
+                                                        <th width="5%">Ảnh danh mục</th>
+                                                        <th width="20%">Tên danh mục</th>
+                                                        {/* <th width="40%">Mô tả danh mục</th> */}
+                                                        <th width="5%">Hoạt động</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {currentItems.map((cate, index) => (
+                                                        <tr key={cate.id}>
+                                                            <td>{indexOfFirstItem + index + 1}</td>
+                                                            <td>
+                                                                <img
+                                                                    className="img-fluid rounded"
+                                                                    src={cate.image}
+                                                                    alt={cate.name}
+                                                                    width="100"
+                                                                />
+                                                            </td>
+                                                            <td>{cate.name}</td>
+                                                            {/* <td>
+                                                <p className="mb-0">{cate.description}</p>
+                                            </td> */}
+                                                            <td>
+                                                                <div className="flex align-items-center list-user-action">
+                                                                    <Link
+                                                                        className="bg-primary"
+                                                                        data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title=""
+                                                                        data-original-title="Sửa"
+                                                                        href={`/admin/catalog/update/${cate.id}`}
+                                                                    >
+                                                                        <i className="ri-pencil-line"></i>
+                                                                    </Link>
+                                                                    <Link
+                                                                        className="bg-primary"
+                                                                        data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title=""
+                                                                        data-original-title="Xoá"
+                                                                        href="#"
+                                                                        onClick={() =>
+                                                                            deleteCategories(
+                                                                                cate.id
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <i className="ri-delete-bin-line"></i>
+                                                                    </Link>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        {/* Phân trang */}
+                                        <nav className="mt-4">
+                                            <ul className="pagination pagination-lg justify-content-center">
                                                 <li
-                                                    key={number}
                                                     className={`page-item ${
-                                                        number === currentPage ? 'active' : ''
+                                                        currentPage === 1 ? 'disabled' : ''
                                                     }`}
                                                 >
                                                     <button
                                                         className="page-link"
-                                                        onClick={() => handlePageChange(number)}
+                                                        onClick={() =>
+                                                            handlePageChange(currentPage - 1)
+                                                        }
+                                                        aria-label="Previous"
                                                     >
-                                                        {number}
+                                                        <span aria-hidden="true">&laquo;</span>
                                                     </button>
                                                 </li>
-                                            ))}
-                                            <li
-                                                className={`page-item ${
-                                                    currentPage === totalPages ? 'disabled' : ''
-                                                }`}
-                                            >
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() =>
-                                                        handlePageChange(currentPage + 1)
-                                                    }
-                                                    aria-label="Next"
+                                                {pageNumbers.map((number) => (
+                                                    <li
+                                                        key={number}
+                                                        className={`page-item ${
+                                                            number === currentPage ? 'active' : ''
+                                                        }`}
+                                                    >
+                                                        <button
+                                                            className="page-link"
+                                                            onClick={() => handlePageChange(number)}
+                                                        >
+                                                            {number}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                                <li
+                                                    className={`page-item ${
+                                                        currentPage === totalPages ? 'disabled' : ''
+                                                    }`}
                                                 >
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                                    <button
+                                                        className="page-link"
+                                                        onClick={() =>
+                                                            handlePageChange(currentPage + 1)
+                                                        }
+                                                        aria-label="Next"
+                                                    >
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </MainLayoutAdmin>
         </>
     )
 }

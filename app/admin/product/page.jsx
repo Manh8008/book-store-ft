@@ -9,6 +9,7 @@ import { ToastError } from '@/components/ui/ToastError/ToastError'
 import { FilterTop } from '@/components/ui/filter-top'
 import Image from 'next/image'
 import orderApiRequest from '@/apiRequests/order'
+import { MainLayoutAdmin } from '@/layouts/main-layout-admin'
 
 export default function Product() {
     const [product, setProduct] = useState([])
@@ -207,7 +208,7 @@ export default function Product() {
     }
 
     return (
-        <>
+        <MainLayoutAdmin>
             <ToastError errorMessage={error} />
             <div id="content-page" className="content-page">
                 <div className="container-fluid">
@@ -389,6 +390,6 @@ export default function Product() {
                     </div>
                 </div>
             </div>
-        </>
+        </MainLayoutAdmin>
     )
 }
